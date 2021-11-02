@@ -150,6 +150,72 @@ class HomeController
 
         $chart5 = new LaravelChart($settings5);
 
-        return view('home', compact('settings1', 'settings2', 'settings3', 'chart4', 'chart5'));
+        $settings6 = [
+            'chart_title'           => 'Last Five Trips',
+            'chart_type'            => 'latest_entries',
+            'report_type'           => 'group_by_date',
+            'model'                 => 'App\Models\Trip',
+            'group_by_field'        => 'created_at',
+            'group_by_period'       => 'day',
+            'aggregate_function'    => 'count',
+            'filter_field'          => 'created_at',
+            'group_by_field_format' => 'd/m/Y H:i:s',
+            'column_class'          => 'col-md-6',
+            'entries_number'        => '5',
+            'fields'                => [
+                'id'          => '',
+                'description' => '',
+                'price'       => '',
+                'guide'       => 'brief_intro',
+            ],
+            'translation_key' => 'trip',
+        ];
+
+        $settings6['data'] = [];
+        if (class_exists($settings6['model'])) {
+            $settings6['data'] = $settings6['model']::latest()
+                ->take($settings6['entries_number'])
+                ->get();
+        }
+
+        if (!array_key_exists('fields', $settings6)) {
+            $settings6['fields'] = [];
+        }
+
+        $settings7 = [
+            'chart_title'           => 'Lat Five Booking',
+            'chart_type'            => 'latest_entries',
+            'report_type'           => 'group_by_date',
+            'model'                 => 'App\Models\Booking',
+            'group_by_field'        => 'created_at',
+            'group_by_period'       => 'day',
+            'aggregate_function'    => 'count',
+            'filter_field'          => 'created_at',
+            'group_by_field_format' => 'd/m/Y H:i:s',
+            'column_class'          => 'col-md-6',
+            'entries_number'        => '5',
+            'fields'                => [
+                'id'         => '',
+                'start_time' => '',
+                'end_time'   => '',
+                'companions' => '',
+                'user'       => 'email',
+                'trip'       => 'description',
+            ],
+            'translation_key' => 'booking',
+        ];
+
+        $settings7['data'] = [];
+        if (class_exists($settings7['model'])) {
+            $settings7['data'] = $settings7['model']::latest()
+                ->take($settings7['entries_number'])
+                ->get();
+        }
+
+        if (!array_key_exists('fields', $settings7)) {
+            $settings7['fields'] = [];
+        }
+
+        return view('home', compact('settings1', 'settings2', 'settings3', 'chart4', 'chart5', 'settings6', 'settings7'));
     }
 }
