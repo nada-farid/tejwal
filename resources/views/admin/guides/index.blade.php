@@ -26,7 +26,7 @@
                             {{ trans('cruds.guide.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.guide.fields.brief_intro') }}
+                            {{ trans('cruds.guide.fields.user') }}
                         </th>
                         <th>
                             {{ trans('cruds.guide.fields.driving_licence') }}
@@ -39,9 +39,6 @@
                         </th>
                         <th>
                             {{ trans('cruds.guide.fields.major') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.guide.fields.user') }}
                         </th>
                         <th>
                             {{ trans('cruds.guide.fields.cost') }}
@@ -61,7 +58,7 @@
                                 {{ $guide->id ?? '' }}
                             </td>
                             <td>
-                                {{ $guide->brief_intro ?? '' }}
+                                {{ $guide->user->email ?? '' }}
                             </td>
                             <td>
                                 {{ App\Models\Guide::DRIVING_LICENCE_RADIO[$guide->driving_licence] ?? '' }}
@@ -75,9 +72,7 @@
                             <td>
                                 {{ $guide->major ?? '' }}
                             </td>
-                            <td>
-                                {{ $guide->user->email ?? '' }}
-                            </td>
+                        
                             <td>
                                 {{ $guide->cost ?? '' }}
                             </td>

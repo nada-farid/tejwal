@@ -33,6 +33,9 @@ class TripCategoryController extends Controller
     {
         $tripCategory = TripCategory::create($request->all());
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.created'));
+
+
         return redirect()->route('admin.trip-categories.index');
     }
 
@@ -46,6 +49,9 @@ class TripCategoryController extends Controller
     public function update(UpdateTripCategoryRequest $request, TripCategory $tripCategory)
     {
         $tripCategory->update($request->all());
+
+        Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
+
 
         return redirect()->route('admin.trip-categories.index');
     }
@@ -62,6 +68,9 @@ class TripCategoryController extends Controller
         abort_if(Gate::denies('trip_category_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $tripCategory->delete();
+
+        Alert::success(trans('global.flash.success'), trans('global.flash.deleted'));
+
 
         return back();
     }

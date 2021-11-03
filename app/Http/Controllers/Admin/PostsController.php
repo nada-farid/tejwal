@@ -36,6 +36,8 @@ class PostsController extends Controller
     {
         $post = Post::create($request->all());
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.created'));
+
         return redirect()->route('admin.posts.index');
     }
 
@@ -53,6 +55,8 @@ class PostsController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         $post->update($request->all());
+
+        Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
 
         return redirect()->route('admin.posts.index');
     }
@@ -72,6 +76,7 @@ class PostsController extends Controller
 
         $post->delete();
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.deleted'));
         return back();
     }
 

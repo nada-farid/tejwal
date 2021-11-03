@@ -8,6 +8,8 @@ use App\Http\Requests\StoreGuideRequest;
 use App\Http\Requests\UpdateGuideRequest;
 use App\Models\Guide;
 use App\Models\User;
+use App\Models\Role;
+use App\Models\Language;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,12 +31,41 @@ class GuideController extends Controller
 
         $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.guides.create', compact('users'));
+        $naitev_languages = Language::pluck('name_en', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $speaking_languages = Language::pluck('name_en', 'id');
+        
+        $roles = Role::pluck('title', 'id');
+
+        return view('admin.guides.create', compact('roles', 'naitev_languages', 'speaking_languages'));
+    
     }
 
     public function store(StoreGuideRequest $request)
     {
-        $guide = Guide::create($request->all());
+        $user = User::create($request->all());
+        $user->roles()->sync($request->input('roles', []));
+        $user->speaking_languages()->sync($request->input('speaking_languages', []));
+        if ($request->input('photo', false)) {
+            $user->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
+        }
+
+        if ($media = $request->input('ck-media', false)) {
+            Media::whereIn('id', $media)->update(['model_id' => $user->id]);
+        }
+
+        $guide = Guide::create([
+                  'brief_intro'=>$request->brief_intro,
+                  'driving_licence'=>$request->driving_licence,
+                  'car'=>$request->car,
+                  'degree'=>$request->degree,
+                  'major'=>$request->major,
+                  'cost'=>$request->cost,
+                  'user_id'=>$user->id,
+
+        ]);
+
+        Alert::success(trans('global.flash.success'), trans('global.flash.created'));
 
         return redirect()->route('admin.guides.index');
     }
@@ -47,13 +78,35 @@ class GuideController extends Controller
 
         $guide->load('user');
 
-        return view('admin.guides.edit', compact('users', 'guide'));
+        
+        $naitev_languages = Language::pluck('name_en', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $speaking_languages = Language::pluck('name_en', 'id');
+
+        return view('admin.guides.edit', compact('users', 'guide','naitev_languages','speaking_languages'));
     }
 
     public function update(UpdateGuideRequest $request, Guide $guide)
     {
         $guide->update($request->all());
+        
+        $user=User::findOrfail($guide->user_id);
+        
+        $user->update($request->all());
+        $user->roles()->sync($request->input('roles', []));
+        $user->speaking_languages()->sync($request->input('speaking_languages', []));
+        if ($request->input('photo', false)) {
+            if (!$user->photo || $request->input('photo') !== $user->photo->file_name) {
+                if ($user->photo) {
+                    $user->photo->delete();
+                }
+                $user->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
+            }
+        } elseif ($user->photo) {
+            $user->photo->delete();
+        }
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
         return redirect()->route('admin.guides.index');
     }
 
@@ -71,6 +124,8 @@ class GuideController extends Controller
         abort_if(Gate::denies('guide_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $guide->delete();
+
+        Alert::success(trans('global.flash.success'), trans('global.flash.deleted'));
 
         return back();
     }

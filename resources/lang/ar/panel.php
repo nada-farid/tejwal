@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'tejwal',
+    'site_title' => 'تجوال',
 ];

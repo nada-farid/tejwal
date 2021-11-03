@@ -45,6 +45,8 @@ class LanguageController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $language->id]);
         }
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.created'));
+
         return redirect()->route('admin.languages.index');
     }
 
@@ -69,7 +71,7 @@ class LanguageController extends Controller
         } elseif ($language->icon) {
             $language->icon->delete();
         }
-
+        Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
         return redirect()->route('admin.languages.index');
     }
 
@@ -85,6 +87,8 @@ class LanguageController extends Controller
         abort_if(Gate::denies('language_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $language->delete();
+
+        Alert::success(trans('global.flash.success'), trans('global.flash.deleted'));
 
         return back();
     }

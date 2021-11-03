@@ -39,6 +39,8 @@ class RattingController extends Controller
     {
         $ratting = Ratting::create($request->all());
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.created'));
+
         return redirect()->route('admin.rattings.index');
     }
 
@@ -59,6 +61,8 @@ class RattingController extends Controller
     {
         $ratting->update($request->all());
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
+
         return redirect()->route('admin.rattings.index');
     }
 
@@ -76,6 +80,8 @@ class RattingController extends Controller
         abort_if(Gate::denies('ratting_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $ratting->delete();
+
+        Alert::success(trans('global.flash.success'), trans('global.flash.deleted'));
 
         return back();
     }

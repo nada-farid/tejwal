@@ -39,6 +39,8 @@ class FollowingController extends Controller
     {
         $following = Following::create($request->all());
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.created'));
+
         return redirect()->route('admin.followings.index');
     }
 
@@ -58,6 +60,8 @@ class FollowingController extends Controller
     public function update(UpdateFollowingRequest $request, Following $following)
     {
         $following->update($request->all());
+        
+        Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
 
         return redirect()->route('admin.followings.index');
     }
@@ -76,6 +80,8 @@ class FollowingController extends Controller
         abort_if(Gate::denies('following_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $following->delete();
+
+        Alert::success(trans('global.flash.success'), trans('global.flash.deleted'));
 
         return back();
     }

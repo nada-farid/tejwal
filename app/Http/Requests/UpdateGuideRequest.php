@@ -40,6 +40,51 @@ class UpdateGuideRequest extends FormRequest
             'cost' => [
                 'required',
             ],
+            'name' => [
+                'string',
+                'required',
+            ],
+            'last_name' => [
+                'string',
+                'required',
+            ],
+            'email' => [
+                'required',
+                'unique:users,email,' . request()->user_id,
+            ],
+            'phone' => [
+                'string',
+                'required',
+            ],
+            'country' => [
+                'string',
+                'required',
+            ],
+            'city' => [
+                'string',
+                'required',
+            ],
+            'dob' => [
+                'required',
+                'date_format:' . config('panel.date_format'),
+            ],
+            'gender' => [
+                'required',
+            ],
+            'photo' => [
+                'required',
+            ],
+            'naitev_language_id' => [
+                'required',
+                'integer',
+            ],
+            'speaking_languages.*' => [
+                'integer',
+            ],
+            'speaking_languages' => [
+                'required',
+                'array',
+            ],
         ];
     }
 }

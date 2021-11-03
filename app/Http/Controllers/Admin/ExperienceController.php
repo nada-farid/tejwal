@@ -36,6 +36,8 @@ class ExperienceController extends Controller
     {
         $experience = Experience::create($request->all());
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.created'));
+
         return redirect()->route('admin.experiences.index');
     }
 
@@ -54,6 +56,8 @@ class ExperienceController extends Controller
     {
         $experience->update($request->all());
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
+
         return redirect()->route('admin.experiences.index');
     }
 
@@ -71,6 +75,8 @@ class ExperienceController extends Controller
         abort_if(Gate::denies('experience_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $experience->delete();
+
+        Alert::success(trans('global.flash.success'), trans('global.flash.deleted'));
 
         return back();
     }

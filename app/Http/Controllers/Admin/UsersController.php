@@ -14,6 +14,7 @@ use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
+Use Alert;
 
 class UsersController extends Controller
 {
@@ -53,7 +54,7 @@ class UsersController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $user->id]);
         }
-
+        Alert::success(trans('global.flash.success'), trans('global.flash.created'));
         return redirect()->route('admin.users.index');
     }
 
@@ -87,6 +88,7 @@ class UsersController extends Controller
         } elseif ($user->photo) {
             $user->photo->delete();
         }
+        Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
 
         return redirect()->route('admin.users.index');
     }
@@ -105,6 +107,7 @@ class UsersController extends Controller
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $user->delete();
+        Alert::success(trans('global.flash.success'), trans('global.flash.deleted'));
 
         return back();
     }

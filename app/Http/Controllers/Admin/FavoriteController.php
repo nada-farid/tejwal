@@ -39,6 +39,8 @@ class FavoriteController extends Controller
     {
         $favorite = Favorite::create($request->all());
 
+        Alert::success(trans('global.flash.success'), trans('global.flash.created'));
+
         return redirect()->route('admin.favorites.index');
     }
 
@@ -52,12 +54,15 @@ class FavoriteController extends Controller
 
         $favorite->load('user', 'trip');
 
+
         return view('admin.favorites.edit', compact('users', 'trips', 'favorite'));
     }
 
     public function update(UpdateFavoriteRequest $request, Favorite $favorite)
     {
         $favorite->update($request->all());
+
+        Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
 
         return redirect()->route('admin.favorites.index');
     }
