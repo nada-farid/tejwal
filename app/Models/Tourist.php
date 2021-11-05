@@ -5,10 +5,12 @@ namespace App\Models;
 use \DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Sanctum\HasApiTokens;
 
 class Tourist extends Model
 {
     use SoftDeletes;
+    use HasApiTokens;
 
     public $table = 'tourists';
 

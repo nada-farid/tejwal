@@ -13,12 +13,14 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements HasMedia
 {
     use SoftDeletes;
     use Notifiable;
     use HasMediaTrait;
+    use HasApiTokens;
 
     public const GENDER_RADIO = [
         'female' => 'female',
@@ -57,6 +59,7 @@ class User extends Authenticatable implements HasMedia
         'dob',
         'gender',
         'naitev_language_id',
+        'user_type',
         'created_at',
         'updated_at',
         'deleted_at',

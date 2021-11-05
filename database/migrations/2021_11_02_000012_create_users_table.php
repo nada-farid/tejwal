@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('city')->nullable();
             $table->date('dob')->nullable();
             $table->string('gender')->nullable();
+            $table->string('user_type')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

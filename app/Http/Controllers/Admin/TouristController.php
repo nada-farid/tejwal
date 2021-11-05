@@ -12,6 +12,7 @@ use App\Models\Language;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Alert;
 
 class TouristController extends Controller
 {
@@ -39,7 +40,18 @@ class TouristController extends Controller
 
     public function store(StoreTouristRequest $request)
     {
-        $user = User::create($request->all());
+        $user = User::create([
+            'name' => $request->name,
+            'last_name'=>$request->last_name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),   
+            'phone' => $request->phone,
+            'country' => $request->country,
+            'city' => $request->city,
+            'dob' => $request->dob,
+            'gender' => $request->gender,
+            'user_type' => 'tourist',
+        ]);
         $user->roles()->sync($request->input('roles', []));
         $user->speaking_languages()->sync($request->input('speaking_languages', []));
         if ($request->input('photo', false)) {

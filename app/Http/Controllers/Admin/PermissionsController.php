@@ -10,6 +10,8 @@ use App\Models\Permission;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Alert;
+
 
 class PermissionsController extends Controller
 {

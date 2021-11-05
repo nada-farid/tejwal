@@ -11,6 +11,8 @@ use App\Models\Guide;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Alert;
+
 
 class ExperienceController extends Controller
 {
