@@ -257,6 +257,8 @@ return [
             'deleted_at_helper'    => ' ',
             'trip_category'        => 'Trip Category',
             'trip_category_helper' => ' ',
+            'car'                  => 'Car',
+            'car_helper'           => ' ',
         ],
     ],
     'post' => [
@@ -283,10 +285,10 @@ return [
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => ' ',
-            'start_time'        => 'Start Time',
-            'start_time_helper' => ' ',
-            'end_time'          => 'End Time',
-            'end_time_helper'   => ' ',
+            'start_date'        => 'Start Date',
+            'start_date_helper' => ' ',
+            'end_date'          => 'End Date',
+            'end_date_helper'   => ' ',
             'companions'        => 'Companions',
             'companions_helper' => ' ',
             'user'              => 'User',

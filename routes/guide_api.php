@@ -6,13 +6,14 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
     Route::post('register','AuthController@register');
     Route::post('login','AuthController@login');
 
+});
 
+Route::group(['prefix' => 'trip','as' => 'api.', 'namespace' => 'Api','middleware' =>['auth:sanctum','ChangeLanguage']],function () {
 
-Route::group(['middleware' => ['auth:sanctum']],function () {
-
-    Route::post('trip/add','TripController@store');
+    Route::post('add','TripController@store');
+    Route::get('index','TripController@index');
+    Route::get('show/{trip_id}','TripController@Show');
 
 
 });
 
-});

@@ -11,24 +11,24 @@
             @method('PUT')
             @csrf
             <div class="form-group">
-                <label class="required" for="start_time">{{ trans('cruds.booking.fields.start_time') }}</label>
-                <input class="form-control timepicker {{ $errors->has('start_time') ? 'is-invalid' : '' }}" type="text" name="start_time" id="start_time" value="{{ old('start_time', $booking->start_time) }}" required>
-                @if($errors->has('start_time'))
+                <label class="required" for="start_date">{{ trans('cruds.booking.fields.start_date') }}</label>
+                <input class="form-control date {{ $errors->has('start_date') ? 'is-invalid' : '' }}" type="text" name="start_date" id="start_date" value="{{ old('start_date', $booking->start_date) }}" required>
+                @if($errors->has('start_date'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('start_time') }}
+                        {{ $errors->first('start_date') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.booking.fields.start_time_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.booking.fields.start_date_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="end_time">{{ trans('cruds.booking.fields.end_time') }}</label>
-                <input class="form-control timepicker {{ $errors->has('end_time') ? 'is-invalid' : '' }}" type="text" name="end_time" id="end_time" value="{{ old('end_time', $booking->end_time) }}" required>
-                @if($errors->has('end_time'))
+                <label class="required" for="end_date">{{ trans('cruds.booking.fields.end_date') }}</label>
+                <input class="form-control date {{ $errors->has('end_date') ? 'is-invalid' : '' }}" type="text" name="end_date" id="end_date" value="{{ old('end_date', $booking->end_date) }}" required>
+                @if($errors->has('end_date'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('end_time') }}
+                        {{ $errors->first('end_date') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.booking.fields.end_time_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.booking.fields.end_date_helper') }}</span>
             </div>
             <div class="form-group">
                 <label class="required">{{ trans('cruds.booking.fields.companions') }}</label>

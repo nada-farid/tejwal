@@ -9,6 +9,7 @@ use Validator;
 use App\Models\Guide;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Tourist;
 use App\Models\Language;
 use App\Models\Experience;
 use Auth;
@@ -28,12 +29,13 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|max:20',
             'country' => 'required|max:30',
+            'phone'=>'required',
             'city' => 'required|max:30',
-            'dob' => 'required|max:30',
+            'dob' => 'required|date_format:d/m/Y',
             'gender' => 'required|max:30',
-            //'photo' => 'required|mimes:jpeg,png,jpg|max:2048',
             'naitev_language_id' => 'required|integer',
             'speaking_languages' => 'required',
+            'speaking_languages .*' => 'integer',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -51,18 +53,29 @@ class AuthController extends Controller
         $user->country = $request->country;
         $user->city = $request->city;
         $user->dob = $request->dob;
+        $user->naitev_language_id=$request->naitev_language_id;
         $user->gender = $request->gender;
         $user->user_type = 'tourist';
         $user->save();
         $user->speaking_languages()->sync($request->input('speaking_languages', []));
 
-        if ($request->input('photo', false)) {
-            $user->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
-        }
+        if (request()->hasFile('photo') && request('photo') != ''){
+            $validator = Validator::make($request->all(), [
+                'photo' => 'required|mimes:jpeg,png,jpg',
+            ]);
+            if ($validator->fails()) {
+                return $this->returnError('401', $validator->errors());
+            } 
 
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $user->id]);
+            $user->addMedia(request('photo'))->toMediaCollection('photo'); 
         }
+        
+
+         //save extra data that belongs to tourist
+       $tourist=new Tourist();
+       $tourist->user_id=$user->id;
+       $tourist->save();
+
   $token = $user->createToken('user_token')->plainTextToken;
         return $this->returnData(
             [
@@ -71,7 +84,7 @@ class AuthController extends Controller
             ]
         );
     }
-    //----------------
+    //----------------------------------------------------------------------
 
     public function login(Request $request){
         $rules = [

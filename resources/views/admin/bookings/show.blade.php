@@ -25,18 +25,18 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.booking.fields.start_time') }}
+                            {{ trans('cruds.booking.fields.start_date') }}
                         </th>
                         <td>
-                            {{ $booking->start_time }}
+                            {{ $booking->start_date}}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.booking.fields.end_time') }}
+                            {{ trans('cruds.booking.fields.end_date') }}
                         </th>
                         <td>
-                            {{ $booking->end_time }}
+                            {{ $booking->end_date }}
                         </td>
                     </tr>
                     <tr>

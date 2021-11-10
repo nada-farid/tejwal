@@ -19,11 +19,11 @@ class UpdateBookingRequest extends FormRequest
         return [
             'start_time' => [
                 'required',
-                'date_format:' . config('panel.time_format'),
+                'date_format:' . config('panel.date_format'),
             ],
             'end_time' => [
                 'required',
-                'date_format:' . config('panel.time_format'),
+                'date_format:' . config('panel.date_format'),
             ],
             'companions' => [
                 'required',

@@ -257,6 +257,8 @@ return [
             'deleted_at_helper'    => ' ',
             'trip_category'        => 'فئة الرحلة ',
             'trip_category_helper' => ' ',
+            'car'                  => 'السيارة',
+            'car_helper'           => ' ',
         ],
     ],
     'post' => [
@@ -283,10 +285,10 @@ return [
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => ' ',
-            'start_time'        => 'موعد بدء الرحلة ',
-            'start_time_helper' => ' ',
-            'end_time'          => '  انتهاء موعدالرحلة',
-            'end_time_helper'   => ' ',
+            'start_date'        => 'تاريخ بدءالرحلة',
+            'start_date_helper' => ' ',
+            'end_date'          => ' تاريخ انتهاء الرحلة',
+            'end_date_helper'   => ' ',
             'companions'        => 'الصحبة',
             'companions_helper' => ' ',
             'user'              => 'المستخدم',

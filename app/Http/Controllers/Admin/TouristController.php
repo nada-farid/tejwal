@@ -49,6 +49,7 @@ class TouristController extends Controller
             'country' => $request->country,
             'city' => $request->city,
             'dob' => $request->dob,
+            'naitev_language_id'=> $request->naitev_language_id,
             'gender' => $request->gender,
             'user_type' => 'tourist',
         ]);

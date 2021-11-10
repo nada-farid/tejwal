@@ -10,8 +10,8 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->string('companions');
             $table->timestamps();
             $table->softDeletes();

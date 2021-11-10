@@ -69,6 +69,14 @@
                             @endforeach
                         </td>
                     </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.trip.fields.car') }}
+                        </th>
+                        <td>
+                            {{ App\Models\Trip::CAR_RADIO[$trip->car] ?? '' }}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="form-group">

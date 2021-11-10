@@ -16,6 +16,11 @@ class Trip extends Model implements HasMedia
 
     public $table = 'trips';
 
+    public const CAR_RADIO = [
+        '1' => 'yes',
+        '0' => 'no',
+    ];
+
     protected $appends = [
         'photo',
     ];
@@ -30,6 +35,7 @@ class Trip extends Model implements HasMedia
         'description',
         'price',
         'guide_id',
+        'car',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -66,5 +72,9 @@ class Trip extends Model implements HasMedia
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+    public function places()
+    {
+        return $this->hasMany(TripPlace::class);
     }
 }

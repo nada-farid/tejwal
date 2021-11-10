@@ -26,10 +26,10 @@
                             {{ trans('cruds.booking.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.booking.fields.start_time') }}
+                            {{ trans('cruds.booking.fields.start_date') }}
                         </th>
                         <th>
-                            {{ trans('cruds.booking.fields.end_time') }}
+                            {{ trans('cruds.booking.fields.end_date') }}
                         </th>
                         <th>
                             {{ trans('cruds.booking.fields.companions') }}
@@ -55,10 +55,10 @@
                                 {{ $booking->id ?? '' }}
                             </td>
                             <td>
-                                {{ $booking->start_time ?? '' }}
+                                {{ $booking->start_date ?? '' }}
                             </td>
                             <td>
-                                {{ $booking->end_time ?? '' }}
+                                {{ $booking->end_date ?? '' }}
                             </td>
                             <td>
                                 {{ App\Models\Booking::COMPANIONS_RADIO[$booking->companions] ?? '' }}

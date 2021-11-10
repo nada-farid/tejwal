@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Guide;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Illuminate\Http\Request;
 use App\Traits\api_return;
 use Validator;
@@ -18,6 +19,7 @@ class AuthController extends Controller
 {
     //
    use api_return;
+   use MediaUploadingTrait;
 
     public function register(Request $request){
  
@@ -29,9 +31,9 @@ class AuthController extends Controller
             'password' => 'required|min:6|max:20',
             'country' => 'required|max:30',
             'city' => 'required|max:30',
-            'dob' => 'required|max:30',
+            'dob' => 'required|date_format:d/m/Y',
             'gender' => 'required|max:30',
-            //'photo' => 'required|mimes:jpeg,png,jpg|max:2048',
+            'phone' =>'required',
             'naitev_language_id' => 'required|integer',
             'speaking_languages' => 'required',
             'brief_intro' => 'required||max:256',
@@ -40,6 +42,10 @@ class AuthController extends Controller
             'degree' => 'required', 
             'major' => 'required',
             'cost' => 'required',
+            'experiences'=>'required',
+           ' experiences.*.city' => 'required|max:20',
+            'experiences.*.years_of_experience' => 'required|integer',
+
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -57,19 +63,23 @@ class AuthController extends Controller
         $user->country = $request->country;
         $user->city = $request->city;
         $user->dob = $request->dob;
+        $user->naitev_language_id=$request->naitev_language_id;
         $user->gender = $request->gender;
         $user->user_type = 'guide';
         $user->save();
         $user->speaking_languages()->sync($request->input('speaking_languages', []));
    
+        if (request()->hasFile('photo') && request('photo') != ''){
+            $validator = Validator::make($request->all(), [
+                'photo' => 'required|mimes:jpeg,png,jpg',
+            ]);
+            if ($validator->fails()) {
+                return $this->returnError('401', $validator->errors());
+            } 
 
-        if ($request->input('photo', false)) {
-            $user->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
+            $user->addMedia(request('photo'))->toMediaCollection('photo'); 
         }
-
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $user->id]);
-        }
+        
        //save extra data that belongs to guide
        $guide=new Guide();
        $guide->brief_intro=$request->brief_intro;
@@ -81,14 +91,16 @@ class AuthController extends Controller
        $guide->user_id=$user->id;
        $guide->save();
         
+     
        //save guide experiences if he has experience
-        foreach ($request['experiences'] as $row){
-            $experience = new Experience();
-            $experience->guide_id =$guide->id;
-            $experience->city = $row['city'];
-            $experience->years_of_experience = $row['years_of_experience'];
-            $experience->save();
-        }
+       foreach ($request['experiences'] as $row){
+        $experience = new Experience();
+        $experience->guide_id =$guide->id;
+        $experience->city = $row['city'];
+        $experience->years_of_experience =$row['years_of_experience'];
+        $experience->save();
+        
+    }
         //return the auth token after complecte the registration
         $token = $user->createToken('user_token')->plainTextToken;
         return $this->returnData(

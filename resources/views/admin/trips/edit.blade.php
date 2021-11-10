@@ -74,6 +74,21 @@
                 <span class="help-block">{{ trans('cruds.trip.fields.trip_category_helper') }}</span>
             </div>
             <div class="form-group">
+                <label class="required">{{ trans('cruds.trip.fields.car') }}</label>
+                @foreach(App\Models\Trip::CAR_RADIO as $key => $label)
+                    <div class="form-check {{ $errors->has('car') ? 'is-invalid' : '' }}">
+                        <input class="form-check-input" type="radio" id="car_{{ $key }}" name="car" value="{{ $key }}" {{ old('car', $trip->car) === (string) $key ? 'checked' : '' }} required>
+                        <label class="form-check-label" for="car_{{ $key }}">{{ $label }}</label>
+                    </div>
+                @endforeach
+                @if($errors->has('car'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('car') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.trip.fields.car_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>

@@ -41,6 +41,9 @@ class UpdateTripRequest extends FormRequest
                 'required',
                 'array',
             ],
+            'car' => [
+                'required',
+            ],
         ];
     }
 }
