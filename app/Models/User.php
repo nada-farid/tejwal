@@ -14,6 +14,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use Laravel\Sanctum\HasApiTokens;
+use Nagy\LaravelRating\Traits\Rate\CanRate;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -21,6 +22,7 @@ class User extends Authenticatable implements HasMedia
     use Notifiable;
     use HasMediaTrait;
     use HasApiTokens;
+    use CanRate;
 
     public const GENDER_RADIO = [
         'female' => 'female',

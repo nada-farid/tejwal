@@ -6,11 +6,15 @@ use \DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
+use Nagy\LaravelRating\Traits\Rate\Rateable;
+
 
 class Guide extends Model
 {
     use SoftDeletes;
     use HasApiTokens;
+    use Rateable;
+
 
     public const CAR_RADIO = [
         '1' => 'yes',
@@ -57,4 +61,5 @@ class Guide extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+
 }

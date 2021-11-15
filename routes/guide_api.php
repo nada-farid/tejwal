@@ -13,6 +13,7 @@ Route::group(['prefix' => 'trip','as' => 'api.', 'namespace' => 'Api','middlewar
     Route::post('add','TripController@store');
     Route::get('index','TripController@index');
     Route::get('show/{trip_id}','TripController@Show');
+    Route::get('filter','TripController@filter');
 
 
 });

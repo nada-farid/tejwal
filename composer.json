@@ -20,6 +20,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laraveldaily/laravel-charts": "^0.1.14",
+        "nagy/laravel-rating": "^2.2",
         "realrashid/sweet-alert": "^4.0",
         "spatie/laravel-medialibrary": "^7.19",
         "yajra/laravel-datatables-oracle": "^9.9"

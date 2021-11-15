@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html  @if(app()->getLocale() == 'ar') dir="rtl" @endif>
 
 <head>
     <meta charset="UTF-8">

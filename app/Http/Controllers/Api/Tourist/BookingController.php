@@ -27,6 +27,15 @@ class BookingController extends Controller
             if ($validator->fails()) {
                 return $this->returnError('401', $validator->errors());
             }
+            //check if any trip reseved within that date
+        $all_Booking=Booking::all();
+        foreach($all_Booking as $booking ){
+            if(($request->start_date >= $booking->start_date) && ($request->start_date <= $booking->end_date)){
+
+            return $this->returnError(205,'Sorry there is a Trip is reseved from '.$booking->start_date .' to '.$booking->end_date .' please choose another date');
+            
+            }
+        }
         $booking= new Booking();
         $booking->start_date=$request->start_date;
         $booking->end_date=$request->end_date;
@@ -34,10 +43,7 @@ class BookingController extends Controller
         $booking->user_id=Auth::id();
         $booking->trip_id=$request->trip_id;
         $booking->save();
-
-        return $this->returnSuccessMessage('Booking saved Successfully');
         
-
-
+        return $this->returnSuccessMessage('Booking saved Successfully');
+        }
     }
-}

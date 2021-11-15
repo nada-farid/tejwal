@@ -8,7 +8,12 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
 
     Route::group(['middleware' => 'auth:sanctum'],function () {
 
-        Route::post('book_trip','BookingController@BookTrip');    
+        Route::post('book_trip','BookingController@BookTrip'); 
+        Route::get('all_guide','TouristController@AllGuides'); 
+        Route::Post('rate','TouristController@RateGuide'); 
+        Route::Post('unrate','TouristController@UnRateGuide'); 
+        
+
 
     
 });

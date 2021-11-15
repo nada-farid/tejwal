@@ -167,7 +167,7 @@ return [
             'id_helper'                  => ' ',
             'city'                       => 'المدينة',
             'city_helper'                => ' ',
-            'years_of_experience'        => 'سنين الخبرة ',
+            'years_of_experience'        => 'سنوات الخبرة ',
             'years_of_experience_helper' => ' ',
             'guide'                      => 'المرشد السياحي',
             'guide_helper'               => ' ',
@@ -304,8 +304,8 @@ return [
         ],
     ],
     'favorite' => [
-        'title'          => 'المفضل',
-        'title_singular' => 'المفضل',
+        'title'          => 'المفضلة',
+        'title_singular' => 'المفضلة',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => ' ',

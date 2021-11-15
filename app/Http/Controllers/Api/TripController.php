@@ -57,13 +57,13 @@ class TripController extends Controller
 
         //to find guide id from auth user 
 
-        $guide_id=Guide::where('user_id',Auth::id())->first();
+        $guide=Guide::where('user_id',Auth::id())->first();
 
         $trip = new Trip();
         $trip->description =$request->description;
         $trip->price =$request->price;
         $trip->car =$request->car;
-        $trip->guide_id =$guide_id->id;
+        $trip->guide_id =$guide->id;
         $trip->save();
 
 
@@ -111,6 +111,32 @@ class TripController extends Controller
         return $this->returnData($trip_detalis);
 
     }
-
 }
+    //------------------------------------
+
+    public function filter(Request $request){
+
+        global $id;
+        $id =$request->category_id;
+        
+        $rules = [
+           'category_id' => 'required|array',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+   
+        $trips = Trip::whereHas('trip_categories',function($query){
+            $query->whereIn('id',$GLOBALS['id']);
+        })->with(['guide', 'media','places','guide.user'])->paginate(10);
+
+        $first_trips = TripResource::collection($trips);
+
+        return $this->returnPaginationData($first_trips,$trips,"success"); 
+
+    }
+
 }
