@@ -8,6 +8,7 @@ use App\Models\Guide;
 use App\Models\User;
 use Validator;
 use App\Http\Resources\GuideResource;
+use App\Http\Resources\GuidePrrofieResource;
 
 
 class TouristController extends Controller
@@ -50,7 +51,7 @@ class TouristController extends Controller
 
 
     }
-    //-----------------------------
+    //------------------------------------------
     public function UnRateGuide(Request $request){
         $rules = [
             'user_id' => 'required|integer',
@@ -70,7 +71,25 @@ class TouristController extends Controller
 
         return $this->returnSuccessMessage('UnRating saved Successfully');
 
-
-
     }
+    //------------------------------------------------
+
+    public function ShowGuideProfile($guide_id){
+
+             $guide=Guide::findOrfail($guide_id);
+
+             if(!$guide){
+
+                return $this->returnError('404',('this guide not found'));
+            }else{
+
+
+                $guide=$guide->load(['experience','user','user.media','user.speaking_languages','user.naitev_language']);
+
+               $new= new GuidePrrofieResource($guide);
+
+                return $this->returnData($new);
+            }
+
+                }
 }

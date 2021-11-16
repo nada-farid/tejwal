@@ -22,8 +22,6 @@ class TripController extends Controller
 
     use MediaUploadingTrait;
 
-
-
         public function index(){
             
             $trips = Trip::with(['guide', 'trip_categories', 'media','places','guide.user'])->paginate(10);
@@ -34,7 +32,7 @@ class TripController extends Controller
                 
         }
 
-        //---------------------------------------
+        //--------------------------------------------------------
 
         public function store(Request $request){
         $rules = [
@@ -73,14 +71,13 @@ class TripController extends Controller
             $validator = Validator::make($request->all(), [
                 'photo' => 'required|mimes:jpeg,png,jpg',
             ]);
-        }
             if ($validator->fails()) {
                 return $this->returnError('401', $validator->errors());
             } 
         foreach ($request->input('photo', []) as $file) {
             $trip->addMedia(request('photo'))->toMediaCollection('photo'); 
         }
-
+    }
         foreach ($request['places'] as $row){
             $TripPlaces = new TripPlace();
             $TripPlaces->latitude =$row['latitude'];
@@ -94,25 +91,26 @@ class TripController extends Controller
 
     }
 
-    //--------------------------------------
+    //-----------------------------------------------------
 
     public function Show($trip_id){
 
-         $trip=Trip::find($trip_id);
+         $trip=Trip::findOrfail($trip_id);
 
         if(!$trip){
             return $this->returnError('404',('this trip not found'));
         }else{
 
-        $trip =Trip::where('id',$trip_id)->with(['guide', 'trip_categories', 'media','places','guide.user','guide.user.media','guide.user.speaking_languages','guide.user.naitev_language'])->get();
+        $trip =$trip->load(['guide', 'trip_categories', 'media','places','guide.user','guide.user.media','guide.user.speaking_languages','guide.user.naitev_language']);
 
-        $trip_detalis = TripDetailsResource::collection($trip);
+   
+        $trip_detalis = new TripDetailsResource($trip);
 
         return $this->returnData($trip_detalis);
 
     }
 }
-    //------------------------------------
+    //------------------------------------------------------
 
     public function filter(Request $request){
 

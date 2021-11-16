@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class ExperienceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,10 +14,11 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        $name= 'name_'.app()->getLocale();
         return [
-        'user_name'=>$this->$name,
+
+           'years_experience' =>$this->years_of_experience,
+           'city'             =>$this->city,
 
         ];
-}
+    }
 }

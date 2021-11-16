@@ -10,6 +10,7 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
 
         Route::post('book_trip','BookingController@BookTrip'); 
         Route::get('all_guide','TouristController@AllGuides'); 
+        Route::get('guide_details/{guide_id}','TouristController@ShowGuideProfile'); 
         Route::Post('rate','TouristController@RateGuide'); 
         Route::Post('unrate','TouristController@UnRateGuide'); 
         

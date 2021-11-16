@@ -61,5 +61,10 @@ class Guide extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+    public function experience(){
+
+        return $this->hasMany(Experience::class);
+    
+    }
 
 }
