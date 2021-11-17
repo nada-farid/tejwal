@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\tourist;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -26,9 +26,9 @@ class TripController extends Controller
             
             $trips = Trip::with(['guide', 'trip_categories', 'media','places','guide.user'])->paginate(10);
 
-            $first_trips = TripResource::collection($trips);
+            $new = TripResource::collection($trips);
 
-            return $this->returnPaginationData($first_trips,$trips,"success"); 
+            return $this->returnPaginationData($new,$trips,"success"); 
                 
         }
 
@@ -38,6 +38,7 @@ class TripController extends Controller
         $rules = [
             'description' => 'required',
             'trip_categories' => 'required',
+            'trip_categories .*' => 'required',
             'price' => 'required',
             'car' => 'required',
             'places'=>'required',

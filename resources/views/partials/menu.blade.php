@@ -107,16 +107,6 @@
                 </a>
             </li>
         @endcan
-        @can('ratting_access')
-            <li class="c-sidebar-nav-item">
-                <a href="{{ route("admin.rattings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/rattings") || request()->is("admin/rattings/*") ? "c-active" : "" }}">
-                    <i class="fa-fw fas fa-chart-line c-sidebar-nav-icon">
-
-                    </i>
-                    {{ trans('cruds.ratting.title') }}
-                </a>
-            </li>
-        @endcan
         @can('trip_access')
             <li class="c-sidebar-nav-item">
                 <a href="{{ route("admin.trips.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/trips") || request()->is("admin/trips/*") ? "c-active" : "" }}">

@@ -20,19 +20,27 @@ class Post extends Model
 
     protected $fillable = [
         'price',
-        'user_id',
+        'tourist_id',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
-    public function user()
+    public function Tourist()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Tourist::class, 'tourist_id');
     }
 
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+    public function places(){
+
+        return $this->hasMany(PostPlace::class);
+    }
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'lang_id');
     }
 }

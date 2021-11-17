@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Tourist;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Booking;
+use App\Models\Trip;
 use Auth;
 use App\Traits\api_return;
 use Validator;
@@ -27,6 +28,13 @@ class BookingController extends Controller
             if ($validator->fails()) {
                 return $this->returnError('401', $validator->errors());
             }
+            $trip=Trip::findOrfail($request->trip_id);
+
+            if(!$trip)
+
+            return $this->returnError('404',('this trip not found'));
+
+          else{
             //check if any trip reseved within that date
         $all_Booking=Booking::all();
         foreach($all_Booking as $booking ){
@@ -46,4 +54,5 @@ class BookingController extends Controller
         
         return $this->returnSuccessMessage('Booking saved Successfully');
         }
+    }
     }

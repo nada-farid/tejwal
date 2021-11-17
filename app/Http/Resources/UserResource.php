@@ -16,7 +16,7 @@ class UserResource extends JsonResource
     {
         $name= 'name_'.app()->getLocale();
         return [
-        'user_name'=>$this->$name,
+        'language'=>$this->$name,
 
         ];
 }

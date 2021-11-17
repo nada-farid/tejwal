@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TripPlace extends Model
+class PostPlace extends Model
 {
     //
     protected $fillable = [
         'latitude',
         'longitude',
         'place_name',
-        'trip_id',
+        'post_id',
         'created_at',
         'updated_at',
         'deleted_at',

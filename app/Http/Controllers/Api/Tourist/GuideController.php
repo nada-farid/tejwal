@@ -6,12 +6,14 @@ use App\Traits\api_return;
 use Illuminate\Http\Request;
 use App\Models\Guide;
 use App\Models\User;
+use App\Models\Trip;
 use Validator;
 use App\Http\Resources\GuideResource;
 use App\Http\Resources\GuidePrrofieResource;
+use App\Http\Resources\TripResource;
 
 
-class TouristController extends Controller
+class GuideController extends Controller
 {
     //
     use api_return;
@@ -21,9 +23,9 @@ class TouristController extends Controller
         
         $guides=Guide::with(['user','user.media','user.speaking_languages','user.naitev_language'])->paginate(6);
 
-        $itration=GuideResource::Collection($guides);
+        $new=GuideResource::Collection($guides);
 
-        return $this->returnPaginationData($itration,$guides,"success"); 
+        return $this->returnPaginationData($new,$guides,"success"); 
 
     }
     //------------------------------------------------------
@@ -92,4 +94,14 @@ class TouristController extends Controller
             }
 
                 }
+    //-----------------------------------------------------
+
+    public function GuideTrips($guide_id){
+
+        $trips = Trip::where('guide_id',$guide_id)->with(['guide', 'trip_categories', 'media','places','guide.user'])->paginate(5);
+
+        $first_trips = TripResource::collection($trips);
+
+        return $this->returnPaginationData($first_trips,$trips,"success"); 
+    }
 }
