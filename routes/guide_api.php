@@ -13,6 +13,8 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
 
          Route::Post('Apply_trip/{post_id}','PostController@Apply');
          Route::get('all_posts','PostController@index');
+         Route::get('show/{post_id}','PostController@show');
+         
 
 
     });

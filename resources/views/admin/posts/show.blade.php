@@ -36,7 +36,7 @@
                             {{ trans('cruds.post.fields.user') }}
                         </th>
                         <td>
-                            {{ $post->user->email ?? '' }}
+                            {{ $post->Tourist->user->email ?? '' }}
                         </td>
                     </tr>
                 </tbody>

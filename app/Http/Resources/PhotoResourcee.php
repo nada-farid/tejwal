@@ -14,9 +14,14 @@ class PhotoResourcee extends JsonResource
      */
     public function toArray($request)
     {
+      $photo= $this;
+      if($photo)
+      $img=$photo->getUrl('thumb');
+      else
+      $img='';
         return [
 
-          'image'=>$this->getUrl('thumb'),
+          'image'=>$img,
 
         ];
     }

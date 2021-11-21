@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\Guide;
 use App\Models\User;
 use App\Models\Trip;
+use App\Models\Tourist;
+use App\Models\Following;
 use Validator;
 use App\Http\Resources\GuideResource;
 use App\Http\Resources\GuidePrrofieResource;
 use App\Http\Resources\TripResource;
+use Auth;
 
 
 class GuideController extends Controller
@@ -21,7 +24,7 @@ class GuideController extends Controller
     public function AllGuides(){
 
         
-        $guides=Guide::with(['user','user.media','user.speaking_languages','user.naitev_language'])->paginate(6);
+        $guides=Guide::with('user')->paginate(6);
 
         $new=GuideResource::Collection($guides);
 
@@ -32,7 +35,6 @@ class GuideController extends Controller
 
     public function RateGuide(Request $request){
         $rules = [
-            'user_id' => 'required|integer',
             'guide_id' => 'required|integer',
             'rate_number' => 'required|integer',
         ];
@@ -43,7 +45,7 @@ class GuideController extends Controller
             return $this->returnError('401', $validator->errors());
         }
 
-        $user=User::find($request->user_id);
+        $user=User::find(Auth::id());
         $guide=Guide::find($request->guide_id);
 
         $user->rate($guide, $request->rate_number);
@@ -56,7 +58,6 @@ class GuideController extends Controller
     //------------------------------------------
     public function UnRateGuide(Request $request){
         $rules = [
-            'user_id' => 'required|integer',
             'guide_id' => 'required|integer',
         ];
 
@@ -66,7 +67,7 @@ class GuideController extends Controller
             return $this->returnError('401', $validator->errors());
         }
 
-        $user=User::find($request->user_id);
+        $user=User::find(Auth::id());
         $guide=Guide::find($request->guide_id);
 
         $user->unrate($guide);
@@ -80,18 +81,17 @@ class GuideController extends Controller
 
              $guide=Guide::findOrfail($guide_id);
 
-             if(!$guide){
+             if(!$guide)
 
                 return $this->returnError('404',('this guide not found'));
-            }else{
+        
 
-
-                $guide=$guide->load(['experience','user','user.media','user.speaking_languages','user.naitev_language']);
+                $guide=$guide->load(['experience','user']);
 
                $new= new GuidePrrofieResource($guide);
 
                 return $this->returnData($new);
-            }
+            
 
                 }
     //-----------------------------------------------------
@@ -103,5 +103,29 @@ class GuideController extends Controller
         $first_trips = TripResource::collection($trips);
 
         return $this->returnPaginationData($first_trips,$trips,"success"); 
+    }
+    //--------------------------
+    public function follow(Request $request){
+
+        $rules = [
+            'guide_id' => 'required|integer',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+
+        $tourist=Tourist::where('user_id',Auth::id())->first();
+
+        $follow=new Following();
+
+        $follow->guide_id=$request->guide_id;
+        $follow->tourist_id=$tourist->id;
+        $follow->save();
+
+        return $this->returnSuccessMessage('follow saved Successfully');
+
     }
 }

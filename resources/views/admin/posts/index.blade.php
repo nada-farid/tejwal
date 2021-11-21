@@ -49,7 +49,7 @@
                                 {{ $post->price ?? '' }}
                             </td>
                             <td>
-                                {{ $post->user->email ?? '' }}
+                                {{ $post->Tourist->user->email ?? '' }}
                             </td>
                             <td>
                                 @can('post_show')

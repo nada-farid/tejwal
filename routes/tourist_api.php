@@ -16,6 +16,7 @@ Route::group(['middleware' => 'auth:sanctum'],function () {
                 Route::get('guide_details/{guide_id}','GuideController@ShowGuideProfile'); 
                 Route::Post('rate','GuideController@RateGuide'); 
                 Route::Post('unrate','GuideController@UnRateGuide'); 
+                Route::Post('follow','GuideController@follow'); 
                 Route::get('guide_trips/{guide_id}','GuideController@GuideTrips'); 
         });
 
@@ -24,20 +25,27 @@ Route::group(['middleware' => 'auth:sanctum'],function () {
                 Route::get('index','TripController@index');
                 Route::get('show/{trip_id}','TripController@Show');
                 Route::get('filter','TripController@filter');
-                Route::post('book_trip','BookingController@BookTrip'); 
+           Route::group(['prefix' => 'booking'],function(){  
+                Route::post('add','BookingController@store');
+                Route::post('update/{booking_id}','BookingController@update');
+                Route::delete('delete/{booking_id}','BookingController@delete');
+           });
 
         });
 
                //post Routes
         Route::group(['prefix' => 'post'],function(){
-                 Route::Post('add_post','PostController@store');
+                 Route::Post('add','PostController@store');
                  Route::get('My_posts','PostController@MyPosts');
+                 Route::post('update/{post_id}','PostController@update');
+                 Route::delete('delete/{post_id}','PostController@delete');
                    
         });
 
          //Settings Routes
         Route::group(['prefix' => 'settings'],function(){
             Route::get('MyProfile','SettingsController@Profile');
+            Route::Post('update_profile','SettingsController@UpdateProfile');
           
               
    });
@@ -45,6 +53,7 @@ Route::group(['middleware' => 'auth:sanctum'],function () {
               //general routes
         Route::group(['prefix' => 'general'],function(){    
                  Route::get('all_Categories','TripCategoryController@index');
+                 Route::get('all_languages','LanguageController@index');
 
         });
 

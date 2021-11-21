@@ -5,6 +5,7 @@ namespace App\Models;
 use \DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Post extends Model
 {
@@ -25,6 +26,26 @@ class Post extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function getStartDateAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
+    }
+
+    public function setStartDateAttribute($value)
+    {
+        $this->attributes['start_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+    }
+
+    public function getEndDateAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
+    }
+
+    public function setEndDateAttribute($value)
+    {
+        $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+    }
 
     public function Tourist()
     {

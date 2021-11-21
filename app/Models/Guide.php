@@ -66,5 +66,10 @@ class Guide extends Model
         return $this->hasMany(Experience::class);
     
     }
+    
+    public function follower(){
+
+        return $this->hasMany(following::class);
+    }
 
 }

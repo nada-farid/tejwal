@@ -36,4 +36,15 @@ class Tourist extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function post(){
+
+        return $this->hasMany(Post::class);
+    }
+    
+    public function following(){
+
+        return $this->hasMany(following::class);
+    }
+
 }

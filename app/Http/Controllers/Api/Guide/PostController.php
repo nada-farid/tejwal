@@ -9,6 +9,7 @@ use App\Models\Guide;
 use App\Models\PostGuide;
 use App\Traits\api_return;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\postDetailsResource;
 use Auth;
 
 class PostController extends Controller
@@ -18,7 +19,7 @@ class PostController extends Controller
 
     public function index(){
 
-        $posts=Post::with(['language','places','tourist.user','tourist.user.media','tourist.user.speaking_languages','tourist.user.naitev_language'])->paginate(5);
+        $posts=Post::with(['language','places','tourist.user'])->paginate(5);
          
          $new = PostResource::collection($posts);
 
@@ -27,6 +28,27 @@ class PostController extends Controller
     }   
     
     //-------------------------------------------------------------
+
+
+    public function show($post_id){
+       
+        
+        $post=POst::findOrfail($post_id);
+
+        if(!$post)
+
+            return $this->returnError('404',('this post not found'));
+     
+            $post->load(['language','places','tourist.user']);
+
+            $new = new postDetailsResource($post);
+
+           return $this->returnData($new);
+
+
+    }
+
+    //-----------------------------------------------------------
 
     public function Apply($post_id){
       

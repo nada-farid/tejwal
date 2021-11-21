@@ -102,7 +102,7 @@ class TripController extends Controller
             return $this->returnError('404',('this trip not found'));
         }else{
 
-        $trip =$trip->load(['guide', 'trip_categories', 'media','places','guide.user','guide.user.media','guide.user.speaking_languages','guide.user.naitev_language']);
+        $trip =$trip->load(['guide','trip_categories', 'media','places','guide.user']);
 
    
         $trip_detalis = new TripDetailsResource($trip);

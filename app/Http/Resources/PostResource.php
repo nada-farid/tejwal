@@ -26,7 +26,6 @@ class PostResource extends JsonResource
         'guide_language'                =>$this->language->$name,
         'trip_price'                  =>$this->price,
 
-
         ];
     }
 }

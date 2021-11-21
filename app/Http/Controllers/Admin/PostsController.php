@@ -19,7 +19,7 @@ class PostsController extends Controller
     {
         abort_if(Gate::denies('post_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $posts = Post::with(['user'])->get();
+        $posts = Post::with(['Tourist'])->get();
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -66,7 +66,7 @@ class PostsController extends Controller
     {
         abort_if(Gate::denies('post_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $post->load('user');
+        $post->load('Tourist');
 
         return view('admin.posts.show', compact('post'));
     }
