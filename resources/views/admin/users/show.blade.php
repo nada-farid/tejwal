@@ -102,7 +102,10 @@
                             {{ trans('cruds.user.fields.gender') }}
                         </th>
                         <td>
-                            {{ App\Models\User::GENDER_RADIO[$user->gender] ?? '' }}
+                            @php
+                                   $gender= App\Models\User::GENDER_RADIO[$user->gender] 
+                                @endphp    
+                               {{ trans('global.gender.'.$gender) ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -118,11 +121,15 @@
                         </td>
                     </tr>
                     <tr>
+                        @php
+                            
+                            $name='name_'.app()->getlocale()
+                        @endphp
                         <th>
                             {{ trans('cruds.user.fields.naitev_language') }}
                         </th>
                         <td>
-                            {{ $user->naitev_language->name_en ?? '' }}
+                            {{ $user->naitev_language->$name ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -131,7 +138,7 @@
                         </th>
                         <td>
                             @foreach($user->speaking_languages as $key => $speaking_language)
-                                <span class="label label-info">{{ $speaking_language->name_en }}</span>
+                                <span class="label label-info">{{ $speaking_language->$name }}</span>
                             @endforeach
                         </td>
                     </tr>

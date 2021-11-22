@@ -155,7 +155,7 @@
                 @foreach(App\Models\User::GENDER_RADIO as $key => $label)
                     <div class="form-check {{ $errors->has('gender') ? 'is-invalid' : '' }}">
                         <input class="form-check-input" type="radio" id="gender_{{ $key }}" name="gender" value="{{ $key }}" {{ old('gender', '') === (string) $key ? 'checked' : '' }} required>
-                        <label class="form-check-label" for="gender_{{ $key }}">{{ $label }}</label>
+                        <label class="form-check-label" for="gender_{{ $key }}">{{ trans('global.gender.'.$label) }}</label>
                     </div>
                 @endforeach
                 @if($errors->has('gender'))
@@ -170,7 +170,7 @@
                 @foreach(App\Models\Guide::DRIVING_LICENCE_RADIO as $key => $label)
                     <div class="form-check {{ $errors->has('driving_licence') ? 'is-invalid' : '' }}">
                         <input class="form-check-input" type="radio" id="driving_licence_{{ $key }}" name="driving_licence" value="{{ $key }}" {{ old('driving_licence', '') === (string) $key ? 'checked' : '' }} required>
-                        <label class="form-check-label" for="driving_licence_{{ $key }}">{{ $label }}</label>
+                        <label class="form-check-label" for="driving_licence_{{ $key }}">{{ trans('global.driving.'.$label) }}</label>
                     </div>
                 @endforeach
                 @if($errors->has('driving_licence'))
@@ -185,7 +185,7 @@
                 @foreach(App\Models\Guide::CAR_RADIO as $key => $label)
                     <div class="form-check {{ $errors->has('car') ? 'is-invalid' : '' }}">
                         <input class="form-check-input" type="radio" id="car_{{ $key }}" name="car" value="{{ $key }}" {{ old('car', '') === (string) $key ? 'checked' : '' }} required>
-                        <label class="form-check-label" for="car_{{ $key }}">{{ $label }}</label>
+                        <label class="form-check-label" for="car_{{ $key }}">{{ trans('global.car.'.$label) }}</label>
                     </div>
                 @endforeach
                 @if($errors->has('car'))
@@ -200,7 +200,7 @@
                 @foreach(App\Models\Guide::DEGREE_RADIO as $key => $label)
                     <div class="form-check {{ $errors->has('degree') ? 'is-invalid' : '' }}">
                         <input class="form-check-input" type="radio" id="degree_{{ $key }}" name="degree" value="{{ $key }}" {{ old('degree', '') === (string) $key ? 'checked' : '' }} required>
-                        <label class="form-check-label" for="degree_{{ $key }}">{{ $label }}</label>
+                        <label class="form-check-label" for="degree_{{ $key }}">{{ trans('global.degree.'.$label) }}</label>
                     </div>
                 @endforeach
                 @if($errors->has('degree'))

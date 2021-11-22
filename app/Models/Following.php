@@ -20,7 +20,7 @@ class Following extends Model
 
     protected $fillable = [
         'guide_id',
-        'user_id',
+        'tourist_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -31,9 +31,9 @@ class Following extends Model
         return $this->belongsTo(Guide::class, 'guide_id');
     }
 
-    public function user()
+    public function Tourist()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Tourist::class, 'tourist_id');
     }
 
     protected function serializeDate(DateTimeInterface $date)

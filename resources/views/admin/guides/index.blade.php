@@ -61,13 +61,14 @@
                                 {{ $guide->user->email ?? '' }}
                             </td>
                             <td>
-                                {{ App\Models\Guide::DRIVING_LICENCE_RADIO[$guide->driving_licence] ?? '' }}
+
+                                {{ trans('global.driving.'.App\Models\Guide::DRIVING_LICENCE_RADIO[$guide->driving_licence] ) ?? '' }}
                             </td>
                             <td>
-                                {{ App\Models\Guide::CAR_RADIO[$guide->car] ?? '' }}
+                                {{ trans('global.driving.'.App\Models\Guide::CAR_RADIO[$guide->car])  ?? '' }}
                             </td>
                             <td>
-                                {{ App\Models\Guide::DEGREE_RADIO[$guide->degree] ?? '' }}
+                                {{ trans('global.degree.'. App\Models\Guide::DEGREE_RADIO[$guide->degree]) ?? '' }}
                             </td>
                             <td>
                                 {{ $guide->major ?? '' }}

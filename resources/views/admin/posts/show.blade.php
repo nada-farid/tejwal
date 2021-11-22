@@ -39,6 +39,30 @@
                             {{ $post->Tourist->user->email ?? '' }}
                         </td>
                     </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.post.fields.start_date') }}
+                        </th>
+                        <td>
+                            {{ $post->start_date ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.post.fields.end_date') }}
+                        </th>
+                        <td>
+                            {{ $post->end_date ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.post.fields.description') }}
+                        </th>
+                        <td>
+                            {{ $post->description ?? '' }}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="form-group">

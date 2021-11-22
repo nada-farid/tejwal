@@ -13,6 +13,8 @@
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
+            <div class="row">
+            <div class="col-md-3">
             <table class="table table-bordered table-striped">
                 <tbody>
                     <tr>
@@ -56,7 +58,7 @@
                             {{ trans('cruds.trip.fields.guide') }}
                         </th>
                         <td>
-                            {{ $trip->guide->brief_intro ?? '' }}
+                            {{ $trip->guide->user->email ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -64,8 +66,11 @@
                             {{ trans('cruds.trip.fields.trip_category') }}
                         </th>
                         <td>
+                            @php
+                                $name='name_'.app()->getlocale();
+                            @endphp
                             @foreach($trip->trip_categories as $key => $trip_category)
-                                <span class="label label-info">{{ $trip_category->name_ar }}</span>
+                                <span class="label label-info">{{ $trip_category->$name }}</span>
                             @endforeach
                         </td>
                     </tr>
@@ -74,7 +79,7 @@
                             {{ trans('cruds.trip.fields.car') }}
                         </th>
                         <td>
-                            {{ App\Models\Trip::CAR_RADIO[$trip->car] ?? '' }}
+                            {{ trans('global.driving.' . App\Models\Trip::CAR_RADIO[$trip->car]) ?? '' }}
                         </td>
                     </tr>
                 </tbody>
@@ -85,9 +90,24 @@
                 </a>
             </div>
         </div>
+
+<div class="col-md-9">
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.relatedData') }}
+    </div>
+    <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="#trip_favorites" role="tab" data-toggle="tab">
+                {{ trans('cruds.favorite.title') }}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" role="tabpanel" id="trip_favorites">
+            @includeIf('admin.trips.relationships.tripFavorites', ['favorites' => $trip->tripFavorites])
+        </div>
     </div>
 </div>
-
-
 
 @endsection

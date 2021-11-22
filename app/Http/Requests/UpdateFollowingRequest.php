@@ -21,7 +21,7 @@ class UpdateFollowingRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'user_id' => [
+            'tourist_id' => [
                 'required',
                 'integer',
             ],

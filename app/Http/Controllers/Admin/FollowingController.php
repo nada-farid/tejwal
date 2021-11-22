@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateFollowingRequest;
 use App\Models\Following;
 use App\Models\Guide;
 use App\Models\User;
+use App\Models\Tourist;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ class FollowingController extends Controller
     {
         abort_if(Gate::denies('following_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $followings = Following::with(['guide', 'user'])->get();
+        $followings = Following::with(['guide', 'Tourist'])->get();
 
         return view('admin.followings.index', compact('followings'));
     }
@@ -30,9 +31,9 @@ class FollowingController extends Controller
     {
         abort_if(Gate::denies('following_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $guides = Guide::pluck('brief_intro', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $guides = Guide::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = Tourist::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('admin.followings.create', compact('guides', 'users'));
     }
@@ -50,11 +51,11 @@ class FollowingController extends Controller
     {
         abort_if(Gate::denies('following_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $guides = Guide::pluck('brief_intro', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $guides = Guide::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = Tourist::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $following->load('guide', 'user');
+        $following->load('guide', 'Tourist');
 
         return view('admin.followings.edit', compact('guides', 'users', 'following'));
     }
@@ -65,14 +66,15 @@ class FollowingController extends Controller
         
         Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
 
-        return redirect()->route('admin.followings.index');
+  
+        return redirect()->route('admin.experiences.show',  $following->id);
     }
 
     public function show(Following $following)
     {
         abort_if(Gate::denies('following_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $following->load('guide', 'user');
+        $following->load('guide', 'Tourist');
 
         return view('admin.followings.show', compact('following'));
     }

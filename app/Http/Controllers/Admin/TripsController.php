@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateTripRequest;
 use App\Models\Guide;
 use App\Models\Trip;
 use App\Models\TripCategory;
+use App\Models\Tourist;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
@@ -20,6 +21,7 @@ use Alert;
 class TripsController extends Controller
 {
     use MediaUploadingTrait;
+    
 
     public function index()
     {
@@ -34,9 +36,10 @@ class TripsController extends Controller
     {
         abort_if(Gate::denies('trip_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $guides = Guide::pluck('brief_intro', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $trip_categories = TripCategory::pluck('name_ar', 'id');
+        $guides = Guide::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $name='name_'.app()->getlocale();
+        
+        $trip_categories = TripCategory::pluck($name, 'id');
 
         return view('admin.trips.create', compact('guides', 'trip_categories'));
     }
@@ -62,9 +65,11 @@ class TripsController extends Controller
     {
         abort_if(Gate::denies('trip_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $guides = Guide::pluck('brief_intro', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $guides = Guide::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $trip_categories = TripCategory::pluck('name_ar', 'id');
+        $name='name_'.app()->getlocale();
+        
+        $trip_categories = TripCategory::pluck($name, 'id');
 
         $trip->load('guide', 'trip_categories');
 

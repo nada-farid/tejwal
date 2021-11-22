@@ -42,7 +42,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Experience
     Route::delete('experiences/destroy', 'ExperienceController@massDestroy')->name('experiences.massDestroy');
-    Route::resource('experiences', 'ExperienceController');
+    Route::resource('experiences', 'ExperienceController')->except([
+        'create']);
+    Route::get('experiences/create/{id}','ExperienceController@create')->name('experiences.create');  
+
 
     // Following
     Route::delete('followings/destroy', 'FollowingController@massDestroy')->name('followings.massDestroy');
@@ -78,8 +81,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('tourists/destroy', 'TouristController@massDestroy')->name('tourists.massDestroy');
     Route::resource('tourists', 'TouristController');
 
+      // User Alerts
+      Route::delete('user-alerts/destroy', 'UserAlertsController@massDestroy')->name('user-alerts.massDestroy');
+      Route::get('user-alerts/read', 'UserAlertsController@read');
+      Route::resource('user-alerts', 'UserAlertsController', ['except' => ['edit', 'update']]);
+
     Route::get('system-calendar', 'SystemCalendarController@index')->name('systemCalendar');
-});
+
+   
+ });
+
+
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password
     if (file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php'))) {

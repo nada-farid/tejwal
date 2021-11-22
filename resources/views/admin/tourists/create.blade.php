@@ -95,7 +95,7 @@
               @foreach(App\Models\User::GENDER_RADIO as $key => $label)
                   <div class="form-check {{ $errors->has('gender') ? 'is-invalid' : '' }}">
                       <input class="form-check-input" type="radio" id="gender_{{ $key }}" name="gender" value="{{ $key }}" {{ old('gender', '') === (string) $key ? 'checked' : '' }} required>
-                      <label class="form-check-label" for="gender_{{ $key }}">{{ $label }}</label>
+                      <label class="form-check-label" for="gender_{{ $key }}">{{ trans('global.gender.'.$label) }}</label>
                   </div>
               @endforeach
               @if($errors->has('gender'))

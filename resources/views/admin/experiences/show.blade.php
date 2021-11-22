@@ -9,7 +9,7 @@
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.experiences.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.guides.show',$experience->guide->id) }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -44,13 +44,13 @@
                             {{ trans('cruds.experience.fields.guide') }}
                         </th>
                         <td>
-                            {{ $experience->guide->brief_intro ?? '' }}
+                            {{ $experience->guide->user->email ?? '' }}
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.experiences.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.guides.show',$experience->guide->id) }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

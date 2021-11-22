@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateRattingRequest;
 use App\Models\Guide;
 use App\Models\Ratting;
 use App\Models\User;
+use App\Models\Tourist;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,9 +31,9 @@ class RattingController extends Controller
     {
         abort_if(Gate::denies('ratting_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $guides = Guide::pluck('brief_intro', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $guides = Guide::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = Tourist::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('admin.rattings.create', compact('guides', 'users'));
     }
@@ -50,9 +51,9 @@ class RattingController extends Controller
     {
         abort_if(Gate::denies('ratting_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $guides = Guide::pluck('brief_intro', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $guides = Guide::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = Tourist::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $ratting->load('guide', 'user');
 

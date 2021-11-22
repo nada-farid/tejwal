@@ -24,7 +24,7 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::with(['roles', 'naitev_language', 'speaking_languages', 'media'])->get();
+        $users = User::where('user_type','staff')->with(['roles', 'naitev_language', 'speaking_languages', 'media'])->get();
 
         return view('admin.users.index', compact('users'));
     }
@@ -35,9 +35,11 @@ class UsersController extends Controller
 
         $roles = Role::pluck('title', 'id');
 
-        $naitev_languages = Language::pluck('name_en', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $name='name_'.app()->getlocale();
 
-        $speaking_languages = Language::pluck('name_en', 'id');
+        $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $speaking_languages = Language::pluck($name, 'id');
 
         return view('admin.users.create', compact('roles', 'naitev_languages', 'speaking_languages'));
     }
@@ -76,9 +78,11 @@ class UsersController extends Controller
 
         $roles = Role::pluck('title', 'id');
 
-        $naitev_languages = Language::pluck('name_en', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $name='name_'.app()->getlocale();
 
-        $speaking_languages = Language::pluck('name_en', 'id');
+        $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $speaking_languages = Language::pluck($name, 'id');
 
         $user->load('roles', 'naitev_language', 'speaking_languages');
 

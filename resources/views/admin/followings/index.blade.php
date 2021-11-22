@@ -46,10 +46,10 @@
                                 {{ $following->id ?? '' }}
                             </td>
                             <td>
-                                {{ $following->guide->brief_intro ?? '' }}
+                                {{ $following->guide->user->email ?? '' }}
                             </td>
                             <td>
-                                {{ $following->user->email ?? '' }}
+                                {{ $following->tourist->user->email ?? '' }}
                             </td>
                             <td>
                                 @can('following_show')

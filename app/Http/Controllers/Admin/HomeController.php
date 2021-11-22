@@ -9,7 +9,7 @@ class HomeController
     public function index()
     {
         $settings1 = [
-            'chart_title'           => 'number of booking',
+            'chart_title'           => trans('cruds.charts.booking'),
             'chart_type'            => 'number_block',
             'report_type'           => 'group_by_date',
             'model'                 => 'App\Models\Booking',
@@ -18,7 +18,7 @@ class HomeController
             'aggregate_function'    => 'count',
             'filter_field'          => 'created_at',
             'group_by_field_format' => 'd-m-Y H:i:s',
-            'column_class'          => 'col-md-4',
+            'column_class'          => 'col-md-3',
             'entries_number'        => '5',
             'translation_key'       => 'booking',
         ];
@@ -45,7 +45,7 @@ class HomeController
         }
 
         $settings2 = [
-            'chart_title'           => 'number of trips',
+            'chart_title'           => trans('cruds.charts.trips'),
             'chart_type'            => 'number_block',
             'report_type'           => 'group_by_date',
             'model'                 => 'App\Models\Trip',
@@ -54,7 +54,7 @@ class HomeController
             'aggregate_function'    => 'count',
             'filter_field'          => 'created_at',
             'group_by_field_format' => 'd-m-Y H:i:s',
-            'column_class'          => 'col-md-4',
+            'column_class'          => 'col-md-3',
             'entries_number'        => '5',
             'translation_key'       => 'trip',
         ];
@@ -81,7 +81,7 @@ class HomeController
         }
 
         $settings3 = [
-            'chart_title'           => 'number of posts',
+            'chart_title'           => trans('cruds.charts.posts'),
             'chart_type'            => 'number_block',
             'report_type'           => 'group_by_date',
             'model'                 => 'App\Models\Post',
@@ -90,7 +90,7 @@ class HomeController
             'aggregate_function'    => 'count',
             'filter_field'          => 'created_at',
             'group_by_field_format' => 'd-m-Y H:i:s',
-            'column_class'          => 'col-md-4',
+            'column_class'          => 'col-md-3',
             'entries_number'        => '5',
             'translation_key'       => 'post',
         ];
@@ -117,32 +117,51 @@ class HomeController
         }
 
         $settings4 = [
-            'chart_title'        => 'Trip rate',
-            'chart_type'         => 'bar',
-            'report_type'        => 'group_by_relationship',
-            'model'              => 'App\Models\Trip',
-            'group_by_field'     => 'name_en',
-            'aggregate_function' => 'count',
-            'filter_field'       => 'created_at',
-            'column_class'       => 'col-md-6',
-            'entries_number'     => '5',
-            'relationship_name'  => 'trip_category',
-            'translation_key'    => 'trip',
+            'chart_title'           => trans('cruds.charts.tourists'),
+            'chart_type'            => 'number_block',
+            'report_type'           => 'group_by_date',
+            'model'                 => 'App\Models\Tourist',
+            'group_by_field'        => 'created_at',
+            'group_by_period'       => 'day',
+            'aggregate_function'    => 'count',
+            'filter_field'          => 'created_at',
+            'group_by_field_format' => 'd/m/Y H:i:s',
+            'column_class'          => 'col-md-3',
+            'entries_number'        => '5',
+            'translation_key'       => 'tourist',
         ];
 
-        $chart4 = new LaravelChart($settings4);
+        $settings4['total_number'] = 0;
+        if (class_exists($settings4['model'])) {
+            $settings4['total_number'] = $settings4['model']::when(isset($settings4['filter_field']), function ($query) use ($settings4) {
+                if (isset($settings4['filter_days'])) {
+                    return $query->where($settings4['filter_field'], '>=',
+                now()->subDays($settings4['filter_days'])->format('Y-m-d'));
+                }
+                if (isset($settings4['filter_period'])) {
+                    switch ($settings4['filter_period']) {
+                case 'week': $start = date('Y-m-d', strtotime('last Monday')); break;
+                case 'month': $start = date('Y-m') . '-01'; break;
+                case 'year': $start = date('Y') . '-01-01'; break;
+            }
+                    if (isset($start)) {
+                        return $query->where($settings4['filter_field'], '>=', $start);
+                    }
+                }
+            })
+                ->{$settings4['aggregate_function'] ?? 'count'}($settings4['aggregate_field'] ?? '*');
+        }
 
         $settings5 = [
-            'chart_title'           => 'Trip profit',
-            'chart_type'            => 'line',
+            'chart_title'           =>  trans('cruds.charts.trip_report'),
+            'chart_type'            => 'bar',
             'report_type'           => 'group_by_date',
             'model'                 => 'App\Models\Trip',
             'group_by_field'        => 'created_at',
-            'group_by_period'       => 'week',
-            'aggregate_function'    => 'sum',
-            'aggregate_field'       => 'price',
+            'group_by_period'       => 'day',
+            'aggregate_function'    => 'count',
             'filter_field'          => 'created_at',
-            'group_by_field_format' => 'd-m-Y H:i:s',
+            'group_by_field_format' => 'd/m/Y H:i:s',
             'column_class'          => 'col-md-6',
             'entries_number'        => '5',
             'translation_key'       => 'trip',
@@ -151,10 +170,10 @@ class HomeController
         $chart5 = new LaravelChart($settings5);
 
         $settings6 = [
-            'chart_title'           => 'Last Five Trips',
-            'chart_type'            => 'latest_entries',
+            'chart_title'           =>  trans('cruds.charts.post_report'),
+            'chart_type'            => 'bar',
             'report_type'           => 'group_by_date',
-            'model'                 => 'App\Models\Trip',
+            'model'                 => 'App\Models\Post',
             'group_by_field'        => 'created_at',
             'group_by_period'       => 'day',
             'aggregate_function'    => 'count',
@@ -162,31 +181,16 @@ class HomeController
             'group_by_field_format' => 'd/m/Y H:i:s',
             'column_class'          => 'col-md-6',
             'entries_number'        => '5',
-            'fields'                => [
-                'id'          => '',
-                'description' => '',
-                'price'       => '',
-                'guide'       => 'brief_intro',
-            ],
-            'translation_key' => 'trip',
+            'translation_key'       => 'post',
         ];
 
-        $settings6['data'] = [];
-        if (class_exists($settings6['model'])) {
-            $settings6['data'] = $settings6['model']::latest()
-                ->take($settings6['entries_number'])
-                ->get();
-        }
-
-        if (!array_key_exists('fields', $settings6)) {
-            $settings6['fields'] = [];
-        }
+        $chart6 = new LaravelChart($settings6);
 
         $settings7 = [
-            'chart_title'           => 'Lat Five Booking',
+            'chart_title'           => trans('cruds.charts.last_tourist'),
             'chart_type'            => 'latest_entries',
             'report_type'           => 'group_by_date',
-            'model'                 => 'App\Models\Booking',
+            'model'                 => 'App\Models\Tourist',
             'group_by_field'        => 'created_at',
             'group_by_period'       => 'day',
             'aggregate_function'    => 'count',
@@ -195,14 +199,10 @@ class HomeController
             'column_class'          => 'col-md-6',
             'entries_number'        => '5',
             'fields'                => [
-                'id'         => '',
-                'start_time' => '',
-                'end_time'   => '',
-                'companions' => '',
-                'user'       => 'email',
-                'trip'       => 'description',
+                'id'   => '',
+                'user' => 'email',
             ],
-            'translation_key' => 'booking',
+            'translation_key' => 'tourist',
         ];
 
         $settings7['data'] = [];
@@ -216,6 +216,40 @@ class HomeController
             $settings7['fields'] = [];
         }
 
-        return view('home', compact('settings1', 'settings2', 'settings3', 'chart4', 'chart5', 'settings6', 'settings7'));
+        $settings8 = [
+            'chart_title'           => trans('cruds.charts.last_guide'),
+            'chart_type'            => 'latest_entries',
+            'report_type'           => 'group_by_date',
+            'model'                 => 'App\Models\Guide',
+            'group_by_field'        => 'created_at',
+            'group_by_period'       => 'day',
+            'aggregate_function'    => 'count',
+            'filter_field'          => 'created_at',
+            'group_by_field_format' => 'd/m/Y H:i:s',
+            'column_class'          => 'col-md-6',
+            'entries_number'        => '5',
+            'fields'                => [
+                'driving_licence' => '',
+                'car'             => '',
+                'degree'          => '',
+                'major'           => '',
+                'user'            => 'email',
+                'cost'            => '',
+            ],
+            'translation_key' => 'guide',
+        ];
+
+        $settings8['data'] = [];
+        if (class_exists($settings8['model'])) {
+            $settings8['data'] = $settings8['model']::latest()
+                ->take($settings8['entries_number'])
+                ->get();
+        }
+
+        if (!array_key_exists('fields', $settings8)) {
+            $settings8['fields'] = [];
+        }
+
+        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'chart5', 'chart6', 'settings7', 'settings8'));
     }
 }

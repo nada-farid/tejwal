@@ -311,6 +311,25 @@ return [
     'team-members'                   => 'Team members',
     'calendar'                       => 'Calendar',
     'messenger'                      => 'Messenger',
+    'gender' => [
+        'male' => 'Male',
+        'female' => 'Female',
+    ],
+
+        'driving' => [
+        'yes' => ' yes,I have',
+        'no' => ' No ,I don.' .'.t have',
+    ],
+    
+    'degree' => [
+        'student' => 'student',
+        'graduate' => 'graduate',
+    ],
+    'car' => [
+        'yes' => ' yes,I have',
+        'no' => ' No ,I don.' .'.t have',
+    ],
+    
     'flash' => [
         '404' => 'Not Found !!',
         'error' => 'Something Went Wrong !!',

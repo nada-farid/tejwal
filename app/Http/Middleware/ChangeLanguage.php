@@ -16,11 +16,12 @@ class ChangeLanguage
     public function handle($request, Closure $next)
     {
        
-        if(isset($request->lang) && $request->lang == 'ar'){
-            app()->setLocale('ar');
+        app()->setLocale('ar');
+        if(isset($request->language) && $request->language == 'en'){
+            app()->setLocale('en');
+
+
         }
-        else
-        app()->setLocale('en');
         return $next($request);
     }
 }

@@ -10,23 +10,10 @@
         <form method="POST" action="{{ route("admin.followings.update", [$following->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
-            <div class="form-group">
-                <label class="required" for="guide_id">{{ trans('cruds.following.fields.guide') }}</label>
-                <select class="form-control select2 {{ $errors->has('guide') ? 'is-invalid' : '' }}" name="guide_id" id="guide_id" required>
-                    @foreach($guides as $id => $entry)
-                        <option value="{{ $id }}" {{ (old('guide_id') ? old('guide_id') : $following->guide->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('guide'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('guide') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.following.fields.guide_helper') }}</span>
-            </div>
+            <input type="hidden" value={{$following->guide->id}} name="guide_id">
             <div class="form-group">
                 <label class="required" for="user_id">{{ trans('cruds.following.fields.user') }}</label>
-                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
+                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="tourist_id" id="user_id" required>
                     @foreach($users as $id => $entry)
                         <option value="{{ $id }}" {{ (old('user_id') ? old('user_id') : $following->user->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
                     @endforeach

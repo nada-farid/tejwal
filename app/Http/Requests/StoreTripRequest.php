@@ -41,6 +41,7 @@ class StoreTripRequest extends FormRequest
                 'required',
                 'array',
             ],
+     
         ];
     }
 }

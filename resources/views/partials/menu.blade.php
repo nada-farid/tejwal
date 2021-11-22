@@ -87,26 +87,17 @@
                 </ul>
             </li>
         @endcan
-        @can('experience_access')
-            <li class="c-sidebar-nav-item">
-                <a href="{{ route("admin.experiences.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/experiences") || request()->is("admin/experiences/*") ? "c-active" : "" }}">
-                    <i class="fa-fw far fa-address-card c-sidebar-nav-icon">
+        @can('user_alert_access')
+        <li class="c-sidebar-nav-item">
+            <a href="{{ route("admin.user-alerts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/user-alerts") || request()->is("admin/user-alerts/*") ? "c-active" : "" }}">
+                <i class="fa-fw fas fa-bell c-sidebar-nav-icon">
 
-                    </i>
-                    {{ trans('cruds.experience.title') }}
-                </a>
-            </li>
-        @endcan
-        @can('following_access')
-            <li class="c-sidebar-nav-item">
-                <a href="{{ route("admin.followings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/followings") || request()->is("admin/followings/*") ? "c-active" : "" }}">
-                    <i class="fa-fw fas fa-check c-sidebar-nav-icon">
-
-                    </i>
-                    {{ trans('cruds.following.title') }}
-                </a>
-            </li>
-        @endcan
+                </i>
+                {{ trans('cruds.userAlert.title') }}
+            </a>
+        </li>
+    @endcan
+     
         @can('trip_access')
             <li class="c-sidebar-nav-item">
                 <a href="{{ route("admin.trips.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/trips") || request()->is("admin/trips/*") ? "c-active" : "" }}">
@@ -134,16 +125,6 @@
 
                     </i>
                     {{ trans('cruds.booking.title') }}
-                </a>
-            </li>
-        @endcan
-        @can('favorite_access')
-            <li class="c-sidebar-nav-item">
-                <a href="{{ route("admin.favorites.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/favorites") || request()->is("admin/favorites/*") ? "c-active" : "" }}">
-                    <i class="fa-fw fas fa-star c-sidebar-nav-icon">
-
-                    </i>
-                    {{ trans('cruds.favorite.title') }}
                 </a>
             </li>
         @endcan

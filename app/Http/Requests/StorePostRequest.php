@@ -20,10 +20,25 @@ class StorePostRequest extends FormRequest
             'price' => [
                 'required',
             ],
-            'user_id' => [
+            'tourist_id' => [
                 'required',
                 'integer',
             ],
+            'start_date'=>[
+                'required',
+            ],
+            'end_date'=>[
+                'required',
+            ],
+            'lang_id'=>[
+                'required',
+                'integer',
+            ],
+            'description'=>[
+                'required',
+            ],
+
+            
         ];
     }
 }

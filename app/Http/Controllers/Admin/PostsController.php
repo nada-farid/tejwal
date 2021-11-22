@@ -8,6 +8,8 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Guide;
+use App\Models\Language;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +21,7 @@ class PostsController extends Controller
     {
         abort_if(Gate::denies('post_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $posts = Post::with(['Tourist'])->get();
+        $posts = Post::with(['Tourist','language'])->get();
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -28,9 +30,10 @@ class PostsController extends Controller
     {
         abort_if(Gate::denies('post_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = Guide::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $langs = Language::pluck('name_ar', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.posts.create', compact('users'));
+        return view('admin.posts.create', compact('users','langs'));
     }
 
     public function store(StorePostRequest $request)
@@ -46,11 +49,13 @@ class PostsController extends Controller
     {
         abort_if(Gate::denies('post_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = Guide::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $post->load('user');
+        $langs = Language::pluck('name_ar', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.posts.edit', compact('users', 'post'));
+        $post->load('Tourist');
+
+        return view('admin.posts.edit', compact('users', 'post','langs'));
     }
 
     public function update(UpdatePostRequest $request, Post $post)
@@ -66,7 +71,7 @@ class PostsController extends Controller
     {
         abort_if(Gate::denies('post_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $post->load('Tourist');
+        $post->load('Tourist','language');
 
         return view('admin.posts.show', compact('post'));
     }

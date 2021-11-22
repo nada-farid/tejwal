@@ -13,6 +13,7 @@
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
+            
             <table class="table table-bordered table-striped">
                 <tbody>
                     <tr>
@@ -85,7 +86,7 @@
                             {{ trans('cruds.user.fields.gender') }}
                         </th>
                         <td>
-                            {{ App\Models\User::GENDER_RADIO[$tourist->user->gender] ?? '' }}
+                            {{  trans('global.gender.'. App\Models\User::GENDER_RADIO[$tourist->user->gender]) ?? ''  }}
                         </td>
                     </tr>
                     <tr>

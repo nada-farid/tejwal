@@ -74,7 +74,7 @@
                                 {{ $tourist->user->country ?? '' }}
                             </td>
                             <td>
-                                {{ App\Models\User::GENDER_RADIO[$tourist->user->gender] ?? '' }}
+                                {{  trans('global.gender.'. App\Models\User::GENDER_RADIO[$tourist->user->gender]) ?? ''  }}
                             </td>
                             <td>
                                 @can('user_show')

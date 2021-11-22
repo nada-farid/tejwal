@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TripCategory;
 use App\Traits\api_return;
+use App\Http\Resources\CategoryTripResource;
 
 class TripCategoryController extends Controller
 {
@@ -16,11 +17,12 @@ class TripCategoryController extends Controller
         
         public function index(){
 
-            $name= 'name_'.app()->getLocale();
             
-            $cat=TripCategory::select('id', $name)->get();
+            $cat=TripCategory::get();
 
-            return $this->returnData($cat);
+            $new = CategoryTripResource::collection($cat);
+
+            return $this->returnData($new);
     
                
         }

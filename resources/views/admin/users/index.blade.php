@@ -80,8 +80,11 @@
                             <td>
                                 {{ $user->country ?? '' }}
                             </td>
-                            <td>
-                                {{ App\Models\User::GENDER_RADIO[$user->gender] ?? '' }}
+                            <td> 
+                              @if($user->gender)
+                               {{  trans('global.gender.'.$user->gender) ?? ''  }}
+                              
+                               @endif
                             </td>
                             <td>
                                 @can('user_show')

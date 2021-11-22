@@ -25,13 +25,14 @@ class ExperienceController extends Controller
         return view('admin.experiences.index', compact('experiences'));
     }
 
-    public function create()
+    public function create($guide_id)
+
     {
         abort_if(Gate::denies('experience_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $guides = Guide::pluck('brief_intro', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $guide = Guide::findOrfail($guide_id);
 
-        return view('admin.experiences.create', compact('guides'));
+        return view('admin.experiences.create', compact('guide'));
     }
 
     public function store(StoreExperienceRequest $request)
@@ -39,15 +40,15 @@ class ExperienceController extends Controller
         $experience = Experience::create($request->all());
 
         Alert::success(trans('global.flash.success'), trans('global.flash.created'));
-
-        return redirect()->route('admin.experiences.index');
+        
+        return redirect()->route('admin.experiences.show', $experience->id);
     }
 
     public function edit(Experience $experience)
     {
         abort_if(Gate::denies('experience_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $guides = Guide::pluck('brief_intro', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $guides = Guide::pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $experience->load('guide');
 
@@ -60,7 +61,7 @@ class ExperienceController extends Controller
 
         Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
 
-        return redirect()->route('admin.experiences.index');
+        return redirect()->route('admin.experiences.show', $experience->id);
     }
 
     public function show(Experience $experience)

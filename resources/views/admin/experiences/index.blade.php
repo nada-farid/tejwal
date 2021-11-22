@@ -55,7 +55,7 @@
                                 {{ $experience->years_of_experience ?? '' }}
                             </td>
                             <td>
-                                {{ $experience->guide->brief_intro ?? '' }}
+                                {{ $experience->guide->user->email ?? '' }}
                             </td>
                             <td>
                                 @can('experience_show')

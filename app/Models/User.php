@@ -26,7 +26,7 @@ class User extends Authenticatable implements HasMedia
 
     public const GENDER_RADIO = [
         'female' => 'female',
-        'male'   => 'male',
+         'male'   => 'male',
     ];
 
     public $table = 'users';
@@ -66,6 +66,13 @@ class User extends Authenticatable implements HasMedia
         'updated_at',
         'deleted_at',
     ];
+
+    
+    public function userUserAlerts()
+    {
+        return $this->belongsToMany(UserAlert::class);
+    }
+
 
     public function getIsAdminAttribute()
     {

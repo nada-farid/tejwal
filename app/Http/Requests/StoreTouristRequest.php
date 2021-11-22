@@ -65,9 +65,6 @@ class StoreTouristRequest extends FormRequest
                 'required',
                 'array',
             ],
-            'car' => [
-                'required',
-            ],
         ];
     }
 }

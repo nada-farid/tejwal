@@ -32,6 +32,12 @@
                             {{ trans('cruds.post.fields.user') }}
                         </th>
                         <th>
+                            {{ trans('cruds.post.fields.start_date') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.post.fields.end_date') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -50,6 +56,12 @@
                             </td>
                             <td>
                                 {{ $post->Tourist->user->email ?? '' }}
+                            </td>
+                            <td>
+                                {{ $post->start_date ?? '' }}
+                            </td>
+                            <td>
+                                {{ $post->end_date ?? '' }}
                             </td>
                             <td>
                                 @can('post_show')

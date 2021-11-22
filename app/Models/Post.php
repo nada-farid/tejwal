@@ -22,6 +22,10 @@ class Post extends Model
     protected $fillable = [
         'price',
         'tourist_id',
+        'start_date',
+        'end_date',
+         'lang_id',
+         'description',
         'created_at',
         'updated_at',
         'deleted_at',

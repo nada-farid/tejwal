@@ -31,9 +31,11 @@ class TouristController extends Controller
 
         $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $naitev_languages = Language::pluck('name_en', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $name='name_'.app()->getlocale();
 
-        $speaking_languages = Language::pluck('name_en', 'id');
+        $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $speaking_languages = Language::pluck($name, 'id');
 
         return view('admin.tourists.create', compact('users','naitev_languages','speaking_languages'));
     }
@@ -78,10 +80,11 @@ class TouristController extends Controller
 
         $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        
-        $naitev_languages = Language::pluck('name_en', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $name='name_'.app()->getlocale();
 
-        $speaking_languages = Language::pluck('name_en', 'id');
+        $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $speaking_languages = Language::pluck($name, 'id');
 
         $tourist->load('user');
 

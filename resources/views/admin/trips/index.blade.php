@@ -32,9 +32,6 @@
                             {{ trans('cruds.trip.fields.price') }}
                         </th>
                         <th>
-                            {{ trans('cruds.trip.fields.photo') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.trip.fields.guide') }}
                         </th>
                         <th>
@@ -61,18 +58,14 @@
                                 {{ $trip->price ?? '' }}
                             </td>
                             <td>
-                                @foreach($trip->photo as $key => $media)
-                                    <a href="{{ $media->getUrl() }}" target="_blank" style="display: inline-block">
-                                        <img src="{{ $media->getUrl('thumb') }}">
-                                    </a>
-                                @endforeach
+                                {{ $trip->guide->user->email ?? '' }}
                             </td>
                             <td>
-                                {{ $trip->guide->brief_intro ?? '' }}
-                            </td>
-                            <td>
+                                @php
+                                $name='name_'.app()->getlocale();
+                                @endphp
                                 @foreach($trip->trip_categories as $key => $item)
-                                    <span class="badge badge-info">{{ $item->name_ar }}</span>
+                                    <span class="badge badge-info">{{ $item->$name }}</span>
                                 @endforeach
                             </td>
                             <td>

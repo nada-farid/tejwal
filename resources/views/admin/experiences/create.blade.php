@@ -29,20 +29,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.experience.fields.years_of_experience_helper') }}</span>
             </div>
-            <div class="form-group">
-                <label class="required" for="guide_id">{{ trans('cruds.experience.fields.guide') }}</label>
-                <select class="form-control select2 {{ $errors->has('guide') ? 'is-invalid' : '' }}" name="guide_id" id="guide_id" required>
-                    @foreach($guides as $id => $entry)
-                        <option value="{{ $id }}" {{ old('guide_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('guide'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('guide') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.experience.fields.guide_helper') }}</span>
-            </div>
+            <input type="hidden" value={{$guide->id}} name="guide_id">
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
