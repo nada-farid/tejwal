@@ -6,7 +6,7 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
       Route::post('register','AuthController@register');
       Route::post('login','AuthController@login');
 
-    Route::group(['middleware' => ['auth:sanctum']],function () {
+ Route::group(['middleware' => ['auth:sanctum']],function () {
 
         
     Route::group(['prefix' => 'post'],function(){
@@ -22,12 +22,14 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
     Route::group(['prefix' => 'trip'],function(){
               
         Route::post('add','TripController@store');
+        Route::post('update/{trip_id}','TripController@update');
+        Route::delete('delete/{trip_id}','TripController@delete');
 
 
 
                });
 
-              });
+               });
 
                });
 

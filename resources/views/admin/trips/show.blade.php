@@ -25,6 +25,14 @@
                             {{ $trip->id }}
                         </td>
                     </tr>
+                      <tr>
+                        <th>
+                            {{ trans('cruds.trip.fields.trip_name') }}
+                        </th>
+                        <td>
+                            {{ $trip->trip_name }}
+                        </td>
+                    </tr>
                     <tr>
                         <th>
                             {{ trans('cruds.trip.fields.description') }}

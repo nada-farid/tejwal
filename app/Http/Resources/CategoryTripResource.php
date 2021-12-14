@@ -16,6 +16,7 @@ class CategoryTripResource extends JsonResource
     {
         $name= 'name_'.app()->getLocale();
         return[
+            'id'     =>$this->id,
              'category_name'=>$this->$name,
         ];
     }

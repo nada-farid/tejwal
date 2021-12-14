@@ -87,7 +87,7 @@
                 </a>
             </div>
         </div>
-<div class="col-md-9">
+<div class="col-md-8">
 <div class="card">
     <div class="card-header">
         {{ trans('global.relatedData') }}

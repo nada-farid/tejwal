@@ -25,6 +25,9 @@
                         <th>
                             {{ trans('cruds.trip.fields.id') }}
                         </th>
+                           <th>
+                            {{ trans('cruds.trip.fields.trip_name') }}
+                        </th>
                         <th>
                             {{ trans('cruds.trip.fields.description') }}
                         </th>
@@ -37,6 +40,7 @@
                         <th>
                             {{ trans('cruds.trip.fields.trip_category') }}
                         </th>
+                        
                         <th>
                             &nbsp;
                         </th>
@@ -50,6 +54,9 @@
                             </td>
                             <td>
                                 {{ $trip->id ?? '' }}
+                            </td>
+                             <td>
+                                {{ $trip->trip_name ?? '' }}
                             </td>
                             <td>
                                 {{ $trip->description ?? '' }}

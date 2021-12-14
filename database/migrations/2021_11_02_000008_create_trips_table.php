@@ -10,6 +10,7 @@ class CreateTripsTable extends Migration
     {
         Schema::create('trips', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('trip_name');
             $table->longText('description');
             $table->decimal('price', 15, 2);
             $table->string('car');

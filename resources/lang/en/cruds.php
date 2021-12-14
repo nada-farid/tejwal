@@ -241,6 +241,9 @@ return [
         'fields'         => [
             'id'                   => 'ID',
             'id_helper'            => ' ',
+            
+            'trip_name'          => 'Trip Name',
+            'trip_name_helper'   => ' ',
             'description'          => 'Description',
             'description_helper'   => ' ',
             'price'                => 'Price',

@@ -16,19 +16,16 @@ class GuidePrrofieResource extends JsonResource
 
     public function toArray($request)
     {
-        $name= 'name_'.app()->getLocale();
-
-     $photo= $this->user->photo;
-     if($photo)
-     $img=$photo->getUrl('thumb');
-     else
-     $img='';
+        
+     
+     if($this->follower->count() > 0)
+        $following='yes';
+        else 
+         $following='no';
 
         return[
-            'guide_name'             => $this->user->name .' '. $this->user->last_name,
-            'guide_image'            => $img,
-            'guide_native_language'  =>$this->user->naitev_language->$name,
-            'guide_speaking_language' => UserResource::collection($this->user->speaking_languages),
+            'details'=> new GuideResource($this),
+             //addatianal data
             'guide_age'               =>Carbon::parse(Carbon::createFromFormat('d/m/Y', $this->user->dob)->format('d-m-Y'))->diff(Carbon::now())->y,
             'guide_cost'              => $this->cost,
             'guide_car'              => $this->car,
@@ -37,6 +34,7 @@ class GuidePrrofieResource extends JsonResource
             'guide_education'        => $this->degree  . ' in ' . $this->major,
             'guide_rate'              =>$this->ratingsAvg(),
             'experiences'             => ExperienceResource::collection($this->experience),
+            'following'=>$following,
             
 
         ];

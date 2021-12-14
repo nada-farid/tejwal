@@ -8,12 +8,15 @@ use App\Models\Guide;
 use App\Models\User;
 use App\Models\Trip;
 use App\Models\Tourist;
-use App\Models\Following;
+use App\Models\following;
 use Validator;
 use App\Http\Resources\GuideResource;
 use App\Http\Resources\GuidePrrofieResource;
 use App\Http\Resources\TripResource;
+use App\Http\Resources\HighestRating;
+use Nagy\LaravelRating\Models\Rating;
 use Auth;
+use DB;
 
 
 class GuideController extends Controller
@@ -32,6 +35,42 @@ class GuideController extends Controller
 
     }
     //------------------------------------------------------
+    
+    public function HighestRating(){
+
+  
+        
+    $rates=Rating::select('rateable_id', DB::raw('SUM(value) AS rating'))
+        ->groupBy('rateable_id')
+        ->orderBy('rating', 'DESC')->with('guide','guide.user')->get()->take(10);
+  
+
+     $new=HighestRating::Collection($rates);
+  
+     return $this->returnData($new);
+    }
+
+    //---------------------------------
+       public function Following(){
+           
+       global $tourist_id;
+      $tourist_id=Tourist::where('user_id',Auth::id())->first()->id;     
+
+       $guides=Guide::whereHas('follower',function($query){
+           
+           $query->where('tourist_id',$GLOBALS['tourist_id']);
+           
+           })->paginate(6);
+           
+
+        $new=GuideResource::Collection($guides);
+
+        return $this->returnPaginationData($new,$guides,"success");
+
+    
+    } 
+    
+    //----------------------------
 
     public function RateGuide(Request $request){
         $rules = [
@@ -84,9 +123,16 @@ class GuideController extends Controller
              if(!$guide)
 
                 return $this->returnError('404',('this guide not found'));
+                
+                global $id;
         
-
-                $guide=$guide->load(['experience','user']);
+                 $id=Tourist::where('user_id',Auth::id())->first()->id; 
+                 
+                $guide=$guide->load(['experience','user','follower'=>function($query){
+                            
+                            $query->where('tourist_id',$GLOBALS['id'])->first();
+                    
+                }]);
 
                $new= new GuidePrrofieResource($guide);
 
@@ -104,7 +150,7 @@ class GuideController extends Controller
 
         return $this->returnPaginationData($first_trips,$trips,"success"); 
     }
-    //--------------------------
+    //-----------------------------------------------
     public function follow(Request $request){
 
         $rules = [
@@ -119,7 +165,7 @@ class GuideController extends Controller
 
         $tourist=Tourist::where('user_id',Auth::id())->first();
 
-        $follow=new Following();
+        $follow=new following();
 
         $follow->guide_id=$request->guide_id;
         $follow->tourist_id=$tourist->id;
@@ -128,4 +174,60 @@ class GuideController extends Controller
         return $this->returnSuccessMessage('follow saved Successfully');
 
     }
+    //--------------------------------------
+     public function unfollow(Request $request){
+             
+        $rules = [
+            'guide_id' => 'required|integer',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+         $tourist=Tourist::where('user_id',Auth::id())->first();
+
+        $follow=following::where('guide_id',$request->guide_id)->where('tourist_id', $tourist->id);
+
+      $follow->delete();
+
+        return $this->returnSuccessMessage('follow deleted Successfully');
+
+    }
+    //---------------------------------------------------
+    
+    public function search(Request $request){
+        
+        global $letters;
+        
+        $letters=$request->letters;
+    
+        
+         $rules = [
+            'letters' => 'required|string',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+        
+
+        $guides=Guide::whereHas('user',function($query){
+            
+            $query->where('name','like',"%".$GLOBALS['letters']."%")
+        ->OrWhere('last_name','like',"%".$GLOBALS['letters']."%");
+        })
+        ->paginate(6);
+        
+        $new=GuideResource::Collection($guides);
+
+        return $this->returnPaginationData($new,$guides,"success"); 
+        
+        
+    }
+    
+
 }

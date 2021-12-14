@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ExperienceResource extends JsonResource
+class HighestRating extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,11 +14,10 @@ class ExperienceResource extends JsonResource
      */
     public function toArray($request)
     {
+       
         return [
-            'id'=>$this->id,
-           'years_experience' =>$this->years_of_experience,
-           'city'             =>$this->city,
-
+        
+        'guide'=> new GuideResource($this->guide),
         ];
     }
 }

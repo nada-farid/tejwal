@@ -10,6 +10,16 @@
         <form method="POST" action="{{ route("admin.trips.update", [$trip->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
+               <div class="form-group">
+                <label class="required" for="trip_name">{{ trans('cruds.trip.fields.trip_name') }}</label>
+                <input class="form-control {{ $errors->has('trip_name') ? 'is-invalid' : '' }}" type="text" name="trip_name" id="trip_name" value="{{ old('trip_name', $trip->trip_name) }}" required>
+                @if($errors->has('trip_name'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('trip_name') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.trip.fields.trip_name_helper') }}</span>
+            </div>
             <div class="form-group">
                 <label class="required" for="description">{{ trans('cruds.trip.fields.description') }}</label>
                 <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description" required>{{ old('description', $trip->description) }}</textarea>

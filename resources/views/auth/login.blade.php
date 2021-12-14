@@ -15,7 +15,7 @@
                 @endif
 
                 <form method="POST" action="{{ route('login') }}">
-                    @csrf
+                   @csrf
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">

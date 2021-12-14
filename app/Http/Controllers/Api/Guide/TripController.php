@@ -26,6 +26,7 @@ class TripController extends Controller
 
         public function store(Request $request){
         $rules = [
+            'trip_name'=>'required',
             'description' => 'required',
             'trip_categories' => 'required',
             'trip_categories .*' => 'required',
@@ -47,8 +48,11 @@ class TripController extends Controller
         //to find guide id from auth user 
 
         $guide=Guide::where('user_id',Auth::id())->first();
+        if(!$guide)
+         return $this->returnError('401', 'somthing went wrong');
 
         $trip = new Trip();
+        $trip->trip_name=$request->trip_name;
         $trip->description =$request->description;
         $trip->price =$request->price;
         $trip->car =$request->car;
@@ -84,4 +88,73 @@ class TripController extends Controller
 
     //-----------------------------------------------------
 
-}
+    public function Update(Request $request,$trip_id){
+        $rules = [
+            'description' => 'required',
+            'trip_categories' => 'required',
+            'trip_categories .*' => 'required',
+            'price' => 'required',
+            'car' => 'required',
+            'places'=>'required',
+            'places.*.latitude' => 'required',
+            'places.*.longitude' => 'required',
+            'places.*.place_name' => 'required',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+
+        $trip=Trip::findOrfail($trip_id);
+
+        $trip->update($request->all());
+
+        $TripPlaces=TripPlace::where('trip_id',$trip_id);
+
+        foreach ($request['places'] as $row){
+            $TripPlaces = new TripPlace();
+            $TripPlaces->latitude =$row['latitude'];
+            $TripPlaces->longitude = $row['longitude'];
+            $TripPlaces->place_name = $row['place_name'];
+            $TripPlaces->trip_id = $trip->id;
+            $TripPlaces->save();
+        }
+
+        return $this->returnSuccessMessage('Trip updated Successfully');
+
+    }
+    //----------------------------------------------
+    public function delete($trip_id){
+
+        $trip=Trip::findOrfail($trip_id);
+
+        if(!$trip)
+  
+        return $this->returnError('404',('this trip not found'));
+  
+        $trip->delete();
+        $TripPlace = TripPlace::where('trip_id',$trip_id);
+        $TripPlace->delete();
+  
+        return $this->returnSuccessMessage('trip deleted Successfully');
+  
+         
+    }
+//--------------------------------------------------------
+    
+     public function MyTrips(){
+
+        $guide_id=Guide::where('user_id',Auth::id())->first()->id;
+
+        $trips = Trip::where('guide_id',$guide_id)->with(['guide', 'trip_categories', 'media','places','guide.user'])->paginate(10);
+
+        $new = TripResource::collection($trips);
+
+        return $this->returnPaginationData($new,$trips,"success"); 
+
+
+     }
+    }

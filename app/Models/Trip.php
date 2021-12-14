@@ -36,6 +36,7 @@ class Trip extends Model implements HasMedia
         'price',
         'guide_id',
         'car',
+        'trip_name',
         'created_at',
         'updated_at',
         'deleted_at',

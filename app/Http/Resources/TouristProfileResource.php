@@ -24,6 +24,7 @@ class TouristProfileResource extends JsonResource
         $img='';
    
            return[
+                'id'=>$this->id,
                'tourist_name'             => $this->user->name .' '. $this->user->last_name,
                'tourist_image'            => $img,
                'tourist_native_language'  =>$this->user->naitev_language->$name,

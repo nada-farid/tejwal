@@ -8,10 +8,14 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Models\Trip;
 use App\Models\TripPlace;
 use App\Models\Guide;
+use App\Models\Booking;
+use App\Models\Favorite;
 use App\Traits\api_return;
 use Validator;
 use Auth;
+use DB;
 use App\Http\Resources\TripResource;
+use App\Http\Resources\PupularTripResource;
 use App\Http\Resources\TripDetailsResource;
 
 
@@ -34,63 +38,6 @@ class TripController extends Controller
 
         //--------------------------------------------------------
 
-        public function store(Request $request){
-        $rules = [
-            'description' => 'required',
-            'trip_categories' => 'required',
-            'trip_categories .*' => 'required',
-            'price' => 'required',
-            'car' => 'required',
-            'places'=>'required',
-            'places.*.latitude' => 'required',
-            'places.*.longitude' => 'required',
-            'places.*.place_name' => 'required',
-            
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return $this->returnError('401', $validator->errors());
-        }
-
-        //to find guide id from auth user 
-
-        $guide=Guide::where('user_id',Auth::id())->first();
-
-        $trip = new Trip();
-        $trip->description =$request->description;
-        $trip->price =$request->price;
-        $trip->car =$request->car;
-        $trip->guide_id =$guide->id;
-        $trip->save();
-
-
-        $trip->trip_categories()->sync($request->input('trip_categories', []));
-
-        if (request()->hasFile('photo') && request('photo') != ''){
-            $validator = Validator::make($request->all(), [
-                'photo' => 'required|mimes:jpeg,png,jpg',
-            ]);
-            if ($validator->fails()) {
-                return $this->returnError('401', $validator->errors());
-            } 
-        foreach ($request->input('photo', []) as $file) {
-            $trip->addMedia(request('photo'))->toMediaCollection('photo'); 
-        }
-    }
-        foreach ($request['places'] as $row){
-            $TripPlaces = new TripPlace();
-            $TripPlaces->latitude =$row['latitude'];
-            $TripPlaces->longitude = $row['longitude'];
-            $TripPlaces->place_name = $row['place_name'];
-            $TripPlaces->trip_id = $trip->id;
-            $TripPlaces->save();
-        }
-
-        return $this->returnSuccessMessage('Trip Added Successfully');
-
-    }
 
     //-----------------------------------------------------
 
@@ -137,5 +84,114 @@ class TripController extends Controller
         return $this->returnPaginationData($first_trips,$trips,"success"); 
 
     }
+        //--------------------------------------------------
+      public function new(){
 
+        $trips = Trip::with(['guide', 'trip_categories', 'media','places','guide.user'])->orderBy('updated_at', 'desc')->take(10)->get();
+        
+
+        $new = TripResource::collection($trips);
+
+      return $this->returnData($new); 
+    }
+    
+    //------------------------------------
+    
+        public function cheapest(){
+
+        $trips = Trip::with(['guide', 'trip_categories', 'media','places','guide.user'])->orderBy('price', 'asc')->take(10)->get();
+        
+
+        $new = TripResource::collection($trips);
+
+      return $this->returnData($new); 
+    }
+    //---------------------------------------------
+    
+        public function pupular(){
+
+
+        $trips=Booking::with('trip','trip.guide', 'trip.trip_categories', 'trip.media','trip.places','trip.guide.user')->select('trip_id', DB::raw('COUNT(trip_id) AS occurrences'))
+     ->groupBy('trip_id')
+     ->orderBy('occurrences', 'DESC')
+     ->take(10)
+     ->get();
+
+      $new = PupularTripResource::collection($trips);
+
+      return $this->returnData($new);
+    
+     
+    }
+//-----------------------------------------------
+    public function favorite(Request $request){
+            $rules = [
+            'trip_id' => 'required|integer',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+        
+    $favorite=new Favorite();
+
+        $favorite->trip_id=$request->trip_id;
+        $favorite->user_id=Auth::id();
+        $favorite->save();
+
+        return $this->returnSuccessMessage('trip saved Successfully to your favorite');
+}
+//-----------------------------------------------------------------
+    public function unfavorite(Request $request){
+            $rules = [
+            'trip_id' => 'required|integer',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+        
+    $favorite=Favorite::where('user_id',Auth::id())->where('trip_id',$request->trip_id);
+    
+    if($favorite)
+    
+    $favorite->delete();
+
+        return $this->returnSuccessMessage('trip deleted Successfully from your favorite');
+}
+//--------------------------------------------------------------
+ public function search(Request $request){
+        
+        global $letters;
+        
+        $letters=$request->letters;
+    
+        
+         $rules = [
+            'letters' => 'required|string',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+        
+
+        $trips=Trip::whereHas('places',function($query){
+            
+            $query->where('place_name','like',"%".$GLOBALS['letters']."%");
+        })->OrWhere('trip_name','like',"%".$GLOBALS['letters']."%")->paginate(6);
+        
+         $first_trips = TripResource::collection($trips);
+
+        return $this->returnPaginationData($first_trips,$trips,"success"); 
+        
+        
+    }
+  
 }

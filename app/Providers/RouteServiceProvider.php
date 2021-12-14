@@ -42,10 +42,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapGuideApiRoutes();
-
-        $this->mapTouristApiRoutes();
-
+        $this->mapApiRoutes(); 
+        
         $this->mapWebRoutes();
 
         //
@@ -72,18 +70,11 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapGuideApiRoutes()
+    protected function mapApiRoutes()
     {
         Route::prefix('api')
              ->middleware('api')
              ->namespace($this->namespace)
-             ->group(base_path('routes/guide_api.php'));
-    }
-    protected function mapTouristApiRoutes()
-    {
-        Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/tourist_api.php'));
-    }
+             ->group(base_path('routes/api.php'));
+    } 
 }

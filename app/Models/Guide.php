@@ -72,4 +72,5 @@ class Guide extends Model
         return $this->hasMany(following::class);
     }
 
+
 }

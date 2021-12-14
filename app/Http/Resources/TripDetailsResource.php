@@ -21,16 +21,14 @@ class TripDetailsResource extends JsonResource
 
         $name= 'name_'.app()->getLocale();
         return[
-        'description'    => $this->description,
-        'price'          => $this->price,
+             'trip_details'=> new TripResource ($this),
+        //addatianal data
         'car'            =>$this->car,
         'guide_name'     => $this->guide->user->name .' '. $this->guide->user->last_name,
         'guide_image'            => PhotoResourcee::collection($this->guide->user->media),
         'guide_native_language'  =>$this->guide->user->naitev_language->$name,
         'guide_speaking_language' => UserResource::collection($this->guide->user->speaking_languages),
-        'trip_categories' => CategoryTripResource::collection($this->whenLoaded('trip_categories')),
-        'places'          => TripPlacesResource::collection($this->whenLoaded('places')),
-        'images'          => PhotoResourcee::collection($this->whenLoaded('media')), 
+         
         ];
     }
 }

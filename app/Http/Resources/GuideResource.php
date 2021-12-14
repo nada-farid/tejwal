@@ -16,7 +16,7 @@ class GuideResource extends JsonResource
     {
         $name= 'name_'.app()->getLocale();
         return [
-        
+             'id'=>$this->id,
         'guide_name'             => $this->user->name .' '. $this->user->last_name,
         'guide_image'            => PhotoResourcee::collection($this->user->media),
         'guide_native_language'  =>$this->user->naitev_language->$name,

@@ -5,33 +5,49 @@
 Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist', 'middleware' => 'ChangeLanguage'], function () {
                
           //Auth Routes
-    Route::post('register','AuthController@register');
-    Route::post('login','AuthController@login');
+               Route::post('register','AuthController@register');
+               Route::post('login','AuthController@login');
 
 Route::group(['middleware' => 'auth:sanctum'],function () {
 
-                //guides_info Routes
+              //guides_info 
         Route::group(['prefix' => 'guide'],function(){
                 Route::get('all_guide','GuideController@AllGuides'); 
+                Route::get('HighestRating','GuideController@HighestRating'); 
+                Route::get('Following','GuideController@Following'); 
+                Route::get('search','GuideController@search'); 
                 Route::get('guide_details/{guide_id}','GuideController@ShowGuideProfile'); 
                 Route::Post('rate','GuideController@RateGuide'); 
                 Route::Post('unrate','GuideController@UnRateGuide'); 
                 Route::Post('follow','GuideController@follow'); 
+                Route::delete('unfollow','GuideController@unfollow');
+                  
                 Route::get('guide_trips/{guide_id}','GuideController@GuideTrips'); 
         });
 
-               //trip Routes
+        //trip Routes
         Route::group(['prefix' => 'trip'],function(){  
                 Route::get('index','TripController@index');
                 Route::get('show/{trip_id}','TripController@Show');
                 Route::get('filter','TripController@filter');
-           Route::group(['prefix' => 'booking'],function(){  
-                Route::post('add','BookingController@store');
-                Route::post('update/{booking_id}','BookingController@update');
-                Route::delete('delete/{booking_id}','BookingController@delete');
-           });
+                Route::get('new','TripController@new');
+                Route::get('cheapest','TripController@cheapest');
+                Route::get('pupular','TripController@pupular');
+                Route::Post('favorite','TripController@favorite');
+                Route::get('unfavorite','TripController@unfavorite');
+                Route::get('search','TripController@search');
+                
+                 
+                 
+                 //booking
+                
+       Route::group(['prefix' => 'booking'],function(){  
+                        Route::post('add','BookingController@store');
+                        Route::post('update/{booking_id}','BookingController@update');
+                        Route::delete('delete/{booking_id}','BookingController@delete');
+       });
 
-        });
+       });
 
                //post Routes
         Route::group(['prefix' => 'post'],function(){
@@ -48,7 +64,7 @@ Route::group(['middleware' => 'auth:sanctum'],function () {
             Route::Post('update_profile','SettingsController@UpdateProfile');
           
               
-   });
+        });
 
               //general routes
         Route::group(['prefix' => 'general'],function(){    
@@ -58,5 +74,5 @@ Route::group(['middleware' => 'auth:sanctum'],function () {
         });
 
 
-});
-});
+        });
+        });
