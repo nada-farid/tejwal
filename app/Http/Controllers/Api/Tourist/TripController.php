@@ -25,10 +25,15 @@ class TripController extends Controller
     use api_return;
 
     use MediaUploadingTrait;
+  
 
         public function index(){
             
-            $trips = Trip::with(['guide', 'trip_categories', 'media','places','guide.user'])->paginate(10);
+               $trips = Trip::with(['guide', 'trip_categories', 'media','places','guide.user','tripFavorites'=>function($query){
+            
+                     $query->where('user_id',Auth::id())->first();
+
+                }])->paginate(10);
 
             $new = TripResource::collection($trips);
 
@@ -49,7 +54,11 @@ class TripController extends Controller
             return $this->returnError('404',('this trip not found'));
         }else{
 
-        $trip =$trip->load(['guide','trip_categories', 'media','places','guide.user']);
+        $trip =$trip->load(['guide','trip_categories', 'media','places','guide.user','tripFavorites'=>function($query){
+            
+            $query->where('user_id',Auth::id())->first();
+
+       }]);
 
    
         $trip_detalis = new TripDetailsResource($trip);

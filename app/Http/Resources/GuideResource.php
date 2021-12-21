@@ -22,6 +22,7 @@ class GuideResource extends JsonResource
         'guide_native_language'  =>$this->user->naitev_language->$name,
         'guide_speaking_language' => UserResource::collection($this->user->speaking_languages),
         'guide_rate'              =>$this->ratingsAvg(),
+        'guide_gender'=>$this->user->gender,
     
 
         ];

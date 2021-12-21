@@ -9,6 +9,7 @@ use App\Http\Resources\PhotoResourcee;
 
 class TripResource extends JsonResource
 {
+    
     /**
      * Transform the resource into an array.
      *
@@ -17,6 +18,10 @@ class TripResource extends JsonResource
      */
     public function toArray($request)
     {
+        if($this->tripFavorites->count() > 0)
+        $favorite='yes';
+        else 
+         $favorite='no';
         return [
              'id'=>$this->id,
              'trip_name'=>$this->trip_name,
@@ -25,6 +30,7 @@ class TripResource extends JsonResource
             'trip_categories' => CategoryTripResource::collection($this->whenLoaded('trip_categories')),
             'places'          => TripPlacesResource::collection($this->whenLoaded('places')),
             'images'          => PhotoResourcee::collection($this->whenLoaded('media')),
+            'favorite'=>$favorite,
 
         ];
     }
