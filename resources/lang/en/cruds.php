@@ -227,6 +227,8 @@ return [
             'name_ar_helper'    => ' ',
             'name_en'           => 'Name En',
             'name_en_helper'    => ' ',
+            'icon'           => 'icon',
+            'icon_helper'    => ' ',
             'created_at'        => 'Created at',
             'created_at_helper' => ' ',
             'updated_at'        => 'Updated at',

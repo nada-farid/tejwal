@@ -32,6 +32,9 @@
                             {{ trans('cruds.tripCategory.fields.name_en') }}
                         </th>
                         <th>
+                            {{ trans('cruds.tripCategory.fields.icon') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -50,6 +53,13 @@
                             </td>
                             <td>
                                 {{ $tripCategory->name_en ?? '' }}
+                            </td>
+                            <td>
+                                @if($tripCategory->icon)
+                                    <a href="{{ $tripCategory->icon->getUrl() }}" target="_blank" style="display: inline-block">
+                                        <img src="{{ $tripCategory->icon->getUrl('thumb') }}">
+                                    </a>
+                                @endif
                             </td>
                             <td>
                                 @can('trip_category_show')

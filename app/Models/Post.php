@@ -24,7 +24,6 @@ class Post extends Model
         'tourist_id',
         'start_date',
         'end_date',
-         'lang_id',
          'description',
         'created_at',
         'updated_at',
@@ -66,6 +65,6 @@ class Post extends Model
     }
     public function language()
     {
-        return $this->belongsTo(Language::class, 'lang_id');
+        return $this->belongsToMany(Language::class);
     }
 }

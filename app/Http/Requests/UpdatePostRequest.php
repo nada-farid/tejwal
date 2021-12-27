@@ -20,10 +20,14 @@ class UpdatePostRequest extends FormRequest
             'price' => [
                 'required',
             ],
-            'user_id' => [
-                'required',
-                'integer',
-            ],
-        ];
-    }
+    
+        'langs.*' => [
+            'integer',
+        ],
+        'langs' => [
+            'required',
+            'array',
+        ],
+    ];
+}
 }

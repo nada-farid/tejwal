@@ -59,15 +59,19 @@
                 <span class="help-block">{{ trans('cruds.post.fields.end_date_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="lang_id">{{ trans('cruds.post.fields.lang') }}</label>
-                <select class="form-control select2 {{ $errors->has('lang') ? 'is-invalid' : '' }}" name="lang_id" id="lang_id" required>
-                    @foreach($langs as $id => $entry)
-                        <option value="{{ $id }}" {{ (old('lang_id') ? old('lang_id') : $post->language->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                <label class="required" for="langs">{{ trans('cruds.post.fields.lang') }}</label>
+                <div style="padding-bottom: 4px">
+                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
+                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
+                </div>
+                <select class="form-control select2 {{ $errors->has('langs') ? 'is-invalid' : '' }}" name="langs[]" id="langs" multiple required>
+                    @foreach($langs as $id => $lang)
+                        <option value="{{ $id }}" {{ (in_array($id, old('langs', [])) || $post->language->contains($id)) ? 'selected' : '' }}>{{ $lang }}</option>
                     @endforeach
                 </select>
-                @if($errors->has('lang'))
+                @if($errors->has('langs'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('lang') }}
+                        {{ $errors->first('langs') }}
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.post.fields.lang_helper') }}</span>

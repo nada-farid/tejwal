@@ -3,23 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyTripCategoryRequest;
 use App\Http\Requests\StoreTripCategoryRequest;
 use App\Http\Requests\UpdateTripCategoryRequest;
 use App\Models\TripCategory;
 use Gate;
 use Illuminate\Http\Request;
+use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
-use Alert;
-
 
 class TripCategoryController extends Controller
 {
+    use MediaUploadingTrait;
+
     public function index()
     {
         abort_if(Gate::denies('trip_category_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $tripCategories = TripCategory::all();
+        $tripCategories = TripCategory::with(['media'])->get();
 
         return view('admin.tripCategories.index', compact('tripCategories'));
     }
@@ -35,8 +37,13 @@ class TripCategoryController extends Controller
     {
         $tripCategory = TripCategory::create($request->all());
 
-        Alert::success(trans('global.flash.success'), trans('global.flash.created'));
+        if ($request->input('icon', false)) {
+            $tripCategory->addMedia(storage_path('tmp/uploads/' . basename($request->input('icon'))))->toMediaCollection('icon');
+        }
 
+        if ($media = $request->input('ck-media', false)) {
+            Media::whereIn('id', $media)->update(['model_id' => $tripCategory->id]);
+        }
 
         return redirect()->route('admin.trip-categories.index');
     }
@@ -52,8 +59,16 @@ class TripCategoryController extends Controller
     {
         $tripCategory->update($request->all());
 
-        Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
-
+        if ($request->input('icon', false)) {
+            if (!$tripCategory->icon || $request->input('icon') !== $tripCategory->icon->file_name) {
+                if ($tripCategory->icon) {
+                    $tripCategory->icon->delete();
+                }
+                $tripCategory->addMedia(storage_path('tmp/uploads/' . basename($request->input('icon'))))->toMediaCollection('icon');
+            }
+        } elseif ($tripCategory->icon) {
+            $tripCategory->icon->delete();
+        }
 
         return redirect()->route('admin.trip-categories.index');
     }
@@ -71,9 +86,6 @@ class TripCategoryController extends Controller
 
         $tripCategory->delete();
 
-        Alert::success(trans('global.flash.success'), trans('global.flash.deleted'));
-
-
         return back();
     }
 
@@ -83,4 +95,26 @@ class TripCategoryController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+    public function storeCKEditorImages(Request $request)
+    {
+        abort_if(Gate::denies('trip_category_create') && Gate::denies('trip_category_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $model         = new TripCategory();
+        $model->id     = $request->input('crud_id', 0);
+        $model->exists = true;
+        $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
+
+        return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
 }
+
+
+
+
+
+
+
+
+
+

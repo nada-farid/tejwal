@@ -39,6 +39,18 @@
                             {{ $tripCategory->name_en }}
                         </td>
                     </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.tripCategory.fields.icon') }}
+                        </th>
+                        <td>
+                            @if($tripCategory->icon)
+                                <a href="{{ $tripCategory->icon->getUrl() }}" target="_blank" style="display: inline-block">
+                                    <img src="{{ $tripCategory->icon->getUrl('thumb') }}">
+                                </a>
+                            @endif
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="form-group">

@@ -18,6 +18,7 @@ class CategoryTripResource extends JsonResource
         return[
             'id'     =>$this->id,
              'category_name'=>$this->$name,
+             'category_icon'=>PhotoResourcee::collection($this->media)
         ];
     }
 }

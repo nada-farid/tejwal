@@ -18,7 +18,7 @@ class TripCategoryController extends Controller
         public function index(){
 
             
-            $cat=TripCategory::get();
+            $cat=TripCategory::with('media')->get();
 
             $new = CategoryTripResource::collection($cat);
 

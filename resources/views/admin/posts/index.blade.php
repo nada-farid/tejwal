@@ -32,10 +32,10 @@
                             {{ trans('cruds.post.fields.user') }}
                         </th>
                         <th>
-                            {{ trans('cruds.post.fields.start_date') }}
+                            {{ trans('cruds.post.fields.description') }}
                         </th>
                         <th>
-                            {{ trans('cruds.post.fields.end_date') }}
+                            {{ trans('cruds.post.fields.lang') }}
                         </th>
                         <th>
                             &nbsp;
@@ -55,13 +55,15 @@
                                 {{ $post->price ?? '' }}
                             </td>
                             <td>
-                                {{ $post->Tourist->user->email ?? '' }}
+                                {{ $post->user->email ?? '' }}
                             </td>
                             <td>
-                                {{ $post->start_date ?? '' }}
+                                {{ $post->description ?? '' }}
                             </td>
                             <td>
-                                {{ $post->end_date ?? '' }}
+                                @foreach($post->language as $key => $item)
+                                    <span class="badge badge-info">{{ $item->name_ar }}</span>
+                                @endforeach
                             </td>
                             <td>
                                 @can('post_show')

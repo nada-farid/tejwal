@@ -54,7 +54,7 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
                       Route::Post('rate','GuideController@RateGuide'); 
                       Route::Post('unrate','GuideController@UnRateGuide'); 
                       Route::Post('follow','GuideController@follow'); 
-                      Route::delete('unfollow','GuideController@unfollow');
+                      Route::Post('unfollow','GuideController@unfollow');
                         
                       Route::get('guide_trips/{guide_id}','GuideController@GuideTrips'); 
               });

@@ -36,23 +36,7 @@
                             {{ trans('cruds.post.fields.user') }}
                         </th>
                         <td>
-                            {{ $post->Tourist->user->email ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.post.fields.start_date') }}
-                        </th>
-                        <td>
-                            {{ $post->start_date ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.post.fields.end_date') }}
-                        </th>
-                        <td>
-                            {{ $post->end_date ?? '' }}
+                            {{ $post->user->email ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -60,7 +44,17 @@
                             {{ trans('cruds.post.fields.description') }}
                         </th>
                         <td>
-                            {{ $post->description ?? '' }}
+                            {{ $post->description }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.post.fields.lang') }}
+                        </th>
+                        <td>
+                            @foreach($post->langs as $key => $lang)
+                                <span class="label label-info">{{ $lang->name_ar }}</span>
+                            @endforeach
                         </td>
                     </tr>
                 </tbody>

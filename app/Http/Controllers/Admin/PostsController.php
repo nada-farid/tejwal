@@ -8,7 +8,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\User;
-use App\Models\Guide;
+use App\Models\Tourist;
 use App\Models\Language;
 use Gate;
 use Illuminate\Http\Request;
@@ -30,8 +30,8 @@ class PostsController extends Controller
     {
         abort_if(Gate::denies('post_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = Guide::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $langs = Language::pluck('name_ar', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = Tourist::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $langs = Language::pluck('name_ar', 'id');
 
         return view('admin.posts.create', compact('users','langs'));
     }
@@ -39,6 +39,7 @@ class PostsController extends Controller
     public function store(StorePostRequest $request)
     {
         $post = Post::create($request->all());
+        $post->language()->sync($request->input('langs', []));
 
         Alert::success(trans('global.flash.success'), trans('global.flash.created'));
 
@@ -49,9 +50,9 @@ class PostsController extends Controller
     {
         abort_if(Gate::denies('post_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = Guide::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = Tourist::with('user')->get()->pluck('user.email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $langs = Language::pluck('name_ar', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $langs = Language::pluck('name_ar', 'id');
 
         $post->load('Tourist');
 
@@ -61,6 +62,8 @@ class PostsController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         $post->update($request->all());
+
+        $post->language()->sync($request->input('langs', []));
 
         Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
 

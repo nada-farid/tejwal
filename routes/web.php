@@ -57,6 +57,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Trip Category
     Route::delete('trip-categories/destroy', 'TripCategoryController@massDestroy')->name('trip-categories.massDestroy');
+    Route::post('trip-categories/media', 'TripCategoryController@storeMedia')->name('trip-categories.storeMedia');
+    Route::post('trip-categories/ckmedia', 'TripCategoryController@storeCKEditorImages')->name('trip-categories.storeCKEditorImages');
     Route::resource('trip-categories', 'TripCategoryController');
 
     // Trips

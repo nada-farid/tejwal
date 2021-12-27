@@ -27,7 +27,7 @@ class PostController extends Controller
             'places.*.latitude' => 'required',
             'places.*.longitude' => 'required',
             'places.*.place_name' => 'required',
-            'lang_id' =>'required|integer',
+            'langs' =>'required|array',
             'start_date' => 'required|date_format:d/m/Y',
             'end_date' => 'required|date_format:d/m/Y',
             'description'=>'required',
@@ -46,12 +46,12 @@ class PostController extends Controller
         $post=new Post();
         $post->price=$request->price;
         $post->tourist_id=$tourist->id;
-        $post->lang_id=$request->lang_id;
+        //$post->lang_id=$request->lang_id;
         $post->start_date=$request->start_date;
         $post->end_date=$request->end_date;
         $post->description=$request->description;
         $post->save();
-
+        $post->language()->sync($request->input('langs', []));
 
         foreach ($request['places'] as $row){
             $PostPlaces = new PostPlace();
