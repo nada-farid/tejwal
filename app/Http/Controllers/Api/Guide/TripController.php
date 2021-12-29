@@ -13,6 +13,7 @@ use Validator;
 use Auth;
 use App\Http\Resources\TripResource;
 use App\Http\Resources\TripDetailsResource;
+use Spatie\MediaLibrary\Models\Media;
 
 
 class TripController extends Controller
@@ -62,17 +63,21 @@ class TripController extends Controller
 
         $trip->trip_categories()->sync($request->input('trip_categories', []));
 
-        if (request()->hasFile('photo') && request('photo') != ''){
+        if (request()->has('photo') && request('photo') != ''){
             $validator = Validator::make($request->all(), [
-                'photo' => 'required|mimes:jpeg,png,jpg',
+                'photo' => 'required|array',
+                'photo.*' => 'mimes:jpeg,png,jpg',
             ]);
             if ($validator->fails()) {
                 return $this->returnError('401', $validator->errors());
             } 
-        foreach ($request->input('photo', []) as $file) {
-            $trip->addMedia(request('photo'))->toMediaCollection('photo'); 
+            foreach ($request->input('photo', []) as $file) {
+                $trip->addMedia(request('photo'))->toMediaCollection('photo'); 
+            }
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $trip->id]);
+            }
         }
-    }
         foreach ($request['places'] as $row){
             $TripPlaces = new TripPlace();
             $TripPlaces->latitude =$row['latitude'];

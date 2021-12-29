@@ -25,57 +25,56 @@ class TripController extends Controller
     use api_return;
 
     use MediaUploadingTrait;
-  
 
-        public function index(){
-            
-               $trips = Trip::with(['guide', 'trip_categories', 'media','places','guide.user','tripFavorites'=>function($query){
-            
-                     $query->where('user_id',Auth::id())->first();
 
-                }])->paginate(10);
+    public function index()
+    {
 
-            $new = TripResource::collection($trips);
+        $trips = Trip::with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
 
-            return $this->returnPaginationData($new,$trips,"success"); 
-                
-        }
+            $query->where('user_id', Auth::id())->first();
+        }])->paginate(10);
 
-        //--------------------------------------------------------
+        $new = TripResource::collection($trips);
+
+        return $this->returnPaginationData($new, $trips, "success");
+    }
+
+    //--------------------------------------------------------
 
 
     //-----------------------------------------------------
 
-    public function Show($trip_id){
+    public function Show($trip_id)
+    {
 
-         $trip=Trip::findOrfail($trip_id);
+        $trip = Trip::findOrfail($trip_id);
 
-        if(!$trip){
-            return $this->returnError('404',('this trip not found'));
-        }else{
+        if (!$trip) {
+            return $this->returnError('404', ('this trip not found'));
+        } else {
 
-        $trip =$trip->load(['guide','trip_categories', 'media','places','guide.user','tripFavorites'=>function($query){
-            
-            $query->where('user_id',Auth::id())->first();
+            $trip = $trip->load(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
 
-       }]);
+                $query->where('user_id', Auth::id())->first();
+            }]);
 
-   
-        $trip_detalis = new TripDetailsResource($trip);
 
-        return $this->returnData($trip_detalis);
+            $trip_detalis = new TripDetailsResource($trip);
 
+            return $this->returnData($trip_detalis);
+        }
     }
-}
     //------------------------------------------------------
 
-    public function filter(Request $request){
+    public function filter(Request $request)
+    {
 
         global $id;
-        $id =$request->category_id;
-        
+        $id = $request->category_id;
+
         $rules = [
-           'category_id' => 'required|array',
+            'category_id' => 'required|array',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -83,58 +82,59 @@ class TripController extends Controller
         if ($validator->fails()) {
             return $this->returnError('401', $validator->errors());
         }
-   
-        $trips = Trip::whereHas('trip_categories',function($query){
-            $query->whereIn('id',$GLOBALS['id']);
-        })->with(['guide', 'media','places','guide.user'])->paginate(10);
+
+        $trips = Trip::whereHas('trip_categories', function ($query) {
+            $query->whereIn('id', $GLOBALS['id']);
+        })->with(['guide', 'media', 'places', 'guide.user'])->paginate(10);
 
         $first_trips = TripResource::collection($trips);
 
-        return $this->returnPaginationData($first_trips,$trips,"success"); 
-
+        return $this->returnPaginationData($first_trips, $trips, "success");
     }
-        //--------------------------------------------------
-      public function new(){
+    //--------------------------------------------------
+    public function new()
+    {
 
-        $trips = Trip::with(['guide', 'trip_categories', 'media','places','guide.user'])->orderBy('updated_at', 'desc')->take(10)->get();
-        
+        $trips = Trip::with(['guide', 'trip_categories', 'media', 'places', 'guide.user'])->orderBy('updated_at', 'desc')->take(10)->get();
+
 
         $new = TripResource::collection($trips);
 
-      return $this->returnData($new); 
+        return $this->returnData($new);
     }
-    
+
     //------------------------------------
-    
-        public function cheapest(){
 
-        $trips = Trip::with(['guide', 'trip_categories', 'media','places','guide.user'])->orderBy('price', 'asc')->take(10)->get();
-        
+    public function cheapest()
+    {
+
+        $trips = Trip::with(['guide', 'trip_categories', 'media', 'places', 'guide.user'])->orderBy('price', 'asc')->take(10)->get();
+
 
         $new = TripResource::collection($trips);
 
-      return $this->returnData($new); 
+        return $this->returnData($new);
     }
     //---------------------------------------------
-    
-        public function pupular(){
+
+    public function pupular()
+    {
 
 
-        $trips=Booking::with('trip','trip.guide', 'trip.trip_categories', 'trip.media','trip.places','trip.guide.user')->select('trip_id', DB::raw('COUNT(trip_id) AS occurrences'))
-     ->groupBy('trip_id')
-     ->orderBy('occurrences', 'DESC')
-     ->take(10)
-     ->get();
+        $trips = Booking::with('trip', 'trip.guide', 'trip.trip_categories', 'trip.media', 'trip.places', 'trip.guide.user')->select('trip_id', DB::raw('COUNT(trip_id) AS occurrences'))
+            ->groupBy('trip_id')
+            ->orderBy('occurrences', 'DESC')
+            ->take(10)
+            ->get();
 
-      $new = PupularTripResource::collection($trips);
+        $new = PupularTripResource::collection($trips);
 
-      return $this->returnData($new);
-    
-     
+        return $this->returnData($new);
     }
-//-----------------------------------------------
-    public function favorite(Request $request){
-            $rules = [
+    //-----------------------------------------------
+    public function favorite(Request $request)
+    {
+        $rules = [
             'trip_id' => 'required|integer',
         ];
 
@@ -143,18 +143,19 @@ class TripController extends Controller
         if ($validator->fails()) {
             return $this->returnError('401', $validator->errors());
         }
-        
-    $favorite=new Favorite();
 
-        $favorite->trip_id=$request->trip_id;
-        $favorite->user_id=Auth::id();
+        $favorite = new Favorite();
+
+        $favorite->trip_id = $request->trip_id;
+        $favorite->user_id = Auth::id();
         $favorite->save();
 
         return $this->returnSuccessMessage('trip saved Successfully to your favorite');
-}
-//-----------------------------------------------------------------
-    public function unfavorite(Request $request){
-            $rules = [
+    }
+    //-----------------------------------------------------------------
+    public function unfavorite(Request $request)
+    {
+        $rules = [
             'trip_id' => 'required|integer',
         ];
 
@@ -163,24 +164,24 @@ class TripController extends Controller
         if ($validator->fails()) {
             return $this->returnError('401', $validator->errors());
         }
-        
-    $favorite=Favorite::where('user_id',Auth::id())->where('trip_id',$request->trip_id);
-    
-    if($favorite)
-    
-    $favorite->delete();
+
+        $favorite = Favorite::where('user_id', Auth::id())->where('trip_id', $request->trip_id)->first();
+
+        if ($favorite)
+            $favorite->delete();
 
         return $this->returnSuccessMessage('trip deleted Successfully from your favorite');
-}
-//--------------------------------------------------------------
- public function search(Request $request){
-        
+    }
+    //--------------------------------------------------------------
+    public function search(Request $request)
+    {
+
         global $letters;
-        
-        $letters=$request->letters;
-    
-        
-         $rules = [
+
+        $letters = $request->letters;
+
+
+        $rules = [
             'letters' => 'required|string',
         ];
 
@@ -189,18 +190,15 @@ class TripController extends Controller
         if ($validator->fails()) {
             return $this->returnError('401', $validator->errors());
         }
-        
 
-        $trips=Trip::whereHas('places',function($query){
-            
-            $query->where('place_name','like',"%".$GLOBALS['letters']."%");
-        })->OrWhere('trip_name','like',"%".$GLOBALS['letters']."%")->paginate(6);
-        
-         $first_trips = TripResource::collection($trips);
 
-        return $this->returnPaginationData($first_trips,$trips,"success"); 
-        
-        
+        $trips = Trip::whereHas('places', function ($query) {
+
+            $query->where('place_name', 'like', "%" . $GLOBALS['letters'] . "%");
+        })->OrWhere('trip_name', 'like', "%" . $GLOBALS['letters'] . "%")->paginate(6);
+
+        $first_trips = TripResource::collection($trips);
+
+        return $this->returnPaginationData($first_trips, $trips, "success");
     }
-  
 }
