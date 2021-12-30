@@ -96,6 +96,12 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
       });
 });
 
+// notifications
+Route::group(['prefix' => 'notifications','as' => 'api.', 'namespace' => 'Api','middleware' => [ 'ChangeLanguage' , 'auth:sanctum' ]], function () {
+      Route::get('all','NotificationsApiController@index');
+      Route::post('fcm-token','NotificationsApiController@update_fcm_token');
+});
+
 Route::group(['prefix' => 'conversations', 'as' => 'api.', 'namespace' => 'Api\Conversations', 'middleware' => [ 'ChangeLanguage' , 'auth:sanctum' ]], function () {
 
       Route::get('contacts','ConversationsController@contacts');

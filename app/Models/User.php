@@ -57,6 +57,7 @@ class User extends Authenticatable implements HasMedia
         'remember_token',
         'phone',
         'country',
+        'fcm_token',
         'city',
         'dob',
         'gender',

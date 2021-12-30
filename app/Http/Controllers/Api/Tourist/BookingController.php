@@ -8,14 +8,18 @@ use App\Models\Trip;
 use Auth;
 use App\Traits\api_return;
 use Validator;
+use App\Traits\push_notification;
+
 
 class BookingController extends Controller
 {
     //
     use api_return;
+    use push_notification;
 
     public function store(Request $request){
-
+        
+            
             $rules = [
                 'start_date' => 'required|date_format:d/m/Y',
                 'end_date' => 'required|date_format:d/m/Y',
@@ -30,30 +34,33 @@ class BookingController extends Controller
             }
             $trip=Trip::findOrfail($request->trip_id);
 
-            if(!$trip)
-
-            return $this->returnError('404',('this trip not found'));
-
-          else{
-            //check if any trip reseved within that date
-        $all_Booking=Booking::all();
-        foreach($all_Booking as $booking ){
-            if(($request->start_date >= $booking->start_date) && ($request->start_date <= $booking->end_date)){
-
-            return $this->returnError(205,'Sorry there is a Trip is reseved from '.$booking->start_date .' to '.$booking->end_date .' please choose another date');
-            
+            if(!$trip){ 
+                return $this->returnError('404',('this trip not found'));
+            }else{
+                //check if any trip reseved within that date
+                $all_Booking=Booking::all();
+                foreach($all_Booking as $booking ){
+                    if(($request->start_date >= $booking->start_date) && ($request->start_date <= $booking->end_date)){ 
+                        return $this->returnError(205,'Sorry there is a Trip is reseved from '.$booking->start_date .' to '.$booking->end_date .' please choose another date'); 
+                    }
+                }
+                $booking= new Booking();
+                $booking->start_date=$request->start_date;
+                $booking->end_date=$request->end_date;
+                $booking->companions=$request->companions; 
+                $booking->user_id=Auth::id();
+                $booking->trip_id=$request->trip_id;
+                $booking->save();
+                
+                $title = 'حجز جديد';
+                $body = 'تم الحجز عن طريق ' . Auth::user()->name;
+                $user_id = $trip->guide->user->id ?? null;
+                if($user_id){
+                    $this->send_notification( $title , $body , $title , $body  , $user_id);
+                }
+                
+                return $this->returnSuccessMessage('Booking saved Successfully');
             }
-        }
-        $booking= new Booking();
-        $booking->start_date=$request->start_date;
-        $booking->end_date=$request->end_date;
-        $booking->companions=$request->companions; 
-        $booking->user_id=Auth::id();
-        $booking->trip_id=$request->trip_id;
-        $booking->save();
-        
-        return $this->returnSuccessMessage('Booking saved Successfully');
-        }
     }
     //--------------------------------------------------
 
