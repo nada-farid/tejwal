@@ -95,3 +95,12 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
             });
       });
 });
+
+Route::group(['prefix' => 'conversations', 'as' => 'api.', 'namespace' => 'Api\Conversations', 'middleware' => [ 'ChangeLanguage' , 'auth:sanctum' ]], function () {
+
+      Route::get('contacts','ConversationsController@contacts');
+      Route::get('messages/{conversation_id}','ConversationsController@messages');
+
+      Route::post('start','ConversationsController@start');
+      Route::post('send','ConversationsController@send');
+});

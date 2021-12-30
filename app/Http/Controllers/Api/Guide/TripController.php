@@ -103,8 +103,7 @@ class TripController extends Controller
             'places'=>'required',
             'places.*.latitude' => 'required',
             'places.*.longitude' => 'required',
-            'places.*.place_name' => 'required',
-            
+            'places.*.place_name' => 'required', 
         ];
 
         $validator = Validator::make($request->all(), $rules);

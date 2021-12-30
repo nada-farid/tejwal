@@ -194,8 +194,8 @@
       }
     },
     init: function () {
-@if(isset($user) && $user->photo)
-      var file = {!! json_encode($user->photo) !!}
+@if(isset($tourist->user) && $tourist->user->photo)
+      var file = {!! json_encode($tourist->user->photo) !!}
           this.options.addedfile.call(this, file)
       this.options.thumbnail.call(this, file, file.preview)
       file.previewElement.classList.add('dz-complete')
