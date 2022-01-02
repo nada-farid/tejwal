@@ -72,5 +72,9 @@ class Guide extends Model
         return $this->hasMany(following::class);
     }
 
+    
+    public function trip(){
 
+        return $this->hasMany(Trip::class);
+    }
 }

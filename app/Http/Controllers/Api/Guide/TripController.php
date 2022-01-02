@@ -71,8 +71,9 @@ class TripController extends Controller
             if ($validator->fails()) {
                 return $this->returnError('401', $validator->errors());
             } 
-            foreach ($request->input('photo', []) as $file) {
-                $trip->addMedia(request('photo'))->toMediaCollection('photo'); 
+           
+            foreach ($request['photo'] as $row) {
+                $trip->addMedia($row)->toMediaCollection('photo'); 
             }
             if ($media = $request->input('ck-media', false)) {
                 Media::whereIn('id', $media)->update(['model_id' => $trip->id]);

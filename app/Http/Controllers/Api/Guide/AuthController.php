@@ -78,6 +78,10 @@ class AuthController extends Controller
             } 
 
             $user->addMedia(request('photo'))->toMediaCollection('photo'); 
+
+                if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $user->id]);
+            }
         }
         
        //save extra data that belongs to guide

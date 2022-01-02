@@ -80,6 +80,6 @@ class Trip extends Model implements HasMedia
     }
     public function tripFavorites()
     {
-        return $this->hasMany(Favorite::class, 'trip_id', 'id');
+        return $this->hasMany(Favorite::class);
     }
 }
