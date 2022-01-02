@@ -35,7 +35,7 @@ class ConversationsResource extends JsonResource
         $image = str_replace('public/public','public',$image);
         
         return [
-            'id' => $this->id, 
+            'conversation_id' => $this->id, 
             'user_id' => $user->id, 
             'name' => $user->name .' '. $user->last_name,
             'photo' => $image,
