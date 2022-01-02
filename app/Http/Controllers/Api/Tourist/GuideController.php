@@ -38,15 +38,13 @@ class GuideController extends Controller
     
     public function HighestRating(){
 
-  
-    $rates=Rating::select('rateable_id', DB::raw('SUM(value) AS rating'))
-        ->groupBy('rateable_id')
-        ->orderBy('rating', 'DESC')->with('guide','guide.user')->paginate(6);
-  
+       $rates=Rating::with('guide','guide.user')->select('rateable_id', DB::raw('avg(value) AS rating'))
+       ->groupBy('rateable_id')
+       ->orderBy('rating', 'DESC')->paginate(6);
 
-     $new=HighestRating::Collection($rates);
-  
-     return $this->returnPaginationData($new,$rates,"success"); 
+        $new=HighestRating::Collection($rates);
+
+        return $this->returnPaginationData($new,$rates,"success"); 
     }
 
     //---------------------------------
@@ -129,7 +127,7 @@ class GuideController extends Controller
                  
                 $guide=$guide->load(['experience','user','follower'=>function($query){
                             
-                            $query->where('tourist_id',$GLOBALS['id'])->first();
+                            $query->where('tourist_id',$GLOBALS['id']);
                     
                 }]);
 

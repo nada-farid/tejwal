@@ -32,7 +32,7 @@ class TripController extends Controller
 
         $trips = Trip::with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
 
-            $query->where('user_id', Auth::id())->first();
+            $query->where('user_id', Auth::id());
         }])->paginate(10);
 
         $new = TripResource::collection($trips);
@@ -56,7 +56,7 @@ class TripController extends Controller
 
             $trip = $trip->load(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
 
-                $query->where('user_id', Auth::id())->first();
+                $query->where('user_id', Auth::id());
             }]);
 
 
@@ -85,7 +85,10 @@ class TripController extends Controller
 
         $trips = Trip::whereHas('trip_categories', function ($query) {
             $query->whereIn('id', $GLOBALS['id']);
-        })->with(['guide', 'media', 'places', 'guide.user'])->paginate(10);
+        })->with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
+
+            $query->where('user_id', Auth::id())->first();
+        }])->paginate(10);
 
         $first_trips = TripResource::collection($trips);
 
@@ -195,10 +198,27 @@ class TripController extends Controller
         $trips = Trip::whereHas('places', function ($query) {
 
             $query->where('place_name', 'like', "%" . $GLOBALS['letters'] . "%");
-        })->OrWhere('trip_name', 'like', "%" . $GLOBALS['letters'] . "%")->paginate(6);
+        })->OrWhere('trip_name', 'like', "%" . $GLOBALS['letters'] . "%")->with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
+
+            $query->where('user_id', Auth::id());
+        }])->paginate(6);
 
         $first_trips = TripResource::collection($trips);
 
         return $this->returnPaginationData($first_trips, $trips, "success");
     }
+  //------------------------------------------------------------------
+  
+    public function MyFavoriteTrips(){
+
+        $trips = Trip::whereHas('tripFavorites',function ($query) {
+            $query->where('user_id', Auth::id());
+        })->with(['guide', 'trip_categories', 'media', 'places', 'guide.user'])->paginate(10);
+
+        $new = TripResource::collection($trips);
+
+        return $this->returnPaginationData($new, $trips, "success");
+    }
 }
+
+

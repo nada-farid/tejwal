@@ -11,6 +11,7 @@ use App\Traits\api_return;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\postDetailsResource;
 use Auth;
+use Validator;
 
 class PostController extends Controller
 {
@@ -71,4 +72,37 @@ class PostController extends Controller
     return $this->returnSuccessMessage('the Application is done Successfully');
 }
     }
-}
+//-----------------------------------------------------------------------
+
+    
+  public function search(Request $request)
+        {
+    
+            global $letters;
+    
+            $letters = $request->letters;
+    
+    
+            $rules = [
+                'letters' => 'required|string',
+            ];
+    
+            $validator = Validator::make($request->all(), $rules);
+    
+            if ($validator->fails()) {
+                return $this->returnError('401', $validator->errors());
+            }
+    
+    
+            $posts = Post::whereHas('places', function ($query) {
+    
+                $query->where('place_name', 'like', "%" . $GLOBALS['letters'] . "%");
+            })->OrWhere('description', 'like', "%" . $GLOBALS['letters'] . "%")->with(['language','places','tourist.user'])->paginate(5);
+    
+            $new = PostResource::collection($posts);
+
+            return $this->returnPaginationData($new,$posts,"success"); 
+        }
+    }
+    
+

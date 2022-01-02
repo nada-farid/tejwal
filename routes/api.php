@@ -14,6 +14,7 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
                   Route::Post('Apply_trip/{post_id}', 'PostController@Apply');
                   Route::get('all_posts', 'PostController@index');
                   Route::get('show/{post_id}', 'PostController@show');
+                  Route::get('search', 'PostController@search');
             });
 
             Route::group(['prefix' => 'trip'], function () {
@@ -22,6 +23,13 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
                   Route::post('update/{trip_id}', 'TripController@update');
                   Route::delete('delete/{trip_id}', 'TripController@delete');
                   Route::get('MyTrips', 'TripController@MyTrips');
+            });
+
+               //Settings Routes
+            Route::group(['prefix' => 'settings'], function () {
+
+                  Route::get('MyProfile', 'SettingsController@Profile');
+      
             });
       });
 });
@@ -68,7 +76,8 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
                   Route::Post('favorite', 'TripController@favorite');
                   Route::get('unfavorite', 'TripController@unfavorite');
                   Route::get('search', 'TripController@search');
-
+                  Route::get('Myfavorites', 'TripController@MyFavoriteTrips');
+                  
 
 
                   //booking
