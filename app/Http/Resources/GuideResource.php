@@ -38,6 +38,7 @@ class GuideResource extends JsonResource
             'guide_rate'              =>$this->ratingsAvg(),
             'guide_gender'=>$this->user->gender, 
             'chat' => $conversation ? 'old' : 'new',
+            'conversation_id' => $conversation->id ?? null,
         ];
     }
 }
