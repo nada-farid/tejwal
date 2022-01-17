@@ -31,9 +31,8 @@ class TripController extends Controller
     {
 
         $trips = Trip::with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
-
-            $query->where('user_id', Auth::id());
-        }])->paginate(10);
+                        $query->where('user_id', Auth::id());
+                               }])->paginate(10);
 
         $new = TripResource::collection($trips);
 
@@ -48,11 +47,12 @@ class TripController extends Controller
     public function Show($trip_id)
     {
 
-        $trip = Trip::findOrfail($trip_id);
+      $trip = Trip::findOrfail($trip_id);
 
         if (!$trip) {
             return $this->returnError('404', ('this trip not found'));
-        } else {
+        }
+         else {
 
             $trip = $trip->load(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
 
@@ -84,11 +84,10 @@ class TripController extends Controller
         }
 
         $trips = Trip::whereHas('trip_categories', function ($query) {
-            $query->whereIn('id', $GLOBALS['id']);
-        })->with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
-
-            $query->where('user_id', Auth::id())->first();
-        }])->paginate(10);
+                         $query->whereIn('id', $GLOBALS['id']);
+                     })->with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
+                          $query->where('user_id', Auth::id())->first();
+                  }])->paginate(10);
 
         $first_trips = TripResource::collection($trips);
 
@@ -99,7 +98,6 @@ class TripController extends Controller
     {
 
         $trips = Trip::with(['guide', 'trip_categories', 'media', 'places', 'guide.user'])->orderBy('updated_at', 'desc')->take(10)->get();
-
 
         $new = TripResource::collection($trips);
 
@@ -170,12 +168,13 @@ class TripController extends Controller
 
         $favorite = Favorite::where('user_id', Auth::id())->where('trip_id', $request->trip_id)->first();
 
-        if ($favorite)
+        if ($favorite){
             $favorite->delete();
+        }
 
         return $this->returnSuccessMessage('trip deleted Successfully from your favorite');
     }
-    //--------------------------------------------------------------
+    //-------------------------------------------------------------------------------------
     public function search(Request $request)
     {
 
@@ -197,11 +196,10 @@ class TripController extends Controller
 
         $trips = Trip::whereHas('places', function ($query) {
 
-            $query->where('place_name', 'like', "%" . $GLOBALS['letters'] . "%");
-        })->OrWhere('trip_name', 'like', "%" . $GLOBALS['letters'] . "%")->with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
-
-            $query->where('user_id', Auth::id());
-        }])->paginate(6);
+                       $query->where('place_name', 'like', "%" . $GLOBALS['letters'] . "%");
+                 })->OrWhere('trip_name', 'like', "%" . $GLOBALS['letters'] . "%")->with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
+                       $query->where('user_id', Auth::id());
+              }])->paginate(6);
 
         $first_trips = TripResource::collection($trips);
 

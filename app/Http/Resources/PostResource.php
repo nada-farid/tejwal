@@ -18,7 +18,7 @@ class PostResource extends JsonResource
         $name= 'name_'.app()->getLocale();
 
         return[
-            'id'=>$this->id,
+        'id'=>$this->id,
         'tourist_id'=>$this->tourist->id,
         'tourist_name'     => $this->tourist->user->name .' '. $this->tourist->user->last_name,
         'tourist_image'            => PhotoResourcee::collection($this->tourist->user->media),

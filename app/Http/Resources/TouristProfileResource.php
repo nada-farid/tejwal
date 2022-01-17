@@ -18,15 +18,17 @@ class TouristProfileResource extends JsonResource
          $name= 'name_'.app()->getLocale();
 
         $photo= $this->user->photo;
-        if($photo)
-        $img=$photo->getUrl('thumb');
-        else
-        $img='';
+        if($photo){
+         $image = $photo ? asset($photo->getUrl()) : null;
+         $image = str_replace('public/public','public',$image);
+      }
+    else
+         $image='';
    
            return[
                 'id'=>$this->id,
                'tourist_name'             => $this->user->name .' '. $this->user->last_name,
-               'tourist_image'            => $img,
+               'tourist_image'            => $image,
                'tourist_native_language'  =>$this->user->naitev_language->$name,
                'tourist_speaking_language' => UserResource::collection($this->user->speaking_languages),
                'tourist_age'               =>Carbon::parse(Carbon::createFromFormat('d/m/Y', $this->user->dob)->format('d-m-Y'))->diff(Carbon::now())->y,

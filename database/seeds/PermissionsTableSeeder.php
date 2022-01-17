@@ -324,6 +324,26 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 79,
                 'title' => 'profile_password_edit',
             ],
+            [
+                'id'    => 80,
+                'title' => 'country_create',
+            ],
+            [
+                'id'    => 81,
+                'title' => 'country_edit',
+            ],
+            [
+                'id'    => 82,
+                'title' => 'country_show',
+            ],
+            [
+                'id'    => 83,
+                'title' => 'country_delete',
+            ],
+            [
+                'id'    => 84,
+                'title' => 'country_access',
+            ],
         ];
 
         Permission::insert($permissions);

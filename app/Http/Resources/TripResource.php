@@ -32,6 +32,7 @@ class TripResource extends JsonResource
             'places'          => TripPlacesResource::collection($this->whenLoaded('places')),
             'images'          => PhotoResourcee::collection($this->whenLoaded('media')),
             'favorite'=>$favorite,
+            'bookings' => BookingResource::collection($this->bookings),
 
         ];
     }

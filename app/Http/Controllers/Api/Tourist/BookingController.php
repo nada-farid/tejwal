@@ -9,6 +9,7 @@ use Auth;
 use App\Traits\api_return;
 use Validator;
 use App\Traits\push_notification;
+use App\Http\Resources\BookingResource;
 
 
 class BookingController extends Controller
@@ -17,6 +18,16 @@ class BookingController extends Controller
     use api_return;
     use push_notification;
 
+
+    public function BookedAppointments(){
+
+     $booking=Booking::paginate(10);
+     $new = BookingResource::collection($booking);
+     return $this->returnPaginationData($new,$booking,"success"); 
+
+    }
+
+//------------------------------------------------------------
     public function store(Request $request){
         
             
@@ -36,7 +47,8 @@ class BookingController extends Controller
 
             if(!$trip){ 
                 return $this->returnError('404',('this trip not found'));
-            }else{
+            }
+            else{
                 //check if any trip reseved within that date
                 $all_Booking=Booking::all();
                 foreach($all_Booking as $booking ){
@@ -84,18 +96,17 @@ class BookingController extends Controller
       
             return $this->returnError('404',('this booking not found'));
             //check if selected date equal old date or new date to check avaliablity of that date
-        if(!($booking->start_date==$request->start_date)&&($booking->end_date=$request->end_date)){
+        if(!($booking->start_date==$request->start_date)&&($booking->end_date==$request->end_date)){
 
             //check if any trip reseved within that date
-        $all_Booking=Booking::all();
-        foreach($all_Booking as $booking ){
-            if(($request->start_date >= $booking->start_date) && ($request->start_date <= $booking->end_date)){
-
-            return $this->returnError(205,'Sorry there is a Trip is reseved from '.$booking->start_date .' to '.$booking->end_date .' please choose another date');
+             $all_Booking=Booking::all();
+             foreach($all_Booking as $booking ){
+                 if(($request->start_date >= $booking->start_date) && ($request->start_date <= $booking->end_date)){
+                      return $this->returnError(205,'Sorry there is a Trip is reseved from '.$booking->start_date .' to '.$booking->end_date .' please choose another date');
             
-            }
-        }
-    }
+                     }
+                         }
+                           }
       $booking->update($request->all());
         
         return $this->returnSuccessMessage('Booking updated Successfully');

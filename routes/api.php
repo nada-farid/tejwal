@@ -41,13 +41,6 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
       Route::post('register', 'AuthController@register');
       Route::post('login', 'AuthController@login');
 
-
-      //general routes
-      Route::group(['prefix' => 'general'], function () {
-            Route::get('all_Categories', 'TripCategoryController@index');
-            Route::get('all_languages', 'LanguageController@index');
-      });
-
       Route::group(['middleware' => 'auth:sanctum'], function () {
 
             //guides_info 
@@ -83,6 +76,7 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
                   //booking
 
                   Route::group(['prefix' => 'booking'], function () {
+                        Route::get('BookedAppointments','BookingController@BookedAppointments');
                         Route::post('add', 'BookingController@store');
                         Route::post('update/{booking_id}', 'BookingController@update');
                         Route::delete('delete/{booking_id}', 'BookingController@delete');
@@ -118,4 +112,12 @@ Route::group(['prefix' => 'conversations', 'as' => 'api.', 'namespace' => 'Api\C
 
       Route::post('start','ConversationsController@start');
       Route::post('send','ConversationsController@send');
+});
+
+//-------------------------------------------------------------------------------
+  //general routes
+  Route::group(['prefix' => 'general', 'as' => 'api.', 'namespace' => 'Api\general', 'middleware' => 'ChangeLanguage'], function () {
+      Route::get('all_Categories', 'TripCategoryController@index');
+      Route::get('all_languages', 'LanguageController@index');
+      Route::get('countries', 'GeneralController@countries');
 });

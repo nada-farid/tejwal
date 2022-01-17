@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryTripResource extends JsonResource
+class CountryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,11 +14,12 @@ class CategoryTripResource extends JsonResource
      */
     public function toArray($request)
     {
-         $name= 'name_'.app()->getLocale();
         return[
-            'id'     =>$this->id,
-             'category_name'=>$this->$name,
-             'category_icon'=>PhotoResourcee::collection($this->media)
+
+            'id'=>$this->id,
+            'county_name'=>$this->name,
+            'county_code'=>$this->phone_code,
+            'number_phone'=>$this->phone_number,
         ];
     }
 }

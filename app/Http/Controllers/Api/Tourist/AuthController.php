@@ -36,6 +36,7 @@ class AuthController extends Controller
             'naitev_language_id' => 'required|integer',
             'speaking_languages' => 'required',
             'speaking_languages .*' => 'integer',
+            'photo' => 'required|mimes:jpeg,png,jpg',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -58,25 +59,15 @@ class AuthController extends Controller
         $user->user_type = 'tourist';
         $user->save();
         $user->speaking_languages()->sync($request->input('speaking_languages', []));
-
-        if (request()->hasFile('photo') && request('photo') != ''){
-            $validator = Validator::make($request->all(), [
-                'photo' => 'required|mimes:jpeg,png,jpg',
-            ]);
-            if ($validator->fails()) {
-                return $this->returnError('401', $validator->errors());
-            } 
-
-            $user->addMedia(request('photo'))->toMediaCollection('photo'); 
-        }
+        $user->addMedia(request('photo'))->toMediaCollection('photo');
         
 
          //save extra data that belongs to tourist
-       $tourist=new Tourist();
-       $tourist->user_id=$user->id;
-       $tourist->save();
+         $tourist=new Tourist();
+         $tourist->user_id=$user->id;
+         $tourist->save();
 
-  $token = $user->createToken('user_token')->plainTextToken;
+        $token = $user->createToken('user_token')->plainTextToken;
         return $this->returnData(
             [
                 'user_token' => $token,

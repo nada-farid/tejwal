@@ -19,7 +19,6 @@ class SettingsController extends Controller
 
       $guide=Guide::where('user_id',Auth::id())->with('user')->withCount('trip')->withCount('follower')->first();
 
-      
       $new= new GuideProfileResource($guide);
 
       return $this->returnData($new);

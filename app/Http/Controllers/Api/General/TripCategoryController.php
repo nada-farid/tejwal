@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Tourist;
+namespace App\Http\Controllers\Api\General;
 
 
 use App\Http\Controllers\Controller;

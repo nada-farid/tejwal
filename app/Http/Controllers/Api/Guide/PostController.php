@@ -31,20 +31,20 @@ class PostController extends Controller
     //-------------------------------------------------------------
 
 
-    public function show($post_id){
+   public function show($post_id){
        
         
         $post=POst::findOrfail($post_id);
 
-        if(!$post)
-
+        if(!$post){
             return $this->returnError('404',('this post not found'));
+          }
      
             $post->load(['language','places','tourist.user']);
 
             $new = new postDetailsResource($post);
 
-           return $this->returnData($new);
+            return $this->returnData($new);
 
 
     }
@@ -92,12 +92,10 @@ class PostController extends Controller
             if ($validator->fails()) {
                 return $this->returnError('401', $validator->errors());
             }
-    
-    
-            $posts = Post::whereHas('places', function ($query) {
-    
-                $query->where('place_name', 'like', "%" . $GLOBALS['letters'] . "%");
-            })->OrWhere('description', 'like', "%" . $GLOBALS['letters'] . "%")->with(['language','places','tourist.user'])->paginate(5);
+
+     $posts = Post::whereHas('places', function ($query) {
+                     $query->where('place_name', 'like', "%" . $GLOBALS['letters'] . "%");
+                            })->OrWhere('description', 'like', "%" . $GLOBALS['letters'] . "%")->with(['language','places','tourist.user'])->paginate(5);
     
             $new = PostResource::collection($posts);
 

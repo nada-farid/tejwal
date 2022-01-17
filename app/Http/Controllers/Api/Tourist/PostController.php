@@ -46,7 +46,6 @@ class PostController extends Controller
         $post=new Post();
         $post->price=$request->price;
         $post->tourist_id=$tourist->id;
-        //$post->lang_id=$request->lang_id;
         $post->start_date=$request->start_date;
         $post->end_date=$request->end_date;
         $post->description=$request->description;
@@ -61,13 +60,12 @@ class PostController extends Controller
             $PostPlaces->post_id = $post->id;
             $PostPlaces->save();
         }
-        return $this->returnSuccessMessage('Your Post Added Successfully');
-
+     return $this->returnSuccessMessage('Your Post Added Successfully');
           
 
-    }
+       }
 
-    //---------------------------------------------
+    //--------------------------------------------------------------------------------
 
     public function update(Request $request ,$post_id){
 
@@ -93,10 +91,11 @@ class PostController extends Controller
 
         $post=Post::findOrfail($post_id);
         
-        if(!$post)
+        if(!$post){
       
-        return $this->returnError('404',('this post not found'));
+           return $this->returnError('404',('this post not found'));
 
+        }
        $post->update($request->all());
 
        $PostPlaces = PostPlace::where('post_id',$post_id);
@@ -115,14 +114,16 @@ class PostController extends Controller
 
     }
 
-    //----------------------------------------
+    //----------------------------------------------------------------
     public function delete($post_id){
 
         $post=POst::findOrfail($post_id);
 
-        if(!$post)
+        if(!$post){
   
-        return $this->returnError('404',('this post not found'));
+           return $this->returnError('404',('this post not found'));
+
+        }
   
         $post->delete();
         $PostPlaces = PostPlace::where('post_id',$post_id);
@@ -142,8 +143,9 @@ class PostController extends Controller
                 
         $posts=Post::Where('tourist_id',$tourist->id)->with(['language','places','tourist.user'])->paginate(5);
 
-        if(!$posts)
-        return $this->returnSuccessMessage('There are no posts yet');
+        if(!$posts){
+           return $this->returnSuccessMessage('There are no posts yet');
+        }
          
          $new = PostResource::collection($posts);
 

@@ -18,20 +18,26 @@ class GuideProfileResource extends JsonResource
         $name= 'name_'.app()->getLocale();
 
         $photo= $this->user->photo;
-        if($photo)
-        $img=$photo->getUrl('thumb');
+        if($photo){
+       // $img=$photo->getUrl('thumb');
+             $image = $photo ? asset($photo->getUrl()) : null;
+            $image = str_replace('public/public','public',$image);
+        }
         else
-        $img='';
+        $image='';
    
         return[
-            'id'=>$this->id,
+           'id'=>$this->id,
            'guide_name'             => $this->user->name .' '. $this->user->last_name,
-           'guide_image'            => $img,
+           'guide_image'            => $image,
            'guide_native_language'  =>$this->user->naitev_language->$name,
            'guide_speaking_language' => UserResource::collection($this->user->speaking_languages),
            'guide_age'               =>Carbon::parse(Carbon::createFromFormat('d/m/Y', $this->user->dob)->format('d-m-Y'))->diff(Carbon::now())->y,
            'trips_count'                =>$this->trip_count,
            'following_count'           =>$this->follower_count,
+           'guide_car'              => $this->car,
+           'guide_driving_licence'  => $this->driving_licence,
+           'guide_rate'              =>$this->ratingsAvg(),
           
 
         ];

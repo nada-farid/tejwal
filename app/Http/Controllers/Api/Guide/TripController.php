@@ -37,6 +37,8 @@ class TripController extends Controller
             'places.*.latitude' => 'required',
             'places.*.longitude' => 'required',
             'places.*.place_name' => 'required',
+            'photo' => 'required|array',
+            'photo.*' => 'mimes:jpeg,png,jpg',
             
         ];
 
@@ -59,26 +61,13 @@ class TripController extends Controller
         $trip->car =$request->car;
         $trip->guide_id =$guide->id;
         $trip->save();
-
-
         $trip->trip_categories()->sync($request->input('trip_categories', []));
-
-        if (request()->has('photo') && request('photo') != ''){
-            $validator = Validator::make($request->all(), [
-                'photo' => 'required|array',
-                'photo.*' => 'mimes:jpeg,png,jpg',
-            ]);
-            if ($validator->fails()) {
-                return $this->returnError('401', $validator->errors());
-            } 
-           
             foreach ($request['photo'] as $row) {
                 $trip->addMedia($row)->toMediaCollection('photo'); 
             }
             if ($media = $request->input('ck-media', false)) {
                 Media::whereIn('id', $media)->update(['model_id' => $trip->id]);
             }
-        }
         foreach ($request['places'] as $row){
             $TripPlaces = new TripPlace();
             $TripPlaces->latitude =$row['latitude'];
@@ -131,15 +120,15 @@ class TripController extends Controller
         return $this->returnSuccessMessage('Trip updated Successfully');
 
     }
-    //----------------------------------------------
+    //-------------------------------------------------------------------------------------------------------
     public function delete($trip_id){
 
         $trip=Trip::findOrfail($trip_id);
 
-        if(!$trip)
-  
-        return $this->returnError('404',('this trip not found'));
-  
+        if(!$trip){
+            return $this->returnError('404',('this trip not found'));
+                }
+
         $trip->delete();
         $TripPlace = TripPlace::where('trip_id',$trip_id);
         $TripPlace->delete();
@@ -148,7 +137,7 @@ class TripController extends Controller
   
          
     }
-//--------------------------------------------------------
+//-------------------------------------------------------------------------------------
     
      public function MyTrips(){
 

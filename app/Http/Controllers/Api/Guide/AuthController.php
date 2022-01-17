@@ -45,6 +45,7 @@ class AuthController extends Controller
             'experiences'=>'required',
            ' experiences.*.city' => 'required|max:20',
             'experiences.*.years_of_experience' => 'required|integer',
+            'photo' => 'required|mimes:jpeg,png,jpg',
 
         ];
 
@@ -68,22 +69,11 @@ class AuthController extends Controller
         $user->user_type = 'guide';
         $user->save();
         $user->speaking_languages()->sync($request->input('speaking_languages', []));
-   
-        if (request()->hasFile('photo') && request('photo') != ''){
-            $validator = Validator::make($request->all(), [
-                'photo' => 'required|mimes:jpeg,png,jpg',
-            ]);
-            if ($validator->fails()) {
-                return $this->returnError('401', $validator->errors());
-            } 
-
-            $user->addMedia(request('photo'))->toMediaCollection('photo'); 
+        $user->addMedia(request('photo'))->toMediaCollection('photo'); 
 
                 if ($media = $request->input('ck-media', false)) {
                 Media::whereIn('id', $media)->update(['model_id' => $user->id]);
             }
-        }
-        
        //save extra data that belongs to guide
        $guide=new Guide();
        $guide->brief_intro=$request->brief_intro;
@@ -115,7 +105,7 @@ class AuthController extends Controller
         );
     }
 
-    //----------------------------------------
+    //-----------------------------------------------------------------------------------------------------
     public function login(Request $request){
         $rules = [
             'email' => 'required|email',
@@ -139,10 +129,10 @@ class AuthController extends Controller
                     ]
                 );
         }
-
+ 
     else {
         return $this->returnError('500',__('invalid username or password'));
-    }
-}
+         }
+              }
 
     }

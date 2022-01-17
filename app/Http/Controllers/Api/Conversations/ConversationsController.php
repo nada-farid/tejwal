@@ -86,6 +86,12 @@ class ConversationsController extends Controller
             'user_id' => Auth::id(),
         ]); 
 
-        return $this->returnSuccessMessage('Send Successfully');
+        return $this->returnData(
+            [
+                'Message' => 'Send Successfully',
+                'conversation_id '=> $conversation->id
+                
+            ]
+        );
     }
 }

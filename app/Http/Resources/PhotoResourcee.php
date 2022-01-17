@@ -15,13 +15,16 @@ class PhotoResourcee extends JsonResource
     public function toArray($request)
     {
       $photo= $this;
-      if($photo)
-      $img=$photo->getUrl('thumb');
-      else
-      $img='';
+
+    if($photo){
+         $image = $photo ? asset($photo->getUrl()) : null;
+         $image = str_replace('public/public','public',$image);
+      }
+    else
+         $image='';
         return [
 
-          'image'=>$img,
+          'image'=>$image,
 
         ];
     }

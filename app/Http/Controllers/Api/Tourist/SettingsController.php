@@ -25,6 +25,9 @@ class SettingsController extends Controller
       return $this->returnData($new);
     
     }
+
+    //------------------------------------------------------------------------
+
     public function UpdateProfile(Request $request){
 
  
@@ -42,6 +45,7 @@ class SettingsController extends Controller
             'naitev_language_id' => 'required|integer',
             'speaking_languages' => 'required',
             'speaking_languages .*' => 'integer',
+            'photo' => 'required|mimes:jpeg,png,jpg',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -52,17 +56,8 @@ class SettingsController extends Controller
         $user=User::findOrfail(Auth::id());
         $user->update($request->all());
         $user->speaking_languages()->sync($request->input('speaking_languages', []));
-
-        if (request()->hasFile('photo') && request('photo') != ''){
-            $validator = Validator::make($request->all(), [
-                'photo' => 'required|mimes:jpeg,png,jpg',
-            ]);
-            if ($validator->fails()) {
-                return $this->returnError('401', $validator->errors());
-            } 
-
-            $user->addMedia(request('photo'))->toMediaCollection('photo'); 
-        }
+        $user->addMedia(request('photo'))->toMediaCollection('photo'); 
+    
         
         return $this->returnSuccessMessage('profile updated Successfully');
 

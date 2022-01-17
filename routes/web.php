@@ -84,9 +84,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('tourists', 'TouristController');
 
       // User Alerts
-      Route::delete('user-alerts/destroy', 'UserAlertsController@massDestroy')->name('user-alerts.massDestroy');
-      Route::get('user-alerts/read', 'UserAlertsController@read');
-      Route::resource('user-alerts', 'UserAlertsController', ['except' => ['edit', 'update']]);
+    Route::delete('user-alerts/destroy', 'UserAlertsController@massDestroy')->name('user-alerts.massDestroy');
+    Route::get('user-alerts/read', 'UserAlertsController@read');
+    Route::resource('user-alerts', 'UserAlertsController', ['except' => ['edit', 'update']]);
+
+         // Countries
+    Route::delete('countries/destroy', 'CountriesController@massDestroy')->name('countries.massDestroy');
+    Route::resource('countries', 'CountriesController');
 
     Route::get('system-calendar', 'SystemCalendarController@index')->name('systemCalendar');
 

@@ -376,4 +376,26 @@ return [
         'last_guide'=>'أخر 5 مرشدين',
 
     ],
+    'country' => [
+        'title'          => 'الدول',
+        'title_singular' => 'دولة',
+        'fields'         => [
+            'id'                  => 'ID',
+            'id_helper'           => ' ',
+            'name'                => 'الاسم',
+            'name_helper'         => ' ',
+            'short_code'          => ' كود الدولة ',
+            'short_code_helper'   => ' ',
+            'created_at'          => 'Created at',
+            'created_at_helper'   => ' ',
+            'updated_at'          => 'Updated at',
+            'updated_at_helper'   => ' ',
+            'deleted_at'          => 'Deleted at',
+            'deleted_at_helper'   => ' ',
+            'phone_number'        => '  عدد رقم الهاتف',
+            'phone_number_helper' => ' ',
+            'phone_code'          => ' كود الاتصال ',
+            'phone_code_helper'   => ' ',
+        ],
+    ],
 ];

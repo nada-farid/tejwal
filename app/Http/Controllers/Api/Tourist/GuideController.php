@@ -117,9 +117,11 @@ class GuideController extends Controller
 
              $guide=Guide::findOrfail($guide_id);
 
-             if(!$guide)
+             if(!$guide){
 
                 return $this->returnError('404',('this guide not found'));
+
+             }
                 
                 global $id;
         
@@ -137,7 +139,7 @@ class GuideController extends Controller
             
 
                 }
-    //-----------------------------------------------------
+    //------------------------------------------------------------------------------------
 
     public function GuideTrips($guide_id){
 
@@ -163,7 +165,6 @@ class GuideController extends Controller
         $tourist=Tourist::where('user_id',Auth::id())->first();
 
         $follow=new following();
-
         $follow->guide_id=$request->guide_id;
         $follow->tourist_id=$tourist->id;
         $follow->save();
@@ -183,16 +184,17 @@ class GuideController extends Controller
         if ($validator->fails()) {
             return $this->returnError('401', $validator->errors());
         }
-         $tourist=Tourist::where('user_id',Auth::id())->first();
+
+        $tourist=Tourist::where('user_id',Auth::id())->first();
 
         $follow=following::where('guide_id',$request->guide_id)->where('tourist_id', $tourist->id);
 
-      $follow->delete();
+        $follow->delete();
 
         return $this->returnSuccessMessage('follow deleted Successfully');
 
     }
-    //---------------------------------------------------
+    //-----------------------------------------------------------------------------
     
     public function search(Request $request){
         
@@ -215,9 +217,8 @@ class GuideController extends Controller
         $guides=Guide::whereHas('user',function($query){
             
             $query->where('name','like',"%".$GLOBALS['letters']."%")
-        ->OrWhere('last_name','like',"%".$GLOBALS['letters']."%");
-        })
-        ->paginate(6);
+                        ->OrWhere('last_name','like',"%".$GLOBALS['letters']."%");
+                 })->paginate(6);
         
         $new=GuideResource::Collection($guides);
 
