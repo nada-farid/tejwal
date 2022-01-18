@@ -15,13 +15,24 @@ use App\Http\Resources\BookingResource;
 class BookingController extends Controller
 {
     //
-    use api_return;
-    use push_notification;
+ use api_return;
+ use push_notification;
 
 
-    public function BookedAppointments(){
 
-     $booking=Booking::paginate(10);
+   public function BookedAppointments(Request $request){
+
+        $rules = [
+            'trip_id' => 'required|integer',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+
+     $booking=Booking::where('trip_id',$request->trip_id)->paginate(10);
      $new = BookingResource::collection($booking);
      return $this->returnPaginationData($new,$booking,"success"); 
 
