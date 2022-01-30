@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'USD'=>'Doller',
+    'EGP'=>'pound',
+    'SAR'=>'Rial',
     'actions'                        => 'Actions',
     'add'                            => 'Add',
     'allRightsReserved'              => 'All rights reserved.',
@@ -342,5 +345,12 @@ return [
         'yes_' => 'Yes, delete it!',
         'no_' => 'No, cancel!',
         'fix_errors' => 'Fix Errors Below',
+    ],
+    'levels'=>
+    [
+
+        'Beginner'=> 'Beginner',
+        'intermediate'=>'intermediate',
+        'Advanced'=>'Advanced',
     ],
 ];

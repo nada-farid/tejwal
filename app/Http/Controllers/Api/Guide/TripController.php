@@ -14,6 +14,7 @@ use Auth;
 use App\Http\Resources\TripResource;
 use App\Http\Resources\TripDetailsResource;
 use Spatie\MediaLibrary\Models\Media;
+use Illuminate\Validation\Rule;
 
 
 class TripController extends Controller
@@ -22,8 +23,6 @@ class TripController extends Controller
     use api_return;
 
     use MediaUploadingTrait;
-
-      
 
         public function store(Request $request){
         $rules = [
@@ -39,6 +38,7 @@ class TripController extends Controller
             'places.*.place_name' => 'required',
             'photo' => 'required|array',
             'photo.*' => 'mimes:jpeg,png,jpg',
+            'currency_type'=>[ Rule::in('USD','SAR','EGP')]
             
         ];
 
@@ -51,13 +51,16 @@ class TripController extends Controller
         //to find guide id from auth user 
 
         $guide=Guide::where('user_id',Auth::id())->first();
-        if(!$guide)
+
+        if(!$guide){
          return $this->returnError('401', 'somthing went wrong');
+        }
 
         $trip = new Trip();
         $trip->trip_name=$request->trip_name;
         $trip->description =$request->description;
         $trip->price =$request->price;
+        $trip->currency_type =$request->currency_type;
         $trip->car =$request->car;
         $trip->guide_id =$guide->id;
         $trip->save();

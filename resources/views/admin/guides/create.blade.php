@@ -112,15 +112,7 @@
            
              <div class="form-group col-md-6">
                 <label class="required" for="speaking_languages">{{ trans('cruds.user.fields.speaking_language') }}</label>
-                <div style="padding-bottom: 4px">
-                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
-                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
-                </div>
-                <select class="form-control select2 {{ $errors->has('speaking_languages') ? 'is-invalid' : '' }}" name="speaking_languages[]" id="speaking_languages" multiple required>
-                    @foreach($speaking_languages as $id => $speaking_language)
-                        <option value="{{ $id }}" {{ in_array($id, old('speaking_languages', [])) ? 'selected' : '' }}>{{ $speaking_language }}</option>
-                    @endforeach
-                </select>
+                @include('admin.guides.partials.levels')
                 @if($errors->has('speaking_languages'))
                     <div class="invalid-feedback">
                         {{ $errors->first('speaking_languages') }}

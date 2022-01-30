@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Validator;
 use Auth;
 use App\Http\Resources\PostResource;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -31,7 +32,7 @@ class PostController extends Controller
             'start_date' => 'required|date_format:d/m/Y',
             'end_date' => 'required|date_format:d/m/Y',
             'description'=>'required',
-
+            'currency_type'=>[ Rule::in('USD','SAR','EGP')]
             
         ];
 
@@ -49,6 +50,7 @@ class PostController extends Controller
         $post->start_date=$request->start_date;
         $post->end_date=$request->end_date;
         $post->description=$request->description;
+        $post->currency_type=$request->currency_type;
         $post->save();
         $post->language()->sync($request->input('langs', []));
 

@@ -58,13 +58,6 @@ class StoreGuideRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'speaking_languages.*' => [
-                'integer',
-            ],
-            'speaking_languages' => [
-                'required',
-                'array',
-            ],
             'brief_intro' => [
                 'required',
             ],

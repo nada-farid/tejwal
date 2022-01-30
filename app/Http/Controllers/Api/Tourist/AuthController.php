@@ -58,7 +58,8 @@ class AuthController extends Controller
         $user->gender = $request->gender;
         $user->user_type = 'tourist';
         $user->save();
-        $user->speaking_languages()->sync($request->input('speaking_languages', []));
+       // $user->speaking_languages()->sync($request->input('speaking_languages', []));
+        $user->speaking_languages()->sync($this->mapLevels($request['speaking_languages']));
         $user->addMedia(request('photo'))->toMediaCollection('photo');
         
 
@@ -106,4 +107,13 @@ class AuthController extends Controller
     }
 }
 
+    //------------------------------------------------------------------------------------------
+    private function mapLevels($levels)
+              {
+                  return collect($levels)->map(function ($i) {
+                      return ['level' => $i];
+                  });
+              }
+
     }
+  

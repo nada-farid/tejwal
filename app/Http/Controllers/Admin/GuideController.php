@@ -36,7 +36,7 @@ class GuideController extends Controller
 
         $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $speaking_languages = Language::pluck($name, 'id');
+        $speaking_languages = Language::all();
         
         $roles = Role::pluck('title', 'id');
 
@@ -46,7 +46,7 @@ class GuideController extends Controller
 
     public function store(StoreGuideRequest $request)
     {
-   
+return $request;
      $user = User::create([
             'name' => $request->name,
             'last_name'=>$request->last_name,
@@ -61,7 +61,9 @@ class GuideController extends Controller
             'user_type' => 'guide',
         ]);
         $user->roles()->sync($request->input('roles', []));
-        $user->speaking_languages()->sync($request->input('speaking_languages', []));
+        //$user->speaking_languages()->sync($request->input('speaking_languages', []));
+        $user->speaking_languages()->sync($this->mapLevels($request['levels']));
+
         if ($request->input('photo', false)) {
             $user->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
         }
@@ -153,4 +155,11 @@ class GuideController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+    private function mapLevels($levels)
+{
+    return collect($levels)->map(function ($i) {
+        return ['level' => $i];
+    });
+}
 }

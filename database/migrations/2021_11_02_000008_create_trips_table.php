@@ -13,6 +13,7 @@ class CreateTripsTable extends Migration
             $table->string('trip_name');
             $table->longText('description');
             $table->decimal('price', 15, 2);
+            $table->string('currency_type');
             $table->string('car');
             $table->timestamps();
             $table->softDeletes();

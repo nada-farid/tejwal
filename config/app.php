@@ -123,6 +123,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'Currency' => 'SAR',
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

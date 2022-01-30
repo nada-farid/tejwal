@@ -62,7 +62,7 @@
                                 {{ $trip->description ?? '' }}
                             </td>
                             <td>
-                                {{ $trip->price ?? '' }}
+                                {{ $trip->price ?? '' }} {{trans('global.'.$trip->currency_type) ?? ''   }}
                             </td>
                             <td>
                                 {{ $trip->guide->user->email ?? '' }}

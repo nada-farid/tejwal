@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'USD'=>'دولار',
+    'EGP'=>'جنيها',
+    'SAR'=>'ريال',
     'actions'                        => 'العمليات',
     'add'                            => 'إضافة',
     'allRightsReserved'              => 'كافة الحقوق محفوظة',
@@ -344,4 +347,12 @@ return [
         'no_' => 'ألغاء',
         'fix_errors' => 'قم بادخال الحقول بطريقة صحيحة',
     ],
+    'levels'=>
+    [
+
+        'Beginner'=> 'Beginner',
+        'intermediate'=>'intermediate',
+        'Advanced'=>'Advanced',
+    ],
+
 ];

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use AmrShawky\LaravelCurrency\Facade\Currency;
 
 class PupularTripResource extends JsonResource
 {
@@ -19,7 +20,7 @@ class PupularTripResource extends JsonResource
             'id'=>$this->trip->id,
             'trip_name'=>$this->trip->trip_name,
             'description'    => $this->trip->description,
-            'price'          => $this->trip->price,
+            'price' => Currency::convert()->from($this->currency_type)->to(config('app.Currency'))->round('2')->amount($this->price)->get().' '.trans('global.'.config('app.Currency')),
             'car'            =>$this->trip->car,
             'guide_name'     => $this->trip->guide->user->name .' '. $this->trip->guide->user->last_name,
             'guide_image'            => PhotoResourcee::collection($this->trip->guide->user->media),

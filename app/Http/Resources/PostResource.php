@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use AmrShawky\LaravelCurrency\Facade\Currency;
 use Auth;
 
 class PostResource extends JsonResource
@@ -26,7 +27,7 @@ class PostResource extends JsonResource
         'tourist_speaking_language' => UserResource::collection($this->tourist->user->speaking_languages),
         'places'          => TripPlacesResource::collection($this->whenLoaded('places')),
         'guide_language'                =>Auth::user()->naitev_language->$name,
-        'trip_price'                  =>$this->price,
+        'trip_price' => Currency::convert()->from($this->currency_type)->to(config('app.Currency'))->round('2')->amount($this->price)->get().' '.trans('global.'.config('app.Currency')),
 
         ];
     }

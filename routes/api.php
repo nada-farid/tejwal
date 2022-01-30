@@ -9,7 +9,7 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
       Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
-            Route::group(['prefix' => 'post'], function () {
+            Route::group(['prefix' => 'post','middleware' => 'ChangeCurrency'], function () {
 
                   Route::Post('Apply_trip/{post_id}', 'PostController@Apply');
                   Route::get('all_posts', 'PostController@index');
@@ -59,7 +59,7 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
             });
 
             //trip Routes
-            Route::group(['prefix' => 'trip'], function () {
+            Route::group(['prefix' => 'trip','middleware' => 'ChangeCurrency'], function () {
                   Route::get('index', 'TripController@index');
                   Route::get('show/{trip_id}', 'TripController@Show');
                   Route::get('filter', 'TripController@filter');
@@ -84,7 +84,7 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
             });
 
             //post Routes
-            Route::group(['prefix' => 'post'], function () {
+            Route::group(['prefix' => 'post','middleware' => 'ChangeCurrency'], function () {
                   Route::Post('add', 'PostController@store');
                   Route::get('My_posts', 'PostController@MyPosts');
                   Route::post('update/{post_id}', 'PostController@update');

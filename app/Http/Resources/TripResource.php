@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\CategoryTripResource;
 use App\Http\Resources\TripPlacesResource;
 use App\Http\Resources\PhotoResourcee;
+use AmrShawky\LaravelCurrency\Facade\Currency;
 
 class TripResource extends JsonResource
 {
@@ -27,12 +28,12 @@ class TripResource extends JsonResource
             'id'=>$this->id,
             'trip_name'=>$this->trip_name,
             'description' => $this->description,
-            'price' => $this->price,
+            'price' => Currency::convert()->from($this->currency_type)->to(config('app.Currency'))->round('2')->amount($this->price)->get().' '.trans('global.'.config('app.Currency')),
             'trip_categories' => CategoryTripResource::collection($this->whenLoaded('trip_categories')),
             'places'          => TripPlacesResource::collection($this->whenLoaded('places')),
             'images'          => PhotoResourcee::collection($this->whenLoaded('media')),
             'favorite'=>$favorite,
-            'bookings' => BookingResource::collection($this->bookings),
+            //'bookings' => BookingResource::collection($this->bookings),
 
         ];
     }

@@ -142,7 +142,7 @@ class User extends Authenticatable implements HasMedia
 
     public function speaking_languages()
     {
-        return $this->belongsToMany(Language::class);
+        return $this->belongsToMany(Language::class)->withPivot('level');
     }
 
     protected function serializeDate(DateTimeInterface $date)

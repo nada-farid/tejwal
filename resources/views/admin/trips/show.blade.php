@@ -46,7 +46,7 @@
                             {{ trans('cruds.trip.fields.price') }}
                         </th>
                         <td>
-                            {{ $trip->price }}
+                            {{ $trip->price ?? '' }} {{trans('global.'.$trip->currency_type) ?? ''   }}
                         </td>
                     </tr>
                     <tr>

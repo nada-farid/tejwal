@@ -31,6 +31,12 @@ class Guide extends Model
         'student'  => 'student',
     ];
 
+    public const LEVELS_RADIO = [
+        'beginner' => 'Beginner',
+        'intermediate'  => 'intermediate',
+        'advanced'=>'Advanced',
+    ];
+
     public $table = 'guides';
 
     protected $dates = [
