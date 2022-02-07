@@ -16,7 +16,6 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => null,
                 'phone'          => '',
                 'last_name'      => '',
-                'country'        => '',
                 'city'           => '',
             ],
         ];

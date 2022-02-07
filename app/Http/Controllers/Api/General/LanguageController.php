@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api\General;
+
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class LanguageController extends Controller
 
             $name= 'name_'.app()->getLocale();
             
-            $lang=Language::select('id', $name)->get();
+            $lang=Language::select('id', $name .' as name')->get();
 
             return $this->returnData($lang);
     

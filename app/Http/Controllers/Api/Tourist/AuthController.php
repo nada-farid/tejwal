@@ -28,13 +28,12 @@ class AuthController extends Controller
             'last_name' => 'required|max:30',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|max:20',
-            'country' => 'required|max:30',
+            'county_id' => 'required|integer',
             'phone'=>'required',
             'city' => 'required|max:30',
             'dob' => 'required|date_format:d/m/Y',
             'gender' => 'required|max:30',
             'naitev_language_id' => 'required|integer',
-            'speaking_languages' => 'required',
             'speaking_languages .*' => 'integer',
             'photo' => 'required|mimes:jpeg,png,jpg',
         ];
@@ -51,15 +50,17 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->password =  bcrypt($request->password);
         $user->phone = $request->phone;
-        $user->country = $request->country;
+        $user->county_id = $request->county_id;
         $user->city = $request->city;
         $user->dob = $request->dob;
         $user->naitev_language_id=$request->naitev_language_id;
         $user->gender = $request->gender;
         $user->user_type = 'tourist';
         $user->save();
-       // $user->speaking_languages()->sync($request->input('speaking_languages', []));
-        $user->speaking_languages()->sync($this->mapLevels($request['speaking_languages']));
+        if($request['speaking_languages']){
+
+            $user->speaking_languages()->sync($this->mapLevels($request['speaking_languages']));
+           }
         $user->addMedia(request('photo'))->toMediaCollection('photo');
         
 

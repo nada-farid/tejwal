@@ -116,7 +116,7 @@ Route::group(['prefix' => 'conversations', 'as' => 'api.', 'namespace' => 'Api\C
 
 //-------------------------------------------------------------------------------
   //general routes
-  Route::group(['prefix' => 'general', 'as' => 'api.', 'namespace' => 'Api\general', 'middleware' => 'ChangeLanguage'], function () {
+  Route::group(['prefix' => 'general', 'as' => 'api.', 'namespace' => 'Api\General', 'middleware' => 'ChangeLanguage'], function () {
       Route::get('all_Categories', 'TripCategoryController@index');
       Route::get('all_languages', 'LanguageController@index');
       Route::get('countries', 'GeneralController@countries');

@@ -18,11 +18,12 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable();
             $table->string('remember_token')->nullable();
             $table->string('phone')->nullable();
-            $table->string('country')->nullable();
+            $table->unsignedBigInteger('county_id')->nullable();
             $table->string('city')->nullable();
             $table->date('dob')->nullable();
             $table->string('gender')->nullable();
             $table->string('user_type')->nullable();
+            $table->foreign('county_id')->references('id')->on('countries');
             $table->timestamps();
             $table->softDeletes();
         });
