@@ -112,12 +112,11 @@ class TripController extends Controller
         $TripPlaces=TripPlace::where('trip_id',$trip_id);
 
         foreach ($request['places'] as $row){
-            $TripPlaces = new TripPlace();
-            $TripPlaces->latitude =$row['latitude'];
-            $TripPlaces->longitude = $row['longitude'];
-            $TripPlaces->place_name = $row['place_name'];
-            $TripPlaces->trip_id = $trip->id;
-            $TripPlaces->save();
+            $TripPlaces->update([
+            'latitude' =>$row['latitude'],
+            'longitude' => $row['longitude'],
+            'place_name' =>$row['place_name'],
+            ]);
         }
 
         return $this->returnSuccessMessage('Trip updated Successfully');

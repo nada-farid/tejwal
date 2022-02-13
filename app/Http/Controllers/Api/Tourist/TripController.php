@@ -15,8 +15,10 @@ use Validator;
 use Auth;
 use DB;
 use App\Http\Resources\TripResource;
+use App\Http\Resources\NearstTripResource;
 use App\Http\Resources\PupularTripResource;
 use App\Http\Resources\TripDetailsResource;
+use App\Support\Collection;
 
 
 class TripController extends Controller
@@ -216,6 +218,32 @@ class TripController extends Controller
         $new = TripResource::collection($trips);
 
         return $this->returnPaginationData($new, $trips, "success");
+    }
+
+    //---------------------------------------------------------------------------
+
+    public function NearestTrips(Request $request){
+
+        $rules = [
+            'latitude' => 'required',
+            'longitude' => 'required',
+
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+         
+        $trips = Trip::with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
+            $query->where('user_id', Auth::id());
+                   }])->get();
+
+        $new = collect(NearstTripResource::collection($trips));
+        $items = $new->sortBy("distance")->values()->all();
+    return $this->returnData((new Collection($items))->paginate(6), "success");
+
     }
 }
 

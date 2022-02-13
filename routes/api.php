@@ -5,7 +5,9 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
 
       Route::post('register', 'AuthController@register');
       Route::post('login', 'AuthController@login');
-
+      //reset password
+      Route::post('forgetpassword','ForgetPasswordController@create_token');
+      Route::post('forgetpassword/reset','ForgetPasswordController@reset');
       Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
@@ -70,6 +72,7 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
                   Route::get('unfavorite', 'TripController@unfavorite');
                   Route::get('search', 'TripController@search');
                   Route::get('Myfavorites', 'TripController@MyFavoriteTrips');
+                  Route::Post('near', 'TripController@NearestTrips');
                   
 
 
