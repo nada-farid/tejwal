@@ -15,6 +15,7 @@ use App\Http\Resources\GuidePrrofieResource;
 use App\Http\Resources\TripResource;
 use App\Http\Resources\HighestRating;
 use Nagy\LaravelRating\Models\Rating;
+use App\Support\Collection;
 use Auth;
 use DB;
 
@@ -225,6 +226,31 @@ class GuideController extends Controller
         return $this->returnPaginationData($new,$guides,"success"); 
         
         
+    }
+
+    //------------------------------------------------------------------------------------
+
+    public function Nearest(Request $request){
+
+            $rules = [
+                'latitude' => 'required',
+                'longitude' => 'required',
+    
+            ];
+    
+            $validator = Validator::make($request->all(), $rules);
+    
+            if ($validator->fails()) {
+                return $this->returnError('401', $validator->errors());
+            }
+             
+            $guides=Guide::with('user')->get();
+
+                $new = collect(NearstGuideResource::collection($guides));
+            $items = $new->sortBy("distance")->values()->all();
+        return $this->returnData((new Collection($items))->paginate(6), "success");
+    
+
     }
     
 

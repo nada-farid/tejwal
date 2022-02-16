@@ -1,7 +1,7 @@
 <?php
 
 //guides
-Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', 'middleware' => 'ChangeLanguage'], function () {
+Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', 'middleware' => 'ChangeLanguage','ChangeCurrency'], function () {
 
       Route::post('register', 'AuthController@register');
       Route::post('login', 'AuthController@login');
@@ -11,7 +11,7 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
       Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
-            Route::group(['prefix' => 'post','middleware' => 'ChangeCurrency'], function () {
+            Route::group(['prefix' => 'post'], function () {
 
                   Route::Post('Apply_trip/{post_id}', 'PostController@Apply');
                   Route::get('all_posts', 'PostController@index');
@@ -37,7 +37,7 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
 });
 //-------------------------------------------------------------------- tourists
 
-Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist', 'middleware' => 'ChangeLanguage'], function () {
+Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist', 'middleware' =>'ChangeLanguage','ChangeCurrency'], function () {
 
       //Auth Routes
       Route::post('register', 'AuthController@register');
@@ -72,7 +72,7 @@ Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist
                   Route::get('unfavorite', 'TripController@unfavorite');
                   Route::get('search', 'TripController@search');
                   Route::get('Myfavorites', 'TripController@MyFavoriteTrips');
-                  Route::Post('near', 'TripController@NearestTrips');
+                  Route::get('near', 'TripController@NearestTrips');
                   
 
 

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class NearstGuideResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,11 +14,6 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        $name= 'name_'.app()->getLocale();
-        return [
-        'language'=>$this->$name,
-        'level'=>$this->pivot->level,
-
-        ];
-}
+        return parent::toArray($request);
+    }
 }

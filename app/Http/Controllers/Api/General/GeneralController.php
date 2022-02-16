@@ -15,9 +15,9 @@ class GeneralController extends Controller
 
     public function countries(){
 
-        $countries = Country::paginate(10);
+        $countries = Country::get();
         $new = CountryResource::collection($countries);
-        return $this->returnPaginationData($new,$countries,"success"); 
+        return $this->returnData($new,"success"); 
 
 
     }

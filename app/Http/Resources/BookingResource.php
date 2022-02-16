@@ -20,6 +20,7 @@ class BookingResource extends JsonResource
             'start_date'=>$this->start_date,
             'end_date' => $this->end_date,
             'trip_id'=>$this->trip_id,
+            'user_id'=>$this->user_id,
         ];
     }
 }

@@ -19,6 +19,7 @@ class TripResource extends JsonResource
      */
     public function toArray($request)
     {
+        
         if($this->tripFavorites()->get()->count() > 0){
             $favorite='yes';
         } else {
@@ -33,7 +34,7 @@ class TripResource extends JsonResource
             'places'          => TripPlacesResource::collection($this->whenLoaded('places')),
             'images'          => PhotoResourcee::collection($this->whenLoaded('media')),
             'favorite'=>$favorite,
-            //'bookings' => BookingResource::collection($this->bookings),
+            'bookings' => BookingResource::collection($this->bookings),
 
         ];
     }

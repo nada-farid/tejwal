@@ -32,7 +32,7 @@ class TripController extends Controller
     public function index()
     {
 
-        $trips = Trip::with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
+        $trips = Trip::with(['guide', 'trip_categories', 'media', 'places', 'guide.user','bookings', 'tripFavorites' => function ($query) {
                         $query->where('user_id', Auth::id());
                                }])->paginate(10);
 
