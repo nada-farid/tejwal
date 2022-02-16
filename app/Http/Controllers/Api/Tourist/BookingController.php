@@ -122,14 +122,20 @@ class BookingController extends Controller
         if(!($booking->start_date==$request->start_date)&&($booking->end_date==$request->end_date)){
 
             //check if any trip reseved within that date
-             $all_Booking=Booking::all();
-             foreach($all_Booking as $booking ){
-                 if(($request->start_date >= $booking->start_date) && ($request->start_date <= $booking->end_date)){
-                      return $this->returnError(205,'Sorry there is a Trip is reseved from '.$booking->start_date .' to '.$booking->end_date .' please choose another date');
-            
-                     }
-                         }
-                           }
+            $all_Booking=Booking::all();
+            foreach($all_Booking as $booking ){
+                       $booking_from=Carbon::parse(Carbon::createFromFormat('d/m/Y', $booking->start_date)->format('d-m-Y')); 
+                       $booking_to=Carbon::parse(Carbon::createFromFormat('d/m/Y', $booking->end_date)->format('d-m-Y')); 
+                 if(( $from >=  $booking_from) && ( $from <=  $booking_to)){ 
+                           return $this->returnError(205,'Sorry there is a Trip is reseved from '.$booking->start_date .' to '.$booking->end_date .' please choose another date'); 
+                   
+                               }
+                elseif(( $booking_from >=  $from) &&(  $booking_from<=  $to)){ 
+                                   return $this->returnError(205,'Sorry there is a Trip is reseved from '.$booking->start_date .' to '.$booking->end_date .' please choose another date'); 
+                           
+                                       }
+                               }
+                            }
       $booking->update($request->all());
         
         return $this->returnSuccessMessage('Booking updated Successfully');
