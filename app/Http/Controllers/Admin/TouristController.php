@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateTouristRequest;
 use App\Models\Tourist;
 use App\Models\User;
 use App\Models\Language;
+use App\Models\Country;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,9 +36,11 @@ class TouristController extends Controller
 
         $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $speaking_languages = Language::pluck($name, 'id');
+        $speaking_languages = Language::all();
+        
+        $countries=Country::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.tourists.create', compact('users','naitev_languages','speaking_languages'));
+        return view('admin.tourists.create', compact('users','naitev_languages','speaking_languages','countries'));
     }
 
     public function store(StoreTouristRequest $request)
@@ -48,7 +51,7 @@ class TouristController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),   
             'phone' => $request->phone,
-            'country' => $request->country,
+            'country_id' => $request->country_id,
             'city' => $request->city,
             'dob' => $request->dob,
             'naitev_language_id'=> $request->naitev_language_id,
@@ -56,7 +59,7 @@ class TouristController extends Controller
             'user_type' => 'tourist',
         ]);
         $user->roles()->sync($request->input('roles', []));
-        $user->speaking_languages()->sync($request->input('speaking_languages', []));
+        $user->speaking_languages()->sync($this->mapLevels($request['levels']));
         if ($request->input('photo', false)) {
             $user->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
         }
@@ -84,21 +87,29 @@ class TouristController extends Controller
 
         $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $speaking_languages = Language::pluck($name, 'id');
+        $speaking_languages = collect(Language::get())->map(function($speaking_language) use ($tourist) {
+            $check =$tourist->user->speaking_languages()->wherePivot('language_id',$speaking_language['id'])->first();
+            $speaking_language['value'] = $check ? 1 : null;
+            $speaking_language['level'] = $check ? $check->pivot->level : null; 
+
+            return $speaking_language;
+        });
+
+        $countries=Country::pluck('name', 'id');
 
         $tourist->load('user');
 
-        return view('admin.tourists.edit', compact('users', 'tourist','naitev_languages','speaking_languages'));
+        return view('admin.tourists.edit', compact('users', 'tourist','naitev_languages','speaking_languages','countries'));
     }
 
     public function update(UpdateTouristRequest $request, Tourist $tourist)
     {
-        
+    
         $user=User::findOrfail($tourist->user_id);
 
         $user->update($request->all());
         $user->roles()->sync($request->input('roles', []));
-        $user->speaking_languages()->sync($request->input('speaking_languages', []));
+        $user->speaking_languages()->sync($this->mapLevels($request['levels']));
         if ($request->input('photo', false)) {
             if (!$user->photo || $request->input('photo') !== $user->photo->file_name) {
                 if ($user->photo) {
@@ -140,4 +151,12 @@ class TouristController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
-}
+
+    private function mapLevels($levels)
+    {
+        return collect($levels)->map(function ($i) {
+            return ['level' => $i];
+        });
+    }
+    }
+    

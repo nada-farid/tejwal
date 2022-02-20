@@ -400,4 +400,10 @@ return [
             'phone_code_helper'   => ' ',
         ],
     ],
+    'levels'=>[
+        'advanced'=>'Advanced',
+        'intermediate'=>'Intermediate',
+        'beginner'=>'Beginner',
+        
+    ],
 ];

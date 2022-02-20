@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->date('dob')->nullable();
             $table->string('gender')->nullable();
             $table->string('user_type')->nullable();
-            $table->foreign('county_id')->references('id')->on('countries');
+            $table->foreign('country_id')->references('id')->on('countries');
             $table->timestamps();
             $table->softDeletes();
         });

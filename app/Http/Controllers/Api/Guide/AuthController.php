@@ -29,7 +29,7 @@ class AuthController extends Controller
             'last_name' => 'required|max:30',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|max:20',
-            'county_id' => 'required|integer',
+            'country_id' => 'required|integer',
             'city' => 'required|max:30',
             'dob' => 'required|date_format:d/m/Y',
             'gender' => 'required|max:30',
@@ -60,7 +60,7 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->password =  bcrypt($request->password);
         $user->phone = $request->phone;
-        $user->county_id = $request->county_id;
+        $user->country_id = $request->country_id;
         $user->city = $request->city;
         $user->dob = $request->dob;
         $user->naitev_language_id=$request->naitev_language_id;

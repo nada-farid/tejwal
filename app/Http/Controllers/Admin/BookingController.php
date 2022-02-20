@@ -32,7 +32,7 @@ class BookingController extends Controller
 
         $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $trips = Trip::pluck('description', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $trips = Trip::pluck('trip_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('admin.bookings.create', compact('users', 'trips'));
     }
@@ -52,7 +52,7 @@ class BookingController extends Controller
 
         $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $trips = Trip::pluck('description', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $trips = Trip::pluck('trip_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $booking->load('user', 'trip');
 

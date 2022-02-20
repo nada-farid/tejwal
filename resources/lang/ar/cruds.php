@@ -243,6 +243,8 @@ return [
         'fields'         => [
             'id'                   => 'ID',
             'id_helper'            => ' ',
+            'trip_name'          => ' اسم الرحلة ',
+            'trip_name_helper'   => ' ',
             'description'          => 'وصف الرحلة',
             'description_helper'   => ' ',
             'price'                => 'سعر الرحلة',
@@ -397,5 +399,12 @@ return [
             'phone_code'          => ' كود الاتصال ',
             'phone_code_helper'   => ' ',
         ],
+    ],
+
+    'levels'=>[
+        'advanced'=>'متطور',
+        'intermediate'=>'متوسط',
+        'beginner'=>'مبدئ',
+        
     ],
 ];

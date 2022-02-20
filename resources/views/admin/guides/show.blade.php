@@ -17,10 +17,98 @@
                 <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.guide.fields.id') }}
+                            {{ trans('cruds.user.fields.name') }}
                         </th>
                         <td>
-                            {{ $guide->id }}
+                            {{ $guide->user->name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.last_name') }}
+                        </th>
+                        <td>
+                            {{ $guide->user->last_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.email') }}
+                        </th>
+                        <td>
+                            {{  $guide->user->email }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.phone') }}
+                        </th>
+                        <td>
+                            {{ $guide->user->phone }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.country') }}
+                        </th>
+                        <td>
+                            @if( $guide->user->country_id!=null)
+                            {{ $guide->user->country->name }}
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.dob') }}
+                        </th>
+                        <td>
+                            {{  $guide->user->dob }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.gender') }}
+                        </th>
+                        <td>
+                            @php
+                                   $gender= App\Models\User::GENDER_RADIO[ $guide->user->gender] 
+                                @endphp    
+                               {{ trans('global.gender.'.$gender) ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.photo') }}
+                        </th>
+                        <td>
+                            @if($guide->user->photo)
+                                <a href="{{ $guide->user->photo->getUrl() }}" target="_blank" style="display: inline-block">
+                                    <img src="{{ $guide->user->photo->getUrl('thumb') }}">
+                                </a>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        @php
+                            
+                            $name='name_'.app()->getlocale()
+                        @endphp
+                        <th>
+                            {{ trans('cruds.user.fields.naitev_language') }}
+                        </th>
+                        <td>
+                            {{  $guide->user->naitev_language->$name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.speaking_language') }}
+                        </th>
+                        <td>
+                            @foreach( $guide->user->speaking_languages as $key => $speaking_language)
+                                <div class="label label-info">{{  $speaking_language->$name  }} 
+                                    (  {{ trans('cruds.levels.'.$speaking_language->pivot->level) }})</div>
+                            @endforeach
                         </td>
                     </tr>
                     <tr>

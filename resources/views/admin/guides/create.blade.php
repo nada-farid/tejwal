@@ -63,7 +63,13 @@
             </div>
             <div class="form-group col-md-6">
                 <label class="required" for="country">{{ trans('cruds.user.fields.country') }}</label>
-                <input class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}" type="text" name="country" id="country" value="{{ old('country', '') }}" required>
+                <div style="padding-bottom: 30px">
+                </div>
+                <select class="form-control select2 {{ $errors->has('country_id') ? 'is-invalid' : '' }}" name="country_id" id="country_id" required>
+                    @foreach($countries as $id => $entry)
+                        <option value="{{ $id }}" {{ old('country_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                    @endforeach
+                </select>
                 @if($errors->has('country'))
                     <div class="invalid-feedback">
                         {{ $errors->first('country') }}
@@ -111,7 +117,7 @@
         
            
              <div class="form-group col-md-6">
-                <label class="required" for="speaking_languages">{{ trans('cruds.user.fields.speaking_language') }}</label>
+                <label for="speaking_languages">{{ trans('cruds.user.fields.speaking_language') }}</label>
                 @include('admin.guides.partials.levels')
                 @if($errors->has('speaking_languages'))
                     <div class="invalid-feedback">

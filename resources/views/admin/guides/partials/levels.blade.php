@@ -10,7 +10,8 @@
      
           <td> <select class="form-control select2 {{ $errors->has('levels') ? 'is-invalid' : '' }}" value="{{ $speaking_language->level ?? null }}"  data-id="{{ $speaking_language->id }}" name="levels[{{ $speaking_language->id }}]" {{ $speaking_language->level ? null : 'disabled' }} data-id="{{ $speaking_language->id }}">
             @foreach(App\Models\Guide::LEVELS_RADIO as $key => $label)
-                <option value="{{ $key }}" >{{ trans('global.levels.'.$label) }}</option>
+                <option  value="{{ $key }}"
+                                    {{ (old('level') ? old('level') : $speaking_language['level']?? '') == $key ? 'selected' : '' }}>{{ trans('global.levels.'.$label) }}</option>
             @endforeach
         </select></td>
         </tr>

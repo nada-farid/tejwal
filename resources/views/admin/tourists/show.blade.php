@@ -62,15 +62,9 @@
                             {{ trans('cruds.user.fields.country') }}
                         </th>
                         <td>
-                            {{ $tourist->user->country }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.user.fields.city') }}
-                        </th>
-                        <td>
-                            {{ $tourist->user->city }}
+                            @if( $guide->user->country_id!=null)
+                            {{ $tourist->user->country->name }}
+                            @endif
                         </td>
                     </tr>
                     <tr>
@@ -102,11 +96,15 @@
                         </td>
                     </tr>
                     <tr>
+                        @php
+                            
+                        $name='name_'.app()->getlocale()
+                    @endphp
                         <th>
                             {{ trans('cruds.user.fields.naitev_language') }}
                         </th>
                         <td>
-                            {{ $tourist->user->naitev_language->name_en ?? '' }}
+                            {{ $tourist->user->naitev_language->$name ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -115,7 +113,8 @@
                         </th>
                         <td>
                             @foreach($tourist->user->speaking_languages as $key => $speaking_language)
-                                <span class="label label-info">{{ $speaking_language->name_en }}</span>
+                            <div class="label label-info">{{  $speaking_language->$name  }} 
+                                (  {{ trans('cruds.levels.'.$speaking_language->pivot->level) }})</div>
                             @endforeach
                         </td>
                     </tr>

@@ -17,8 +17,8 @@ class UserResource extends JsonResource
         $name= 'name_'.app()->getLocale();
         return [
         'language'=>$this->$name,
-        'level'=>$this->pivot->level,
-
+        'level'=>trans('cruds.levels.'.$this->pivot->level),
+       
         ];
 }
 }

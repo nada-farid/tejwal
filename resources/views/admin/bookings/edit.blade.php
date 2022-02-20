@@ -31,13 +31,8 @@
                 <span class="help-block">{{ trans('cruds.booking.fields.end_date_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required">{{ trans('cruds.booking.fields.companions') }}</label>
-                @foreach(App\Models\Booking::COMPANIONS_RADIO as $key => $label)
-                    <div class="form-check {{ $errors->has('companions') ? 'is-invalid' : '' }}">
-                        <input class="form-check-input" type="radio" id="companions_{{ $key }}" name="companions" value="{{ $key }}" {{ old('companions', $booking->companions) === (string) $key ? 'checked' : '' }} required>
-                        <label class="form-check-label" for="companions_{{ $key }}">{{ $label }}</label>
-                    </div>
-                @endforeach
+                <label class="required">{{ trans('cruds.booking.fields.companions') }}</label>          
+              <input class="form-control" type="number" id="companions" name="companions"  value="{{$booking->companions}}" required>
                 @if($errors->has('companions'))
                     <div class="invalid-feedback">
                         {{ $errors->first('companions') }}

@@ -56,7 +56,7 @@ class User extends Authenticatable implements HasMedia
         'password',
         'remember_token',
         'phone',
-        'country',
+        'country_id',
         'fcm_token',
         'city',
         'dob',
@@ -149,4 +149,10 @@ class User extends Authenticatable implements HasMedia
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function country()
+    {
+        return $this->belongsTo(country::class, 'country_id');
+    }
+
 }

@@ -56,8 +56,8 @@ class UpdateGuideRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'country' => [
-                'string',
+            'country_id' => [
+              //  'string',
                 'required',
             ],
             'city' => [
@@ -78,13 +78,7 @@ class UpdateGuideRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'speaking_languages.*' => [
-                'integer',
-            ],
-            'speaking_languages' => [
-                'required',
-                'array',
-            ],
+           
         ];
     }
 }

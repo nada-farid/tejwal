@@ -36,8 +36,8 @@ class StoreGuideRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'country' => [
-                'string',
+            'country_id' => [
+                //'string',
                 'required',
             ],
             'city' => [

@@ -88,7 +88,7 @@
                 @foreach(App\Models\Trip::CAR_RADIO as $key => $label)
                     <div class="form-check {{ $errors->has('car') ? 'is-invalid' : '' }}">
                         <input class="form-check-input" type="radio" id="car_{{ $key }}" name="car" value="{{ $key }}" {{ old('car', $trip->car) === (string) $key ? 'checked' : '' }} required>
-                        <label class="form-check-label" for="car_{{ $key }}">{{ $label }}</label>
+                        <label class="form-check-label" for="car_{{ $key }}">{{trans('global.'.$label )}}{{ $label }}</label>
                     </div>
                 @endforeach
                 @if($errors->has('car'))

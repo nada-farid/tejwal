@@ -71,7 +71,7 @@
                                 {{ $tourist->user->phone ?? '' }}
                             </td>
                             <td>
-                                {{ $tourist->user->country ?? '' }}
+                                {{ $tourist->user->country->name ?? '' }}
                             </td>
                             <td>
                                 {{  trans('global.gender.'. App\Models\User::GENDER_RADIO[$tourist->user->gender]) ?? ''  }}

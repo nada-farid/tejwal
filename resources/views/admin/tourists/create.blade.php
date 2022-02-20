@@ -61,15 +61,19 @@
               <span class="help-block">{{ trans('cruds.user.fields.phone_helper') }}</span>
           </div>
           <div class="form-group col-md-6">
-              <label class="required" for="country">{{ trans('cruds.user.fields.country') }}</label>
-              <input class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}" type="text" name="country" id="country" value="{{ old('country', '') }}" required>
-              @if($errors->has('country'))
-                  <div class="invalid-feedback">
-                      {{ $errors->first('country') }}
-                  </div>
-              @endif
-              <span class="help-block">{{ trans('cruds.user.fields.country_helper') }}</span>
-          </div>
+            <label class="required" for="country">{{ trans('cruds.user.fields.country') }}</label>
+            <select class="form-control select2 {{ $errors->has('country_id') ? 'is-invalid' : '' }}" name="country_id" id="country_id" required>
+                @foreach($countries as $id => $entry)
+                    <option value="{{ $id }}" {{ old('country_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                @endforeach
+            </select>
+            @if($errors->has('country'))
+                <div class="invalid-feedback">
+                    {{ $errors->first('country') }}
+                </div>
+            @endif
+            <span class="help-block">{{ trans('cruds.user.fields.country_helper') }}</span>
+        </div>
           <div class="form-group col-md-6">
               <label class="required" for="city">{{ trans('cruds.user.fields.city') }}</label>
               <input class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" type="text" name="city" id="city" value="{{ old('city', '') }}" required>
@@ -132,24 +136,17 @@
               @endif
               <span class="help-block">{{ trans('cruds.user.fields.naitev_language_helper') }}</span>
           </div>
+          
           <div class="form-group col-md-6">
-              <label class="required" for="speaking_languages">{{ trans('cruds.user.fields.speaking_language') }}</label>
-              <div style="padding-bottom: 4px">
-                  <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
-                  <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
-              </div>
-              <select class="form-control select2 {{ $errors->has('speaking_languages') ? 'is-invalid' : '' }}" name="speaking_languages[]" id="speaking_languages" multiple required>
-                  @foreach($speaking_languages as $id => $speaking_language)
-                      <option value="{{ $id }}" {{ in_array($id, old('speaking_languages', [])) ? 'selected' : '' }}>{{ $speaking_language }}</option>
-                  @endforeach
-              </select>
-              @if($errors->has('speaking_languages'))
-                  <div class="invalid-feedback">
-                      {{ $errors->first('speaking_languages') }}
-                  </div>
-              @endif
-              <span class="help-block">{{ trans('cruds.user.fields.speaking_language_helper') }}</span>
-          </div>
+            <label  for="speaking_languages">{{ trans('cruds.user.fields.speaking_language') }}</label>
+            @include('admin.guides.partials.levels')
+            @if($errors->has('speaking_languages'))
+                <div class="invalid-feedback">
+                    {{ $errors->first('speaking_languages') }}
+                </div>
+            @endif
+            <span class="help-block">{{ trans('cruds.user.fields.speaking_language_helper') }}</span>
+        </div>
           <div class="form-group col-md-6">
               <button class="btn btn-danger" type="submit">
                   {{ trans('global.save') }}

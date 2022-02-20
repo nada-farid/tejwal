@@ -33,8 +33,7 @@ class UpdateTouristRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'country' => [
-                'string',
+            'country_id' => [
                 'required',
             ],
             'city' => [
@@ -54,13 +53,6 @@ class UpdateTouristRequest extends FormRequest
             'naitev_language_id' => [
                 'required',
                 'integer',
-            ],
-            'speaking_languages.*' => [
-                'integer',
-            ],
-            'speaking_languages' => [
-                'required',
-                'array',
             ],
         ];
     }

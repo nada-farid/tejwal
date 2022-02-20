@@ -61,7 +61,7 @@
                                 {{ $booking->end_date ?? '' }}
                             </td>
                             <td>
-                                {{ App\Models\Booking::COMPANIONS_RADIO[$booking->companions] ?? '' }}
+                                {{$booking->companions ?? '' }}
                             </td>
                             <td>
                                 {{ $booking->user->email ?? '' }}

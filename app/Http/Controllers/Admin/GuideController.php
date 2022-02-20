@@ -10,6 +10,7 @@ use App\Models\Guide;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Language;
+use App\Models\Country;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,20 +41,23 @@ class GuideController extends Controller
         
         $roles = Role::pluck('title', 'id');
 
-        return view('admin.guides.create', compact('roles', 'naitev_languages', 'speaking_languages'));
+        $countries=Country::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+
+        return view('admin.guides.create', compact('roles', 'naitev_languages', 'speaking_languages','countries'));
     
     }
 
     public function store(StoreGuideRequest $request)
     {
-return $request;
+        
      $user = User::create([
             'name' => $request->name,
             'last_name'=>$request->last_name,
             'email' => $request->email,
             'password' => bcrypt($request->password),   
             'phone' => $request->phone,
-            'country' => $request->country,
+            'country_id' => $request->country_id,
             'city' => $request->city,
             'dob' => $request->dob,
             'naitev_language_id'=> $request->naitev_language_id,
@@ -100,9 +104,17 @@ return $request;
 
         $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $speaking_languages = Language::pluck($name, 'id');
+       $speaking_languages = collect(Language::get())->map(function($speaking_language) use ($guide) {
+            $check =$guide->user->speaking_languages()->wherePivot('language_id',$speaking_language['id'])->first();
+            $speaking_language['value'] = $check ? 1 : null;
+            $speaking_language['level'] = $check ? $check->pivot->level : null; 
 
-        return view('admin.guides.edit', compact('users', 'guide','naitev_languages','speaking_languages'));
+            return $speaking_language;
+        });
+
+        $countries=Country::pluck('name', 'id');
+
+        return view('admin.guides.edit', compact('users', 'guide','naitev_languages','speaking_languages','countries'));
     }
 
     public function update(UpdateGuideRequest $request, Guide $guide)
@@ -113,7 +125,7 @@ return $request;
         
         $user->update($request->all());
         $user->roles()->sync($request->input('roles', []));
-        $user->speaking_languages()->sync($request->input('speaking_languages', []));
+        $user->speaking_languages()->sync($this->mapLevels($request['levels']));
         if ($request->input('photo', false)) {
             if (!$user->photo || $request->input('photo') !== $user->photo->file_name) {
                 if ($user->photo) {

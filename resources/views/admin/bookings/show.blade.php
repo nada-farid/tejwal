@@ -44,7 +44,7 @@
                             {{ trans('cruds.booking.fields.companions') }}
                         </th>
                         <td>
-                            {{ App\Models\Booking::COMPANIONS_RADIO[$booking->companions] ?? '' }}
+                            {{$booking->companions ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -60,7 +60,7 @@
                             {{ trans('cruds.booking.fields.trip') }}
                         </th>
                         <td>
-                            {{ $booking->trip->description ?? '' }}
+                            {{ $booking->trip->trip_name ?? '' }}
                         </td>
                     </tr>
                 </tbody>

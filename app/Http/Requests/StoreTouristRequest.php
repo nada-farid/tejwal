@@ -36,8 +36,8 @@ class StoreTouristRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'country' => [
-                'string',
+            'country_id' => [
+             
                 'required',
             ],
             'city' => [
@@ -58,13 +58,7 @@ class StoreTouristRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'speaking_languages.*' => [
-                'integer',
-            ],
-            'speaking_languages' => [
-                'required',
-                'array',
-            ],
+          
         ];
     }
 }

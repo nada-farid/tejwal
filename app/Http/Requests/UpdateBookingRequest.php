@@ -17,11 +17,11 @@ class UpdateBookingRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_time' => [
+            'start_date' => [
                 'required',
                 'date_format:' . config('panel.date_format'),
             ],
-            'end_time' => [
+            'end_date' => [
                 'required',
                 'date_format:' . config('panel.date_format'),
             ],
