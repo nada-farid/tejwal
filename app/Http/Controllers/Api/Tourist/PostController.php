@@ -31,7 +31,8 @@ class PostController extends Controller
             'langs' =>'required|array',
             'start_date' => 'required|date_format:d/m/Y',
             'end_date' => 'required|date_format:d/m/Y',
-            'description'=>'required',
+            'description_ar'=>'required',
+            'description_en'=>'required',
             'currency_type'=>[ Rule::in('USD','SAR','EGP')]
             
         ];
@@ -49,7 +50,8 @@ class PostController extends Controller
         $post->tourist_id=$tourist->id;
         $post->start_date=$request->start_date;
         $post->end_date=$request->end_date;
-        $post->description=$request->description;
+        $post->description_ar=$request->description_ar;
+        $post->description_en=$request->description_en;
         $post->currency_type=$request->currency_type;
         $post->save();
         $post->language()->sync($request->input('langs', []));
@@ -80,7 +82,8 @@ class PostController extends Controller
             'lang_id' =>'required|integer',
             'start_date' => 'required|date_format:d/m/Y',
             'end_date' => 'required|date_format:d/m/Y',
-            'description'=>'required',
+            'description_ar'=>'required',
+            'description_en'=>'required',
             
         ];
 

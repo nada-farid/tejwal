@@ -27,18 +27,34 @@
                     </tr>
                       <tr>
                         <th>
-                            {{ trans('cruds.trip.fields.trip_name') }}
+                            {{ trans('cruds.trip.fields.name_ar') }}
                         </th>
                         <td>
-                            {{ $trip->trip_name }}
+                            {{ $trip->name_ar }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.trip.fields.description') }}
+                            {{ trans('cruds.trip.fields.name_en') }}
                         </th>
                         <td>
-                            {{ $trip->description }}
+                            {{ $trip->name_en }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.trip.fields.description_ar') }}
+                        </th>
+                        <td>
+                            {{ $trip->description_ar }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.trip.fields.description_en') }}
+                        </th>
+                        <td>
+                            {{ $trip->description_en }}
                         </td>
                     </tr>
                     <tr>

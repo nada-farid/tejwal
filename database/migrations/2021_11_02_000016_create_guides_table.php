@@ -15,7 +15,7 @@ class CreateGuidesTable extends Migration
             $table->string('car');
             $table->string('degree');
             $table->string('major');
-            $table->decimal('cost', 15, 2);
+            $table->decimal('cost', 15, 2)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

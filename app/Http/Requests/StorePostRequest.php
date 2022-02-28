@@ -30,7 +30,10 @@ class StorePostRequest extends FormRequest
             'end_date'=>[
                 'required',
             ],
-            'description' => [
+            'description_ar' => [
+                'required',
+            ],
+            'description_en' => [
                 'required',
             ],
             'langs.*' => [

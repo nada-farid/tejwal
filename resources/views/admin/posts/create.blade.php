@@ -94,14 +94,24 @@
                 <span class="help-block">{{ trans('cruds.post.fields.lang_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="description">{{ trans('cruds.post.fields.description') }}</label>
-                <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description" required>{{ old('description') }}</textarea>
-                @if($errors->has('description'))
+                <label class="required" for="description_ar">{{ trans('cruds.post.fields.description_ar') }}</label>
+                <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description_ar" id="description_ar" required>{{ old('description_ar') }}</textarea>
+                @if($errors->has('description_ar'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('description') }}
+                        {{ $errors->first('description_ar') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.post.fields.description_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.post.fields.description_ar_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="description_en">{{ trans('cruds.post.fields.description_en') }}</label>
+                <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description_en" id="description_en" required>{{ old('description_en') }}</textarea>
+                @if($errors->has('description_en'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('description_en') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.post.fields.description_en_helper') }}</span>
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">

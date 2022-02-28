@@ -28,6 +28,12 @@ class UpdatePostRequest extends FormRequest
             'required',
             'array',
         ],
+        'description_ar' => [
+            'required',
+        ],
+        'description_en' => [
+            'required',
+        ],
     ];
 }
 }

@@ -32,7 +32,10 @@
                             {{ trans('cruds.post.fields.user') }}
                         </th>
                         <th>
-                            {{ trans('cruds.post.fields.description') }}
+                            {{ trans('cruds.post.fields.description_ar') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.post.fields.description_en') }}
                         </th>
                         <th>
                             {{ trans('cruds.post.fields.lang') }}
@@ -55,14 +58,20 @@
                                 {{ $post->price ?? '' }}{{trans('global.'.$post->currency_type) ?? ''   }}
                             </td>
                             <td>
-                                {{ $post->user->email ?? '' }}
+                                {{ $post->Tourist->user->name ?? '' }}
                             </td>
                             <td>
-                                {{ $post->description ?? '' }}
+                                {{ $post->description_ar?? '' }}
                             </td>
                             <td>
+                                {{ $post->description_en?? '' }}
+                            </td>
+                            <td>
+                                @php
+                                  $name='name_'.app()->getLocale();    
+                                @endphp
                                 @foreach($post->language as $key => $item)
-                                    <span class="badge badge-info">{{ $item->name_ar }}</span>
+                                    <span class="badge badge-info">{{ $item->$name }}</span>
                                 @endforeach
                             </td>
                             <td>

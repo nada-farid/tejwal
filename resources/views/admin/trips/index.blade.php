@@ -25,11 +25,17 @@
                         <th>
                             {{ trans('cruds.trip.fields.id') }}
                         </th>
+                        <th>
+                            {{ trans('cruds.trip.fields.name_ar') }}
+                        </th>
                            <th>
-                            {{ trans('cruds.trip.fields.trip_name') }}
+                            {{ trans('cruds.trip.fields.name_en') }}
                         </th>
                         <th>
-                            {{ trans('cruds.trip.fields.description') }}
+                            {{ trans('cruds.trip.fields.description_ar') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.trip.fields.description_en') }}
                         </th>
                         <th>
                             {{ trans('cruds.trip.fields.price') }}
@@ -55,11 +61,17 @@
                             <td>
                                 {{ $trip->id ?? '' }}
                             </td>
+                            <td>
+                                {{ $trip->name_ar ?? '' }}
+                            </td>
                              <td>
-                                {{ $trip->trip_name ?? '' }}
+                                {{ $trip->name_en ?? '' }}
                             </td>
                             <td>
-                                {{ $trip->description ?? '' }}
+                                {{ $trip->description_ar ?? '' }}
+                            </td>
+                            <td>
+                                {{ $trip->description_en ?? '' }}
                             </td>
                             <td>
                                 {{ $trip->price ?? '' }} {{trans('global.'.$trip->currency_type) ?? ''   }}

@@ -40,7 +40,7 @@ class AuthController extends Controller
             'car' => 'required',
             'degree' => 'required', 
             'major' => 'required',
-            'cost' => 'required',
+           // 'cost' => 'required',
             'experiences'=>'required',
            ' experiences.*.city' => 'required|max:20',
             'experiences.*.years_of_experience' => 'required|integer',
@@ -84,7 +84,7 @@ class AuthController extends Controller
        $guide->car=$request->car;
        $guide->degree=$request->degree;
        $guide->major=$request->major;
-       $guide->cost=$request->cost;
+     //  $guide->cost=$request->cost;
        $guide->user_id=$user->id;
        $guide->save();
         

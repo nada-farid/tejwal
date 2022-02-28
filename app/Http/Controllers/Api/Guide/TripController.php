@@ -26,8 +26,10 @@ class TripController extends Controller
 
         public function store(Request $request){
         $rules = [
-            'trip_name'=>'required',
-            'description' => 'required',
+            'name_ar'=>'required',
+            'name_en'=>'required',
+            'description_ar' => 'required',
+            'description_en' => 'required',
             'trip_categories' => 'required',
             'trip_categories .*' => 'required',
             'price' => 'required',
@@ -57,8 +59,10 @@ class TripController extends Controller
         }
 
         $trip = new Trip();
-        $trip->trip_name=$request->trip_name;
-        $trip->description =$request->description;
+        $trip->name_ar=$request->name_ar;
+        $trip->name_en=$request->name_en;
+        $trip->description_ar =$request->description_ar;
+        $trip->description_en =$request->description_en;
         $trip->price =$request->price;
         $trip->currency_type =$request->currency_type;
         $trip->car =$request->car;
@@ -88,7 +92,10 @@ class TripController extends Controller
 
     public function Update(Request $request,$trip_id){
         $rules = [
-            'description' => 'required',
+            'name_ar'=>'required',
+            'name_en'=>'required',
+            'description_ar' => 'required',
+            'description_en' => 'required',
             'trip_categories' => 'required',
             'trip_categories .*' => 'required',
             'price' => 'required',

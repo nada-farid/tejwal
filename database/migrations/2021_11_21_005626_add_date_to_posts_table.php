@@ -17,7 +17,8 @@ class AddDateToPostsTable extends Migration
             //
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->longText('description')->nullable();
+            $table->longText('description_ar')->nullable();
+            $table->longText('description_en')->nullable();
         });
     }
 

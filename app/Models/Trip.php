@@ -38,7 +38,10 @@ class Trip extends Model implements HasMedia
     ];
 
     protected $fillable = [
-        'description',
+        'name_ar',
+        'name_en',
+        'description_ar',
+        'description_en',
         'price',
         'currency_type',
         'guide_id',

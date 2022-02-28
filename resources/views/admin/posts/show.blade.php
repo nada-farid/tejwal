@@ -36,7 +36,7 @@
                             {{ trans('cruds.post.fields.user') }}
                         </th>
                         <td>
-                            {{ $post->user->email ?? '' }}
+                            {{ $post->Tourist->user->name ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -52,8 +52,11 @@
                             {{ trans('cruds.post.fields.lang') }}
                         </th>
                         <td>
-                            @foreach($post->language as $key => $lang)
-                                <span class="label label-info">{{ $lang->name_ar }}</span>
+                            @php
+                              $name='name_'.app()->getLocale();    
+                            @endphp
+                            @foreach($post->language as $key => $item)
+                                <span class="badge badge-info">{{ $item->$name }}</span>
                             @endforeach
                         </td>
                     </tr>

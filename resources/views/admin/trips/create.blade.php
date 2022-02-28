@@ -10,24 +10,44 @@
         <form method="POST" action="{{ route("admin.trips.store") }}" enctype="multipart/form-data">
             @csrf
               <div class="form-group">
-                <label class="required" for="trip_name">{{ trans('cruds.trip.fields.trip_name') }}</label>
-                <input class="form-control {{ $errors->has('trip_name') ? 'is-invalid' : '' }}" type="text" name="trip_name" id="trip_name" value="{{ old('trip_name', '') }}" required>
-                @if($errors->has('trip_name'))
+                <label class="required" for="name_ar">{{ trans('cruds.trip.fields.name_ar') }}</label>
+                <input class="form-control {{ $errors->has('name_ar') ? 'is-invalid' : '' }}" type="text" name="name_ar" id="name_ar" value="{{ old('name_ar', '') }}" required>
+                @if($errors->has('name_ar'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('trip_name') }}
+                        {{ $errors->first('name_ar') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.trip.fields.trip_name_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.trip.fields.name_ar_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="description">{{ trans('cruds.trip.fields.description') }}</label>
-                <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description" required>{{ old('description') }}</textarea>
-                @if($errors->has('description'))
+                <label class="required" for="name_en">{{ trans('cruds.trip.fields.name_en') }}</label>
+                <input class="form-control {{ $errors->has('name_en') ? 'is-invalid' : '' }}" type="text" name="name_en" id="name_en" value="{{ old('name_en', '') }}" required>
+                @if($errors->has('name_en'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('description') }}
+                        {{ $errors->first('name_en') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.trip.fields.description_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.trip.fields.name_en_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="description_ar">{{ trans('cruds.trip.fields.description_ar') }}</label>
+                <textarea class="form-control {{ $errors->has('description_ar') ? 'is-invalid' : '' }}" name="description_ar" id="description_ar" required>{{ old('description_ar') }}</textarea>
+                @if($errors->has('description_ar'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('description_ar') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.trip.fields.description_ar_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="description_en">{{ trans('cruds.trip.fields.description_en') }}</label>
+                <textarea class="form-control {{ $errors->has('description_en') ? 'is-invalid' : '' }}" name="description_en" id="description_en" required>{{ old('description_en') }}</textarea>
+                @if($errors->has('description_en'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('description_en') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.trip.fields.description_en_helper') }}</span>
             </div>
             <div class="row">
             <div class="form-group col-md-6">
