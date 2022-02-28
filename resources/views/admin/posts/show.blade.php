@@ -28,7 +28,7 @@
                             {{ trans('cruds.post.fields.price') }}
                         </th>
                         <td>
-                            {{ $post->price }}
+                            {{ $post->price ?? '' }}{{trans('global.'.$post->currency_type) ?? ''   }}
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +52,7 @@
                             {{ trans('cruds.post.fields.lang') }}
                         </th>
                         <td>
-                            @foreach($post->langs as $key => $lang)
+                            @foreach($post->language as $key => $lang)
                                 <span class="label label-info">{{ $lang->name_ar }}</span>
                             @endforeach
                         </td>

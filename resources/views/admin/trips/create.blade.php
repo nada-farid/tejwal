@@ -29,7 +29,8 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.trip.fields.description_helper') }}</span>
             </div>
-            <div class="form-group">
+            <div class="row">
+            <div class="form-group col-md-6">
                 <label class="required" for="price">{{ trans('cruds.trip.fields.price') }}</label>
                 <input class="form-control {{ $errors->has('price') ? 'is-invalid' : '' }}" type="number" name="price" id="price" value="{{ old('price', '') }}" step="0.01" required>
                 @if($errors->has('price'))
@@ -38,6 +39,23 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.trip.fields.price_helper') }}</span>
+            </div>
+            <div class="form-group col-md-6">
+                    <label class="required">{{ trans('cruds.trip.fields.currency_type') }}</label>
+                    <select class="form-control {{ $errors->has('currency_type') ? 'is-invalid' : '' }}" name="currency_type" id="currency_type" required>
+                        <option value disabled {{ old('currency_type', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                        @foreach(App\Models\Trip::CURRENCY_TYPE_SELECT as $key => $label)
+                            <option value="{{ $key }}" {{ old('currency_type', '') === (string) $key ? 'selected' : '' }}>{{trans('global.'.$label) }}</option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('currency_type'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('currency_type') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.trip.fields.currency_type_helper') }}</span>
+                
+            </div>
             </div>
             <div class="form-group">
                 <label class="required" for="photo">{{ trans('cruds.trip.fields.photo') }}</label>

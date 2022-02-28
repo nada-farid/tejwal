@@ -21,6 +21,12 @@ class Trip extends Model implements HasMedia
         '0' => 'no',
     ];
 
+    public const CURRENCY_TYPE_SELECT = [
+        'USD' => 'USD',
+        'SAR' => 'SAR',
+        'EGP' => 'EGP',
+    ];
+
     protected $appends = [
         'photo',
     ];

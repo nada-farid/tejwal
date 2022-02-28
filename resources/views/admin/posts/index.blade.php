@@ -52,7 +52,7 @@
                                 {{ $post->id ?? '' }}
                             </td>
                             <td>
-                                {{ $post->price ?? '' }}
+                                {{ $post->price ?? '' }}{{trans('global.'.$post->currency_type) ?? ''   }}
                             </td>
                             <td>
                                 {{ $post->user->email ?? '' }}
