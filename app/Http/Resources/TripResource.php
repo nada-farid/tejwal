@@ -20,6 +20,9 @@ class TripResource extends JsonResource
     public function toArray($request)
     {
         
+          $name='name_'.app()->getLocale();
+          $description='description_'.app()->getLocale();
+        
         if($this->tripFavorites()->get()->count() > 0){
             $favorite='yes';
         } else {
@@ -27,10 +30,10 @@ class TripResource extends JsonResource
         }
         return [
             'id'=>$this->id,
-            'name_ar'=>$this->name_ar,
-            'name_en'=>$this->name_en,
-            'description_ar' => $this->description_ar,
-            'description_en' => $this->description_en,
+            'trip_name'=>$this->$name,
+            // 'name_en'=>$this->name_en,
+            //'description_ar' => $this->description_ar,
+            'description' => $this->$description,
             'price' => Currency::convert()->from($this->currency_type)->to(config('app.Currency'))->round('2')->amount($this->price)->get().' '.trans('global.'.config('app.Currency')),
             'trip_categories' => CategoryTripResource::collection($this->whenLoaded('trip_categories')),
             'places'          => TripPlacesResource::collection($this->whenLoaded('places')),

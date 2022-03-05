@@ -16,10 +16,12 @@ class PupularTripResource extends JsonResource
     public function toArray($request)
     {
         $name= 'name_'.app()->getLocale();
+        $description='description_'.app()->getLocale();
+
         return [
             'id'=>$this->trip->id,
-            'trip_name'=>$this->trip->trip_name,
-            'description'    => $this->trip->description,
+            'trip_name'=>$this->trip->$name,
+            'description'    => $this->trip->$description,
             'price' => Currency::convert()->from($this->currency_type)->to(config('app.Currency'))->round('2')->amount($this->price)->get().' '.trans('global.'.config('app.Currency')),
             'car'            =>$this->trip->car,
             'guide_name'     => $this->trip->guide->user->name .' '. $this->trip->guide->user->last_name,

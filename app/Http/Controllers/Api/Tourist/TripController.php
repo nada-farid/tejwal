@@ -199,7 +199,7 @@ class TripController extends Controller
         $trips = Trip::whereHas('places', function ($query) {
 
                        $query->where('place_name', 'like', "%" . $GLOBALS['letters'] . "%");
-                 })->OrWhere('trip_name', 'like', "%" . $GLOBALS['letters'] . "%")->with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
+                 })->OrWhere('name_en', 'like', "%" . $GLOBALS['letters'] . "%")->OrWhere('name_ar', 'like', "%" . $GLOBALS['letters'] . "%")->with(['guide', 'trip_categories', 'media', 'places', 'guide.user', 'tripFavorites' => function ($query) {
                        $query->where('user_id', Auth::id());
               }])->paginate(6);
 
