@@ -22,7 +22,7 @@ trait push_notification
         }
 
         Http::withHeaders([
-            'Authorization' => 'key=AAAASNZTiVQ:APA91bFSbyrVvAW4egjLnusv20wWDBNGnCvqECM0lzhYPcAdS4swA9PC_h8jLB2uQEiaQI4TKVAYFdl5HF0wY8zLdoiLoNaWUJAsjYdypcI7smZs9-w8t0TOeOOwrHi1oSIvSEFH7zrq',
+            'Authorization' => 'key=',
             'Content-Type' =>   'application/json',
         ])->post('https://fcm.googleapis.com/fcm/send', [
             "to" => $user->fcm_token,

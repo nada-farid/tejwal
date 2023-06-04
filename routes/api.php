@@ -1,7 +1,7 @@
 <?php
 
 //guides
-Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', 'middleware' => 'ChangeLanguage','ChangeCurrency'], function () {
+Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', 'middleware' => 'ChangeLanguage'], function () {
 
       Route::post('register', 'AuthController@register');
       Route::post('login', 'AuthController@login');
@@ -11,7 +11,7 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
       Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
-            Route::group(['prefix' => 'post'], function () {
+            Route::group(['prefix' => 'post','middleware' => 'ChangeCurrency'], function () {
 
                   Route::Post('Apply_trip/{post_id}', 'PostController@Apply');
                   Route::get('all_posts', 'PostController@index');
@@ -37,7 +37,7 @@ Route::group(['prefix' => 'guide', 'as' => 'api.', 'namespace' => 'Api\Guide', '
 });
 //-------------------------------------------------------------------- tourists
 
-Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist', 'middleware' =>'ChangeLanguage','ChangeCurrency'], function () {
+Route::group(['prefix' => 'tourist', 'as' => 'api.', 'namespace' => 'Api\Tourist', 'middleware' => 'ChangeLanguage'], function () {
 
       //Auth Routes
       Route::post('register', 'AuthController@register');
@@ -120,7 +120,7 @@ Route::group(['prefix' => 'conversations', 'as' => 'api.', 'namespace' => 'Api\C
 //-------------------------------------------------------------------------------
   //general routes
   Route::group(['prefix' => 'general', 'as' => 'api.', 'namespace' => 'Api\General', 'middleware' => 'ChangeLanguage'], function () {
-      Route::get('all_Categories', 'TripCategoryController@index');
+      Route::get('all_categories', 'TripCategoryController@index');
       Route::get('all_languages', 'LanguageController@index');
       Route::get('countries', 'GeneralController@countries');
 });

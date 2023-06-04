@@ -62,7 +62,7 @@
                             {{ trans('cruds.user.fields.country') }}
                         </th>
                         <td>
-                            @if( $guide->user->country_id!=null)
+                            @if( $tourist->user->country_id!=null)
                             {{ $tourist->user->country->name }}
                             @endif
                         </td>

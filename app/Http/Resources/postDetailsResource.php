@@ -14,7 +14,7 @@ class postDetailsResource extends JsonResource
      */
       public function toArray($request)
         {
-        
+            $description='description_'.app()->getLocale();
     
             return[
         
@@ -22,8 +22,7 @@ class postDetailsResource extends JsonResource
             //addational data
             'start_date'                 =>$this->start_date,
             'end_date'                   =>$this->end_date,
-            'description_ar'               =>$this->description_ar,
-            'description_en'               =>$this->description_en,
+            'description'               =>$this->$description,
     
             ];
         }

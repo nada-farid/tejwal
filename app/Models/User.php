@@ -152,7 +152,7 @@ class User extends Authenticatable implements HasMedia
 
     public function country()
     {
-        return $this->belongsTo(country::class, 'country_id');
+        return $this->belongsTo(Country::class, 'country_id');
     }
 
 }

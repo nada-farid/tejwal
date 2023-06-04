@@ -113,10 +113,9 @@ class TripController extends Controller
 
         $trips = Trip::with(['guide', 'trip_categories', 'media', 'places', 'guide.user'])->orderBy('price', 'asc')->take(10)->get();
 
-
-        $new = TripResource::collection($trips);
-
-        return $this->returnData($new);
+    $new = collect(TripResource::collection($trips));
+        $items = $new->sortBy("price")->values()->all();
+    return $this->returnData((new Collection($items)), "success");
     }
     //---------------------------------------------
 
