@@ -30,7 +30,7 @@ class TouristProfileResource extends JsonResource
                'tourist_name'             => $this->user->name .' '. $this->user->last_name,
                'tourist_image'            => $image,
                'tourist_native_language'  =>$this->user->naitev_language->$name,
-               'tourist_speaking_language' => UserResource::collection($this->user->speaking_languages),
+               'tourist_speaking_language' => LanguageUserResource::collection($this->user->speaking_languages),
                'tourist_age'               =>Carbon::parse(Carbon::createFromFormat('d/m/Y', $this->user->dob)->format('d-m-Y'))->diff(Carbon::now())->y,
                'post_count'                =>$this->post_count,
                'following_count'           =>$this->following_count,

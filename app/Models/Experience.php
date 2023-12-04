@@ -19,7 +19,7 @@ class Experience extends Model
     ];
 
     protected $fillable = [
-        'city',
+        'city_id',
         'years_of_experience',
         'guide_id',
         'created_at',
@@ -35,5 +35,10 @@ class Experience extends Model
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+    
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
     }
 }

@@ -15,11 +15,11 @@ class CreateFollowingsTable extends Migration
     {
         Schema::create('followings', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->unsignedBigInteger('guide_id');
             $table->foreign('guide_id', 'guide_fk_5203861')->references('id')->on('guides');
             $table->unsignedBigInteger('tourist_id');
             $table->foreign('tourist_id', 'tourist_fk_5203862')->references('id')->on('tourists');
+            $table->timestamps();
             $table->softDeletes();
         });
     }

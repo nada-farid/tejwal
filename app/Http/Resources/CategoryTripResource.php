@@ -14,11 +14,11 @@ class CategoryTripResource extends JsonResource
      */
     public function toArray($request)
     {
-         $name= 'name_'.app()->getLocale();
-        return[
-            'id'     =>$this->id,
-             'category_name'=>$this->$name,
-             'category_icon'=>PhotoResourcee::collection($this->media)
+        $name = 'name_' . app()->getLocale();
+        return [
+            'id'     => $this->id,
+            'category_name' => $this->$name,
+            'category_icon' => PhotoResourcee::collection($this->media)
         ];
     }
 }

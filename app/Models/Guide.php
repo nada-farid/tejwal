@@ -53,6 +53,7 @@ class Guide extends Model
         'major',
         'user_id',
         'cost',
+        'organization_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -61,6 +62,11 @@ class Guide extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, 'organization_id');
     }
 
     protected function serializeDate(DateTimeInterface $date)

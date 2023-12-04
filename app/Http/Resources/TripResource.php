@@ -10,7 +10,7 @@ use AmrShawky\LaravelCurrency\Facade\Currency;
 
 class TripResource extends JsonResource
 {
-    
+
     /**
      * Transform the resource into an array.
      *
@@ -19,30 +19,26 @@ class TripResource extends JsonResource
      */
     public function toArray($request)
     {
-        
-          $name='name_'.app()->getLocale();
-          $description='description_'.app()->getLocale();
-        
-        if($this->tripFavorites()->get()->count() > 0){
-            $favorite='yes';
+
+        $name = 'name_' . app()->getLocale();
+        $description = 'description_' . app()->getLocale();
+
+        if ($this->tripFavorites()->get()->count() > 0) {
+            $favorite = 'yes';
         } else {
-            $favorite='no';
+            $favorite = 'no';
         }
         return [
-            'id'=>$this->id,
-            'trip_name'=>$this->$name,
-            // 'name_en'=>$this->name_en,
-            //'description_ar' => $this->description_ar,
+            'id' => $this->id,
+            'trip_name' => $this->$name, 
             'description' => $this->$description,
-            'price' => Currency::convert()->from($this->currency_type)->to(config('app.Currency'))->round('2')->amount($this->price)->get(),
-            'trip_categories' => CategoryTripResource::collection($this->whenLoaded('trip_categories')),
+            'price' => $this->price . ' ' . trans('global.' . config('app.Currency')),
+            'trip_categories' => UserTripCategoryResource::collection($this->whenLoaded('trip_categories')),
             'places'          => TripPlacesResource::collection($this->whenLoaded('places')),
             'images'          => PhotoResourcee::collection($this->whenLoaded('media')),
-            'favorite'=>$favorite,
+            'favorite' => $favorite,
             'bookings' => BookingResource::collection($this->bookings),
 
         ];
     }
 }
-
-

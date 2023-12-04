@@ -62,9 +62,21 @@
                 <span class="help-block">{{ trans('cruds.user.fields.phone_helper') }}</span>
             </div>
             <div class="form-group col-md-6">
-                <label class="required" for="country">{{ trans('cruds.user.fields.country') }}</label>
-                <div style="padding-bottom: 30px">
-                </div>
+                <label class="required" for="organization">{{ trans('cruds.guide.fields.organization') }}</label>
+                <select class="form-control select2 {{ $errors->has('organization_id') ? 'is-invalid' : '' }}" name="organization_id" id="organization_id" required>
+                    @foreach($organizations as $id => $entry)
+                        <option value="{{ $id }}" {{ old('organization_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('organization'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('organization') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.guide.fields.organization_helper') }}</span>
+            </div>
+            <div class="form-group col-md-6">
+                <label class="required" for="country">{{ trans('cruds.user.fields.country') }}</label> 
                 <select class="form-control select2 {{ $errors->has('country_id') ? 'is-invalid' : '' }}" name="country_id" id="country_id" required>
                     @foreach($countries as $id => $entry)
                         <option value="{{ $id }}" {{ old('country_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>

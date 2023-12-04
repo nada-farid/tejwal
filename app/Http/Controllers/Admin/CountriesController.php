@@ -13,6 +13,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CountriesController extends Controller
 {
+    
+    public function update_statuses(Request $request){ 
+        $type = $request->type;
+        $country = Country::findOrFail($request->id);
+        $country->$type = $request->status; 
+        $country->save();
+        return 1;
+    }
+    
     public function index()
     {
         abort_if(Gate::denies('country_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');

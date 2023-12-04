@@ -32,6 +32,9 @@ class StoreGuideRequest extends FormRequest
             'password' => [
                 'required',
             ],
+            'organization_id' => [
+                'required',
+            ],
             'phone' => [
                 'string',
                 'required',

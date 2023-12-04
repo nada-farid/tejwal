@@ -322,27 +322,87 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => 79,
-                'title' => 'profile_password_edit',
-            ],
-            [
-                'id'    => 80,
                 'title' => 'country_create',
             ],
             [
-                'id'    => 81,
+                'id'    => 80,
                 'title' => 'country_edit',
             ],
             [
-                'id'    => 82,
+                'id'    => 81,
                 'title' => 'country_show',
             ],
             [
-                'id'    => 83,
+                'id'    => 82,
                 'title' => 'country_delete',
             ],
             [
-                'id'    => 84,
+                'id'    => 83,
                 'title' => 'country_access',
+            ],
+            [
+                'id'    => 84,
+                'title' => 'organization_create',
+            ],
+            [
+                'id'    => 85,
+                'title' => 'organization_edit',
+            ],
+            [
+                'id'    => 86,
+                'title' => 'organization_show',
+            ],
+            [
+                'id'    => 87,
+                'title' => 'organization_delete',
+            ],
+            [
+                'id'    => 88,
+                'title' => 'organization_access',
+            ],
+            [
+                'id'    => 89,
+                'title' => 'specialization_create',
+            ],
+            [
+                'id'    => 90,
+                'title' => 'specialization_edit',
+            ],
+            [
+                'id'    => 91,
+                'title' => 'specialization_show',
+            ],
+            [
+                'id'    => 92,
+                'title' => 'specialization_delete',
+            ],
+            [
+                'id'    => 93,
+                'title' => 'specialization_access',
+            ],
+            [
+                'id'    => 94,
+                'title' => 'city_create',
+            ],
+            [
+                'id'    => 95,
+                'title' => 'city_edit',
+            ],
+            [
+                'id'    => 96,
+                'title' => 'city_show',
+            ],
+            [
+                'id'    => 97,
+                'title' => 'city_delete',
+            ],
+            [
+                'id'    => 98,
+                'title' => 'city_access',
+            ],
+            [
+                'id'    => 99,
+                'title' => 'profile_password_edit',
             ],
         ];
 

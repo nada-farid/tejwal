@@ -29,6 +29,9 @@ class UpdateGuideRequest extends FormRequest
             'degree' => [
                 'required',
             ],
+            'organization_id' => [
+                'required',
+            ],
             'major' => [
                 'string',
                 'required',

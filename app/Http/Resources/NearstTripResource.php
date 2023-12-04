@@ -41,7 +41,7 @@ class NearstTripResource extends JsonResource
             'id'=>$this->id,
             'trip_name'=>$this->$name,
             'description'    => $this->$description,
-            'price' => Currency::convert()->from($this->currency_type)->to(config('app.Currency'))->round('2')->amount($this->price)->get().' '.trans('global.'.config('app.Currency')),
+            'price' => $this->price .' '.trans('global.'.config('app.Currency')),
             'trip_categories' => CategoryTripResource::collection($this->whenLoaded('trip_categories')),
             'places'          => TripPlacesResource::collection($this->whenLoaded('places')),
             'images'          => PhotoResourcee::collection($this->whenLoaded('media')),

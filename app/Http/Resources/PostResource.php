@@ -24,10 +24,10 @@ class PostResource extends JsonResource
         'tourist_name'     => $this->tourist->user->name .' '. $this->tourist->user->last_name,
         'tourist_image'            => PhotoResourcee::collection($this->tourist->user->media),
         'tourist_native_language'  =>$this->tourist->user->naitev_language->$name,
-        'tourist_speaking_language' => UserResource::collection($this->tourist->user->speaking_languages),
+        'speaking_language' => LanguagePostResource::collection($this->languages),
         'places'          => TripPlacesResource::collection($this->whenLoaded('places')),
         'guide_language'                =>Auth::user()->naitev_language->$name,
-        'trip_price' => Currency::convert()->from($this->currency_type)->to(config('app.Currency'))->round('2')->amount($this->price)->get().' '.trans('global.'.config('app.Currency')),
+        'trip_price' => $this->price.' '.trans('global.'.config('app.Currency')),
 
         ];
     }

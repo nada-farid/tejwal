@@ -20,6 +20,14 @@ class UsersController extends Controller
 {
     use MediaUploadingTrait;
 
+    public function update_statuses(Request $request){ 
+        $type = $request->type;
+        $user = User::findOrFail($request->id);
+        $user->$type = $request->status; 
+        $user->save();
+        return 1;
+    }
+    
     public function index()
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');

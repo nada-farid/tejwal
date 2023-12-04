@@ -15,6 +15,8 @@ use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Alert;
+use App\Models\Organization;
+use App\Models\SpeakingLanguage;
 
 class GuideController extends Controller
 {
@@ -33,40 +35,46 @@ class GuideController extends Controller
 
         $users = User::pluck('email', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $name='name_'.app()->getlocale();
+        $name = 'name_' . app()->getlocale();
 
         $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
 
+        $organizations = Organization::pluck('organization_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
         $speaking_languages = Language::all();
-        
+
         $roles = Role::pluck('title', 'id');
 
-        $countries=Country::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $countries = Country::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
 
-        return view('admin.guides.create', compact('roles', 'naitev_languages', 'speaking_languages','countries'));
-    
+        return view('admin.guides.create', compact('roles', 'naitev_languages', 'speaking_languages', 'countries', 'organizations'));
     }
 
     public function store(StoreGuideRequest $request)
     {
-        
-     $user = User::create([
+
+        $user = User::create([
             'name' => $request->name,
-            'last_name'=>$request->last_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),   
+            'password' => bcrypt($request->password),
             'phone' => $request->phone,
             'country_id' => $request->country_id,
             'city' => $request->city,
             'dob' => $request->dob,
-            'naitev_language_id'=> $request->naitev_language_id,
+            'naitev_language_id' => $request->naitev_language_id,
             'gender' => $request->gender,
             'user_type' => 'guide',
-        ]);
-        $user->roles()->sync($request->input('roles', []));
-        //$user->speaking_languages()->sync($request->input('speaking_languages', []));
-        $user->speaking_languages()->sync($this->mapLevels($request['levels']));
+        ]); 
+        
+        foreach($request['levels'] as $key => $value){
+            $speaking_lang = new SpeakingLanguage();
+            $speaking_lang->user_id  = $user->id;
+            $speaking_lang->language_id  = $key;
+            $speaking_lang->level = $value;
+            $speaking_lang->save();
+        } 
 
         if ($request->input('photo', false)) {
             $user->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
@@ -77,14 +85,14 @@ class GuideController extends Controller
         }
 
         $guide = Guide::create([
-                  'brief_intro'=>$request->brief_intro,
-                  'driving_licence'=>$request->driving_licence,
-                  'car'=>$request->car,
-                  'degree'=>$request->degree,
-                  'major'=>$request->major,
-                  'cost'=>$request->cost,
-                  'user_id'=>$user->id,
-
+            'brief_intro' => $request->brief_intro,
+            'driving_licence' => $request->driving_licence,
+            'car' => $request->car,
+            'degree' => $request->degree,
+            'major' => $request->major,
+            'cost' => $request->cost,
+            'organization_id' => $request->organization_id,
+            'user_id' => $user->id,
         ]);
 
         Alert::success(trans('global.flash.success'), trans('global.flash.created'));
@@ -100,32 +108,40 @@ class GuideController extends Controller
 
         $guide->load('user');
 
-        $name='name_'.app()->getlocale();
+        $name = 'name_' . app()->getlocale();
+
+        $organizations = Organization::pluck('organization_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
 
-       $speaking_languages = collect(Language::get())->map(function($speaking_language) use ($guide) {
-            $check =$guide->user->speaking_languages()->wherePivot('language_id',$speaking_language['id'])->first();
-            $speaking_language['value'] = $check ? 1 : null;
-            $speaking_language['level'] = $check ? $check->pivot->level : null; 
+        $speaking_languages = collect(Language::get())->map(function ($speaking_language) use ($guide) {
+            $speaking_lang = SpeakingLanguage::where('language_id',$speaking_language['id'])->where('user_id',$guide->user_id)->first();
+            $speaking_language['value'] = $speaking_lang ? 1 : null;
+            $speaking_language['level'] = $speaking_lang ? $speaking_lang->level : null; 
 
             return $speaking_language;
         });
 
-        $countries=Country::pluck('name', 'id');
+        $countries = Country::pluck('name', 'id');
 
-        return view('admin.guides.edit', compact('users', 'guide','naitev_languages','speaking_languages','countries'));
+        return view('admin.guides.edit', compact('users', 'guide', 'naitev_languages', 'speaking_languages', 'countries', 'organizations'));
     }
 
     public function update(UpdateGuideRequest $request, Guide $guide)
     {
         $guide->update($request->all());
-        
-        $user=User::findOrfail($guide->user_id);
-        
+
+        $user = User::findOrfail($guide->user_id);
+
         $user->update($request->all());
         $user->roles()->sync($request->input('roles', []));
-        $user->speaking_languages()->sync($this->mapLevels($request['levels']));
+        foreach($request['levels'] as $key => $value){
+            $speaking_lang = new SpeakingLanguage();
+            $speaking_lang->user_id  = $user->id;
+            $speaking_lang->language_id  = $key;
+            $speaking_lang->level = $value;
+            $speaking_lang->save();
+        } 
         if ($request->input('photo', false)) {
             if (!$user->photo || $request->input('photo') !== $user->photo->file_name) {
                 if ($user->photo) {
@@ -169,9 +185,9 @@ class GuideController extends Controller
     }
 
     private function mapLevels($levels)
-{
-    return collect($levels)->map(function ($i) {
-        return ['level' => $i];
-    });
-}
+    {
+        return collect($levels)->map(function ($i) {
+            return ['level' => $i];
+        });
+    }
 }

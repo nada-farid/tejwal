@@ -14,11 +14,12 @@ class TripPlacesResource extends JsonResource
      */
     public function toArray($request)
     {
-        return[
-             'latitude'=>$this->latitude,
-             'longitude'=>$this->longitude,
-             'place_name'=>$this->place_name,
-
+        return [
+            'id' => $this->id,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'place_name' => $this->place_name, 
+            'city' => $this->city->name ?? '', 
         ];
     }
 }

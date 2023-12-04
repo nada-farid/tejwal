@@ -14,6 +14,7 @@ use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Alert;
+use App\Models\LanguagePost;
 
 class PostsController extends Controller
 {
@@ -21,7 +22,7 @@ class PostsController extends Controller
     {
         abort_if(Gate::denies('post_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $posts = Post::with(['Tourist','language'])->get();
+        $posts = Post::with(['Tourist','languages.language'])->get();
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -39,7 +40,12 @@ class PostsController extends Controller
     public function store(StorePostRequest $request)
     {
         $post = Post::create($request->all());
-        $post->language()->sync($request->input('langs', []));
+        foreach($request->langs as $lang){
+            $postlang = LanguagePost::Create([
+                'post_id' => $post->id,
+                'language_id' => $lang,
+            ]);
+        }
 
         Alert::success(trans('global.flash.success'), trans('global.flash.created'));
 
@@ -62,8 +68,13 @@ class PostsController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         $post->update($request->all());
-
-        $post->language()->sync($request->input('langs', []));
+        $post->languages()->delete();
+        foreach($request->langs as $lang){
+            $postlang = LanguagePost::Create([
+                'post_id' => $post->id,
+                'language_id' => $lang,
+            ]);
+        }
 
         Alert::success(trans('global.flash.success'), trans('global.flash.updated'));
 

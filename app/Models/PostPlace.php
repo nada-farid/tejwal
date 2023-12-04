@@ -12,9 +12,14 @@ class PostPlace extends Model
         'longitude',
         'place_name',
         'post_id',
+        'city_id',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
-   
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
 }

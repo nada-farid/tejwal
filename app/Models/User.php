@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use \DateTimeInterface;
-use Carbon\Carbon;
-use Hash;
+use Carbon\Carbon; 
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -26,7 +26,7 @@ class User extends Authenticatable implements HasMedia
 
     public const GENDER_RADIO = [
         'female' => 'female',
-         'male'   => 'male',
+        'male'   => 'male',
     ];
 
     public $table = 'users';
@@ -58,11 +58,12 @@ class User extends Authenticatable implements HasMedia
         'phone',
         'country_id',
         'fcm_token',
-        'city',
+        'city', 
         'dob',
         'gender',
         'naitev_language_id',
         'user_type',
+        'approved',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -142,7 +143,7 @@ class User extends Authenticatable implements HasMedia
 
     public function speaking_languages()
     {
-        return $this->belongsToMany(Language::class)->withPivot('level');
+        return $this->hasMany(SpeakingLanguage::class,'user_id');
     }
 
     protected function serializeDate(DateTimeInterface $date)
@@ -155,4 +156,8 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsTo(Country::class, 'country_id');
     }
 
+    public function trip_categories()
+    {
+        return $this->hasMany(UserTripCategory::class,'user_id');
+    }
 }

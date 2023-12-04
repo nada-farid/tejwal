@@ -13,6 +13,12 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             RoleUserTableSeeder::class,
             CountriesTableSeeder::class,
+            CitySeeder::class,
+            LanguageSeeder::class,
+            OrganizationSeeder::class,
+            GuideSeeder::class,
+            TripCategorySeeder::class,
+            TripSeeder::class,
         ]);
     }
 }

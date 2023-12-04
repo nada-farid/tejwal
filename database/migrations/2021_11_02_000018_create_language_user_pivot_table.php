@@ -9,11 +9,13 @@ class CreateLanguageUserPivotTable extends Migration
     public function up()
     {
         Schema::create('language_user', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id', 'user_id_fk_5203775')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('language_id');
             $table->foreign('language_id', 'language_id_fk_5203775')->references('id')->on('languages')->onDelete('cascade');
-            $table->string('level');
+            $table->string('level')->nullable();
+            $table->timestamps();
         });
     }
 }

@@ -14,6 +14,7 @@ use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Alert;
+use App\Models\SpeakingLanguage;
 
 class TouristController extends Controller
 {
@@ -44,7 +45,7 @@ class TouristController extends Controller
     }
 
     public function store(StoreTouristRequest $request)
-    {
+    { 
         $user = User::create([
             'name' => $request->name,
             'last_name'=>$request->last_name,
@@ -58,8 +59,17 @@ class TouristController extends Controller
             'gender' => $request->gender,
             'user_type' => 'tourist',
         ]);
-        $user->roles()->sync($request->input('roles', []));
-        $user->speaking_languages()->sync($this->mapLevels($request['levels']));
+        
+        
+        foreach($request['levels'] as $key => $value){
+            $speaking_lang = new SpeakingLanguage();
+            $speaking_lang->user_id  = $user->id;
+            $speaking_lang->language_id  = $key;
+            $speaking_lang->level = $value;
+            $speaking_lang->save();
+        } 
+        
+        
         if ($request->input('photo', false)) {
             $user->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
         }
@@ -88,9 +98,9 @@ class TouristController extends Controller
         $naitev_languages = Language::pluck($name, 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $speaking_languages = collect(Language::get())->map(function($speaking_language) use ($tourist) {
-            $check =$tourist->user->speaking_languages()->wherePivot('language_id',$speaking_language['id'])->first();
-            $speaking_language['value'] = $check ? 1 : null;
-            $speaking_language['level'] = $check ? $check->pivot->level : null; 
+            $speaking_lang = SpeakingLanguage::where('language_id',$speaking_language['id'])->where('user_id',$tourist->user_id)->first();
+            $speaking_language['value'] = $speaking_lang ? 1 : null;
+            $speaking_language['level'] = $speaking_lang ? $speaking_lang->level : null; 
 
             return $speaking_language;
         });
@@ -109,7 +119,14 @@ class TouristController extends Controller
 
         $user->update($request->all());
         $user->roles()->sync($request->input('roles', []));
-        $user->speaking_languages()->sync($this->mapLevels($request['levels']));
+        $user->speaking_languages()->delete();
+        foreach($request['levels'] as $key => $value){
+            $speaking_lang = new SpeakingLanguage();
+            $speaking_lang->user_id  = $user->id;
+            $speaking_lang->language_id  = $key;
+            $speaking_lang->level = $value;
+            $speaking_lang->save();
+        } 
         if ($request->input('photo', false)) {
             if (!$user->photo || $request->input('photo') !== $user->photo->file_name) {
                 if ($user->photo) {

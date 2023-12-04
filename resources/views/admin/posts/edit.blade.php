@@ -83,7 +83,7 @@
                 </div>
                 <select class="form-control select2 {{ $errors->has('langs') ? 'is-invalid' : '' }}" name="langs[]" id="langs" multiple required>
                     @foreach($langs as $id => $lang)
-                        <option value="{{ $id }}" {{ (in_array($id, old('langs', [])) || $post->language->contains($id)) ? 'selected' : '' }}>{{ $lang }}</option>
+                        <option value="{{ $id }}" {{ (in_array($id, old('langs', [])) || \App\Models\LanguagePost::where('post_id',$post->id)->where('language_id',$id)->first()) ? 'selected' : '' }}>{{ $lang }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('langs'))

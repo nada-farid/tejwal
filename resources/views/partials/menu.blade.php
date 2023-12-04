@@ -108,6 +108,16 @@
                 </a>
             </li>
         @endcan
+        @can('organization_access')
+            <li class="c-sidebar-nav-item">
+                <a href="{{ route("admin.organizations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/organizations") || request()->is("admin/organizations/*") ? "c-active" : "" }}">
+                    <i class="fa-fw far fa-building c-sidebar-nav-icon">
+
+                    </i>
+                    {{ trans('cruds.organization.title') }}
+                </a>
+            </li>
+        @endcan
         @can('post_access')
             <li class="c-sidebar-nav-item">
                 <a href="{{ route("admin.posts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/posts") || request()->is("admin/posts/*") ? "c-active" : "" }}">
@@ -158,15 +168,35 @@
                         </li>
                     @endcan
                     @can('country_access')
-                    <li class="c-sidebar-nav-item">
-                        <a href="{{ route("admin.countries.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/countries") || request()->is("admin/countries/*") ? "c-active" : "" }}">
-                            <i class="fa-fw fas fa-flag c-sidebar-nav-icon">
-        
-                            </i>
-                            {{ trans('cruds.country.title') }}
-                        </a>
-                    </li>
-                @endcan
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("admin.countries.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/countries") || request()->is("admin/countries/*") ? "c-active" : "" }}">
+                                <i class="fa-fw fas fa-flag c-sidebar-nav-icon">
+            
+                                </i>
+                                {{ trans('cruds.country.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('city_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("admin.cities.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/cities") || request()->is("admin/cities/*") ? "c-active" : "" }}">
+                                <i class="fa-fw fas fa-globe-asia c-sidebar-nav-icon">
+            
+                                </i>
+                                {{ trans('cruds.city.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('specialization_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("admin.specializations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/specializations") || request()->is("admin/specializations/*") ? "c-active" : "" }}">
+                                <i class="fa-fw fas fa-align-center c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.specialization.title') }}
+                            </a>
+                        </li>
+                    @endcan
                 </ul>
             </li>
         @endcan

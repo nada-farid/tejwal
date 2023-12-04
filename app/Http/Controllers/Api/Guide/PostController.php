@@ -16,91 +16,88 @@ use Validator;
 class PostController extends Controller
 {
     //
-          use api_return;
+    use api_return;
 
-    public function index(){
+    public function index()
+    {
 
-        $posts=Post::with(['language','places','tourist.user'])->paginate(5);
-         
-         $new = PostResource::collection($posts);
+        $posts = Post::with(['languages', 'places', 'tourist.user'])->paginate(5);
 
-       return $this->returnPaginationData($new,$posts,"success"); 
+        $new = PostResource::collection($posts);
 
-    }   
-    
+        return $this->returnPaginationData($new, $posts, "success");
+    }
+
     //-------------------------------------------------------------
 
 
-   public function show($post_id){
-       
-        
-        $post=POst::findOrfail($post_id);
-
-        if(!$post){
-            return $this->returnError('404',('this post not found'));
-          }
-     
-            $post->load(['language','places','tourist.user']);
-
-            $new = new postDetailsResource($post);
-
-            return $this->returnData($new);
+    public function show($post_id)
+    {
 
 
+        $post = POst::findOrfail($post_id);
+
+        if (!$post) {
+            return $this->returnError('404', ('this post not found'));
+        }
+
+        $post->load(['languages', 'places', 'tourist.user']);
+
+        $new = new postDetailsResource($post);
+
+        return $this->returnData($new);
     }
 
     //-----------------------------------------------------------
 
-    public function Apply($post_id){
-      
-        $post=Post::findOrfail($post_id)->first();
+    public function Apply($post_id)
+    {
 
-        if(!$post){
+        $post = Post::findOrfail($post_id)->first();
 
-            return $this->returnError('404',('this post not found'));
+        if (!$post) {
+
+            return $this->returnError('404', ('this post not found'));
+        } else {
+
+            $guide = Guide::where('user_id', Auth::id())->first();
+
+            $postGuide = new PostGuide();
+            $postGuide->post_id = $post->id;
+            $postGuide->guide_id = $guide->id;
+            $postGuide->save();
+
+
+            return $this->returnSuccessMessage('the Application is done Successfully');
         }
-        else{
-         
-        $guide=Guide::where('user_id',Auth::id())->first();
+    }
+    //-----------------------------------------------------------------------
 
-        $postGuide=new PostGuide();
-        $postGuide->post_id=$post->id;
-        $postGuide->guide_id=$guide->id; 
-        $postGuide->save();  
-    
-    
-    return $this->returnSuccessMessage('the Application is done Successfully');
+
+    public function search(Request $request)
+    {
+
+        global $letters;
+
+        $letters = $request->letters;
+
+
+        $rules = [
+            'letters' => 'required|string',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->returnError('401', $validator->errors());
+        }
+
+        $posts = Post::whereHas('places', function ($query) {
+            $query->where('place_name', 'like', "%" . $GLOBALS['letters'] . "%");
+        })->OrWhere('description_ar', 'like', "%" . $GLOBALS['letters'] . "%")->OrWhere('description_en', 'like', "%" . $GLOBALS['letters'] . "%")->with(['languages', 'places', 'tourist.user'])->paginate(5);
+
+        $new = PostResource::collection($posts);
+
+        return $this->returnPaginationData($new, $posts, "success");
+    }
 }
-    }
-//-----------------------------------------------------------------------
-
-    
-  public function search(Request $request)
-        {
-    
-            global $letters;
-    
-            $letters = $request->letters;
-    
-    
-            $rules = [
-                'letters' => 'required|string',
-            ];
-    
-            $validator = Validator::make($request->all(), $rules);
-    
-            if ($validator->fails()) {
-                return $this->returnError('401', $validator->errors());
-            }
-
-     $posts = Post::whereHas('places', function ($query) {
-                     $query->where('place_name', 'like', "%" . $GLOBALS['letters'] . "%");
-                            })->OrWhere('description', 'like', "%" . $GLOBALS['letters'] . "%")->with(['language','places','tourist.user'])->paginate(5);
-    
-            $new = PostResource::collection($posts);
-
-            return $this->returnPaginationData($new,$posts,"success"); 
-        }
-    }
-    
-

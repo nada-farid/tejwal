@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::redirect('/', '/login');
 Route::get('/home', function () {
     if (session('status')) {
@@ -24,6 +27,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Users
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
     Route::post('users/media', 'UsersController@storeMedia')->name('users.storeMedia');
+    Route::post('users/update_statuses', 'UsersController@update_statuses')->name('users.update_statuses');
     Route::post('users/ckmedia', 'UsersController@storeCKEditorImages')->name('users.storeCKEditorImages');
     Route::resource('users', 'UsersController');
 
@@ -88,10 +92,26 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('user-alerts/read', 'UserAlertsController@read');
     Route::resource('user-alerts', 'UserAlertsController', ['except' => ['edit', 'update']]);
 
-         // Countries
+    // Countries
     Route::delete('countries/destroy', 'CountriesController@massDestroy')->name('countries.massDestroy');
+    Route::post('countries/update_statuses', 'CountriesController@update_statuses')->name('countries.update_statuses');
     Route::resource('countries', 'CountriesController');
 
+    // Cities
+    Route::delete('cities/destroy', 'CitiesController@massDestroy')->name('cities.massDestroy');
+    Route::post('cities/update_statuses', 'CitiesController@update_statuses')->name('cities.update_statuses');
+    Route::resource('cities', 'CitiesController');
+
+    // Organizations
+    Route::delete('organizations/destroy', 'OrganizationsController@massDestroy')->name('organizations.massDestroy');
+    Route::post('organizations/media', 'OrganizationsController@storeMedia')->name('organizations.storeMedia');
+    Route::post('organizations/ckmedia', 'OrganizationsController@storeCKEditorImages')->name('organizations.storeCKEditorImages');
+    Route::resource('organizations', 'OrganizationsController');
+
+    // Specializations
+    Route::delete('specializations/destroy', 'SpecializationsController@massDestroy')->name('specializations.massDestroy');
+    Route::resource('specializations', 'SpecializationsController');
+    
     Route::get('system-calendar', 'SystemCalendarController@index')->name('systemCalendar');
 
    

@@ -24,9 +24,9 @@ class Post extends Model
         'tourist_id',
         'start_date',
         'end_date',
-         'description_ar',
-         'description_en',
-         'currency_type',
+        'description_ar',
+        'description_en',
+        'currency_type',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -61,12 +61,13 @@ class Post extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
-    public function places(){
-
-        return $this->hasMany(PostPlace::class);
-    }
-    public function language()
+    public function places()
     {
-        return $this->belongsToMany(Language::class);
+
+        return $this->hasMany(PostPlace::class, 'post_id');
+    }
+    public function languages()
+    {
+        return $this->hasMany(LanguagePost::class, 'post_id');
     }
 }
