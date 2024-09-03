@@ -143,7 +143,7 @@ class User extends Authenticatable implements HasMedia
 
     public function speaking_languages()
     {
-        return $this->hasMany(SpeakingLanguage::class,'user_id');
+        return $this->belongsToMany(Language::class,'language_user','user_id','language_id');
     }
 
     protected function serializeDate(DateTimeInterface $date)

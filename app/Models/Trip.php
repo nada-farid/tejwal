@@ -77,7 +77,7 @@ class Trip extends Model implements HasMedia
 
     public function trip_categories()
     {
-        return $this->hasMany(TripTripCategory::class,'trip_id');
+        return $this->belongsToMany(TripCategory::class,'trip_trip_category','trip_id','trip_category_id');
     }
 
     protected function serializeDate(DateTimeInterface $date)
